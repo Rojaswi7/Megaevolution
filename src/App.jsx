@@ -2,6 +2,7 @@ import { cloneElement, useEffect, useMemo, useRef, useState } from 'react'
 import { MARKETS, CATEGORIES, CREATORS, MEDIA } from './data.js'
 import { HeroFloaters } from './extras.jsx'
 import { Flag } from './flag.jsx'
+import { PlatformIcon } from './platformIcon.jsx'
 import { Creators as Creators3, Markets as Markets3 } from './sections3.jsx'
 import { Head as Head2 } from './head.jsx'
 import { About as About2, Process as Process2, ForCreators as ForCreators2, Contact as Contact2 } from './sections2.jsx'
@@ -123,22 +124,24 @@ function Collage() {
 
 /* ---------- sections ---------- */
 
-function Nav() {
+export function Nav({ home = true }) {
+  const pre = home ? '' : '/'
   const [open, setOpen] = useState(false)
   return (
     <header className="nav wrap">
-      <a href="#top" className="nav__logo" aria-label="MegaEvolution home">
+      <a href={home ? '#top' : '/'} className="nav__logo" aria-label="MegaEvolution home">
         <img className="logo--onlight" src="/logo.png" alt="MegaEvolution" width="138" height="20" />
         <img className="logo--ondark" src="/logo-light.png" alt="" width="138" height="20" />
       </a>
       <nav className={`nav__links ${open ? 'is-open' : ''}`} onClick={() => setOpen(false)}>
-        <a href="#creators">Creators</a>
-        <a href="#services">Services</a>
-        <a href="#markets">Markets</a>
-        <a href="#for-creators">For creators</a>
+        <a href={`${pre}#creators`}>Creators</a>
+        <a href={`${pre}#services`}>Services</a>
+        <a href={`${pre}#markets`}>Markets</a>
+        <a href={`${pre}#for-creators`}>For creators</a>
+        <a href="/blog/">Blog</a>
         <a href={`${SITE}/login`}>Log in</a>
       </nav>
-      <a className="nav__cta" href="#contact">Start a campaign <Arrow /></a>
+      <a className="nav__cta" href={`${pre}#contact`}>Start a campaign <Arrow /></a>
       <button className="nav__burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
         {open ? 'Close' : 'Menu'}
       </button>
@@ -302,11 +305,11 @@ function useMedia(query) {
 
 
 
-function Footer() {
+export function Footer() {
   const cols = [
-    ['Marketing', [['Creator marketing', SITE], ['Start a campaign', '#contact'], ['Business inquiry', `${SITE}/business-inquiry`]]],
-    ['Support', [['Help Center', `${SITE}/help`], ['Creator FAQ', `${SITE}/help`], ['Company · Brand FAQ', `${SITE}/help`], ['Connect your AI', SITE]]],
-    ['Information', [['Terms & Conditions', `${SITE}/terms`], ['Privacy Policy', `${SITE}/privacy`], ['Blog', SITE]]],
+    ['Marketing', [['Creator marketing', SITE], ['Start a campaign', '/#contact'], ['Business inquiry', `${SITE}/business-inquiry`]]],
+    ['Support', [['Help Center', `${SITE}/help-center`], ['Creator FAQ', `${SITE}/help-center`], ['Company · Brand FAQ', `${SITE}/help-center`], ['Connect your AI', SITE]]],
+    ['Information', [['Terms & Conditions', `${SITE}/terms`], ['Privacy Policy', `${SITE}/privacy`], ['Blog', '/blog/']]],
   ]
   return (
     <footer className="footer">
@@ -314,6 +317,11 @@ function Footer() {
         <div className="footer__brand">
           <img src="/logo-light.png" alt="MegaEvolution" width="150" height="22" />
           <p className="soft">Reach globally, delivered locally.</p>
+          <div className="socials">
+            {[['Instagram', 'https://www.instagram.com/megaevo1ution/'], ['TikTok', 'https://tiktok.com/@megaevo1ution'], ['LinkedIn', 'https://www.linkedin.com/company/megaevolution/']].map(([n, u]) => (
+              <a key={n} href={u} target="_blank" rel="noreferrer" aria-label={`MegaEvolution on ${n}`}><PlatformIcon name={n} size={16} mono /></a>
+            ))}
+          </div>
         </div>
         {cols.map(([h, links]) => (
           <div key={h}>

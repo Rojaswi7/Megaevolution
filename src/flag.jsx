@@ -1,7 +1,7 @@
 // Country flags (country-flag-icons, MIT). Regions without one flag get a globe badge.
-import { ID, VN, TH, PH, SG, TW, CN, KR, JP, IN, EU, US } from 'country-flag-icons/react/3x2'
+import { ID, VN, TH, PH, MY, SG, TW, CN, KR, JP, IN, EU, US } from 'country-flag-icons/react/3x2'
 
-const FLAGS = { id: ID, vn: VN, th: TH, ph: PH, sg: SG, tw: TW, cn: CN, kr: KR, jp: JP, in: IN, eu: EU, us: US }
+const FLAGS = { id: ID, vn: VN, th: TH, ph: PH, my: MY, sg: SG, tw: TW, cn: CN, kr: KR, jp: JP, in: IN, eu: EU, us: US }
 
 export function Flag({ market, title }) {
   const F = FLAGS[market]

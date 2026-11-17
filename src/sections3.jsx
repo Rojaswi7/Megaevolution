@@ -3,6 +3,7 @@ import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate,
 import { MAP_DOTS, MAP_VIEW } from './mapDots.js'
 import { Head } from './head.jsx'
 import { Flag } from './flag.jsx'
+import { MARKET_STRENGTHS } from './marketStrengths.js'
 
 const CAT_ICONS = {
   All: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
@@ -191,7 +192,7 @@ const project = (lat, lon) => [(lon < 0 ? lon + 360 : lon) - MAP_VIEW.lon0, MAP_
 
 // label offset per pin: [dx, dy, anchor]
 const LABEL = {
-  eu: [2.4, -2, 'start'], me: [2.4, 1, 'start'], in: [-2.4, 1, 'end'], th: [-2.4, -1.2, 'end'], sg: [-2.4, 1.6, 'end'], id: [2.4, 2.6, 'start'],
+  eu: [2.4, -2, 'start'], me: [2.4, 1, 'start'], in: [-2.4, 1, 'end'], th: [-2.4, -1.2, 'end'], my: [-2.4, 0.2, 'end'], sg: [2.4, 1.6, 'start'], id: [2.4, 2.6, 'start'],
   vn: [2.2, 2.6, 'start'], ph: [2.4, 1.2, 'start'], tw: [2.4, 0.4, 'start'], cn: [-2.4, -1, 'end'], kr: [-1, -2.8, 'end'], jp: [2.4, 1, 'start'],
   us: [-2.4, -1.6, 'end'], latam: [-2.4, 3.6, 'end'],
 }
@@ -220,6 +221,7 @@ export function Markets() {
 
         <div className="mx__panel">
           <div className="mx__map">
+            <div className="mx__mapwrap">
             <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Map of MegaEvolution markets">
               <g className="mx__dots">{MAP_DOTS.map(([x, y], k) => <circle key={k} cx={x} cy={y} r="0.5" />)}</g>
               {MARKETS.map((x) => {
@@ -237,6 +239,8 @@ export function Markets() {
                 )
               })}
             </svg>
+            <Callout id={active} />
+            </div>
 
             <article className="mx__card" key={active} aria-live="polite">
               <header>
@@ -277,8 +281,93 @@ export function Markets() {
               )
             })}
           </div>
+
+          <Why id={active} />
         </div>
       </div>
     </section>
+  )
+}
+
+// countries by name; regions (Europe, Middle East, Latin America) by their short label
+const placeName = (m) => (m.id === 'eu' || m.isRegion ? m.short : m.country)
+
+// real per-market numbers only (some markets share a generic template on the live site)
+const statOf = (s) => (s && /KOL/.test(s.stat.label) ? s.stat : null)
+const badgeOf = (s) => (s && s.badge.title && !/^\d/.test(s.badge.title) ? s.badge : null)
+
+function Callout({ id }) {
+  const s = MARKET_STRENGTHS[id]
+  const m = marketById[id]
+  const i = MARKET_INFO[id]
+  if (!s) return null
+  const [px, py] = project(i.lat, i.lon)
+  const stat = statOf(s)
+  const below = py < H * 0.35
+  return (
+    <div className={`callout ${below ? 'callout--below' : ''} ${px > W * 0.7 ? 'callout--left' : ''}`} key={id}
+      style={{ left: `${(px / W) * 100}%`, top: `${(py / H) * 100}%` }} aria-hidden="true">
+      <b>{placeName(m)}</b>
+      {stat ? <span><em>{stat.value}</em> {stat.label}</span> : <span>{s.features[0]?.title}</span>}
+    </div>
+  )
+}
+
+const FEAT_ICONS = [
+  'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4.5 20c.8-3.4 3.9-6 7.5-6s6.7 2.6 7.5 6',
+  'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3ZM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6',
+  'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM12 12h.01',
+  'M4 20V10M10 20V4M16 20v-7M22 20H2',
+]
+
+function Why({ id }) {
+  const s = MARKET_STRENGTHS[id]
+  const m = marketById[id]
+  if (!s) return null
+  const stat = statOf(s)
+  const badge = badgeOf(s)
+  const name = placeName(m)
+  const pairs = s.hard.map((h, k) => [h, s.different[k]]).filter(([, d]) => d)
+  return (
+    <div className="why2" key={id}>
+      <div className={`why2__head ${stat || badge ? '' : 'why2__head--solo'}`}>
+        <div>
+          <p className="why__k"><Flag market={id} />Why brands work with us in {name}</p>
+          <h3 className="why2__lead">{s.subtitle}</h3>
+        </div>
+        {(stat || badge) && (
+          <div className="why__chips">
+            {stat && <span className="why__stat"><b>{stat.value}</b>{stat.label}</span>}
+            {badge && <span className="why__badge"><b>{badge.title}</b>{badge.text}</span>}
+          </div>
+        )}
+      </div>
+
+      <div className="why2__pairs">
+        <div className="why2__labels" aria-hidden="true"><span>The challenge in {name}</span><span>How we handle it</span></div>
+        {pairs.map(([h, d], k) => (
+          <div className="pair" key={h}>
+            <span className="pair__n">0{k + 1}</span>
+            <p className="pair__c">{h}</p>
+            <span className="pair__arrow" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </span>
+            <p className="pair__us">{d}</p>
+          </div>
+        ))}
+      </div>
+
+      <ul className="why2__feats" aria-label="What you get">
+        {s.features.map((f, k) => (
+          <li key={f.title}>
+            <span className="why2__ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d={FEAT_ICONS[k % FEAT_ICONS.length]} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </span>
+            <b>{f.title}</b>
+            <span>{f.text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }

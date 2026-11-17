@@ -5,6 +5,7 @@ export const MARKETS = [
   { id: 'vn', city: 'Ho Chi Minh City', short: 'Saigon', country: 'Vietnam', tz: 'Asia/Ho_Chi_Minh', langs: 'Tiếng Việt', strong: ['F&B', 'Vlog', 'Tech'], region: 'SEA' },
   { id: 'th', city: 'Bangkok', country: 'Thailand', tz: 'Asia/Bangkok', langs: 'ภาษาไทย', strong: ['F&B', 'Beauty', 'Vlog'], region: 'SEA' },
   { id: 'ph', city: 'Manila', country: 'Philippines', tz: 'Asia/Manila', langs: 'Filipino, English', strong: ['Vlog', 'F&B', 'Beauty'], region: 'SEA' },
+  { id: 'my', city: 'Kuala Lumpur', country: 'Malaysia', tz: 'Asia/Kuala_Lumpur', langs: 'Bahasa Melayu, English, 中文', strong: ['F&B', 'Beauty', 'Vlog'], region: 'SEA' },
   { id: 'sg', city: 'Singapore', country: 'Singapore', tz: 'Asia/Singapore', langs: 'English, 中文, Bahasa Melayu', strong: ['F&B', 'Beauty', 'Tech'], region: 'SEA' },
   { id: 'tw', city: 'Taipei', country: 'Taiwan', tz: 'Asia/Taipei', langs: '繁體中文', strong: ['F&B', 'Tech', 'Gaming'], region: 'NE Asia' },
   { id: 'cn', city: 'Shanghai', country: 'China', tz: 'Asia/Shanghai', langs: '简体中文', strong: ['Beauty', 'Tech', 'F&B'], region: 'NE Asia' },
@@ -66,6 +67,7 @@ export const MARKET_INFO = {
   tw: { code: 'TW', lat: 25.0, lon: 121.5, team: 'Local manager', watched: ['YouTube', 'Facebook', 'Instagram', 'LINE'], buy: ['Shopee', 'momo', 'PChome'] },
   kr: { code: 'KR', lat: 37.6, lon: 127.0, team: 'Local manager', watched: ['YouTube', 'Instagram', 'Naver', 'TikTok'], buy: ['Coupang', 'Naver Shopping', 'Gmarket'] },
   jp: { code: 'JP', lat: 35.7, lon: 139.7, team: 'Local manager', watched: ['YouTube', 'X', 'Instagram', 'TikTok'], buy: ['Amazon', 'Rakuten', 'Yahoo! Shopping'] },
+  my: { code: 'MY', lat: 3.14, lon: 101.69, team: '', watched: ['YouTube', 'Facebook', 'TikTok', 'Instagram'], buy: ['Shopee', 'Lazada', 'TikTok Shop'] },
   sg: { code: 'SG', lat: 1.35, lon: 103.82, team: '', watched: ['YouTube', 'Instagram', 'TikTok', 'Facebook'], buy: ['Shopee', 'Lazada', 'Amazon'] },
   cn: { code: 'CN', lat: 31.23, lon: 121.47, team: '', watched: ['Douyin', 'Xiaohongshu', 'Bilibili', 'WeChat'], buy: ['Taobao', 'JD.com', 'Pinduoduo'] },
   in: { code: 'IN', lat: 19.08, lon: 72.88, team: '', watched: ['YouTube', 'Instagram', 'Facebook', 'X'], buy: ['Amazon', 'Flipkart', 'Meesho'] },
@@ -89,7 +91,7 @@ export const PLATFORM_COLORS = {
 // local rates when the creator data is wired up.
 // ------------------------------------------------------------------
 const FX = {
-  th: ['THB', 36], ph: ['PHP', 56], me: ['AED', 3.67], latam: ['MXN', 17], id: ['IDR', 16000], vn: ['VND', 25000], sg: ['SGD', 1.35], tw: ['TWD', 32], cn: ['CNY', 7.2], kr: ['KRW', 1350], jp: ['JPY', 150], in: ['INR', 83], eu: ['EUR', 0.92], us: ['USD', 1] }
+  th: ['THB', 36], my: ['MYR', 4.7], ph: ['PHP', 56], me: ['AED', 3.67], latam: ['MXN', 17], id: ['IDR', 16000], vn: ['VND', 25000], sg: ['SGD', 1.35], tw: ['TWD', 32], cn: ['CNY', 7.2], kr: ['KRW', 1350], jp: ['JPY', 150], in: ['INR', 83], eu: ['EUR', 0.92], us: ['USD', 1] }
 export const minUsd = (rate) => Number(String(rate).split('–')[0].replace(/,/g, ''))
 export function localRate(usd, market) {
   const [cur, r] = FX[market] || FX.us
@@ -106,14 +108,14 @@ export function localRate(usd, market) {
 // browser language, then USD. Once hosted on Vercel this can switch to the
 // x-vercel-ip-country header for true IP-based detection.
 // ------------------------------------------------------------------
-const CURRENCY_RATES = { USD: 1, IDR: 16000, VND: 25000, THB: 36, PHP: 56, SGD: 1.35, TWD: 32, CNY: 7.2, KRW: 1350, JPY: 150, INR: 83, AED: 3.67, EUR: 0.92, MXN: 17, GBP: 0.79, AUD: 1.5 }
+const CURRENCY_RATES = { USD: 1, MYR: 4.7, IDR: 16000, VND: 25000, THB: 36, PHP: 56, SGD: 1.35, TWD: 32, CNY: 7.2, KRW: 1350, JPY: 150, INR: 83, AED: 3.67, EUR: 0.92, MXN: 17, GBP: 0.79, AUD: 1.5 }
 const TZ_CURRENCY = {
-  'Asia/Jakarta': 'IDR', 'Asia/Ho_Chi_Minh': 'VND', 'Asia/Saigon': 'VND', 'Asia/Bangkok': 'THB', 'Asia/Manila': 'PHP',
+  'Asia/Jakarta': 'IDR', 'Asia/Ho_Chi_Minh': 'VND', 'Asia/Saigon': 'VND', 'Asia/Bangkok': 'THB', 'Asia/Kuala_Lumpur': 'MYR', 'Asia/Manila': 'PHP',
   'Asia/Singapore': 'SGD', 'Asia/Taipei': 'TWD', 'Asia/Shanghai': 'CNY', 'Asia/Seoul': 'KRW', 'Asia/Tokyo': 'JPY',
   'Asia/Kolkata': 'INR', 'Asia/Calcutta': 'INR', 'Asia/Dubai': 'AED', 'America/Mexico_City': 'MXN', 'Europe/London': 'GBP',
   'Australia/Sydney': 'AUD',
 }
-const REGION_CURRENCY = { ID: 'IDR', VN: 'VND', TH: 'THB', PH: 'PHP', SG: 'SGD', TW: 'TWD', CN: 'CNY', KR: 'KRW', JP: 'JPY', IN: 'INR', AE: 'AED', MX: 'MXN', GB: 'GBP', AU: 'AUD', DE: 'EUR', FR: 'EUR', ES: 'EUR', IT: 'EUR', NL: 'EUR' }
+const REGION_CURRENCY = { MY: 'MYR', ID: 'IDR', VN: 'VND', TH: 'THB', PH: 'PHP', SG: 'SGD', TW: 'TWD', CN: 'CNY', KR: 'KRW', JP: 'JPY', IN: 'INR', AE: 'AED', MX: 'MXN', GB: 'GBP', AU: 'AUD', DE: 'EUR', FR: 'EUR', ES: 'EUR', IT: 'EUR', NL: 'EUR' }
 
 export function detectCurrency() {
   try {
