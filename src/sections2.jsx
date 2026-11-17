@@ -356,12 +356,12 @@ function Screen({ step, s, set, next }) {
         </div>
       </div>
       <p className="sect">Top creators</p>
-      <ul className="top">
+      <ul className="topc">
         {TOP.map(([h, mk, pl, v], k) => (
           <li key={h}>
-            <span className="top__n">{k + 1}</span>
-            <span className="top__av">{h[0].toUpperCase()}<span className="scr__avflag"><Flag market={mk} /></span></span>
-            <span className="top__h"><PlatformIcon name={pl} size={10} />@{h}</span>
+            <span className="topc__n">{k + 1}</span>
+            <span className="topc__av">{h[0].toUpperCase()}<span className="scr__avflag"><Flag market={mk} /></span></span>
+            <span className="topc__h"><PlatformIcon name={pl} size={10} />@{h}</span>
             <b>{v[s.metric]}</b>
           </li>
         ))}
