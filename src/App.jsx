@@ -329,20 +329,14 @@ function Footer() {
 
 const THEMES = [['brand', 'Brand'], ['coast', 'Coast'], ['icy', 'Icy'], ['sakura', 'Sakura'], ['lavender', 'Lavender'], ['sand', 'Sand']]
 
-const REVIEW = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('review')
-
 function ThemeSwitch() {
   const [theme, setTheme] = useState(() => {
     const q = new URLSearchParams(window.location.search).get('theme')
-    if (THEMES.some(([id]) => id === q)) return q
-    if (!REVIEW) return 'brand'
-    try { return localStorage.getItem('me-theme') || 'brand' } catch { return 'brand' }
+    return THEMES.some(([id]) => id === q) ? q : 'brand'
   })
   useEffect(() => {
     document.documentElement.dataset.theme = theme
-    if (REVIEW) { try { localStorage.setItem('me-theme', theme) } catch {} }
   }, [theme])
-  if (!REVIEW) return null
   return (
     <div className="themeswitch" role="group" aria-label="Colour theme (review only)">
       {THEMES.map(([id, name]) => (
