@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate, minUsd } from './data.js'
 import { Head, Eyebrow } from './head.jsx'
+import { Flag } from './flag.jsx'
 import { PlatformIcon } from './platformIcon.jsx'
 
 const fmt = (date, tz, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: tz, ...opts }).format(date)
@@ -155,12 +156,12 @@ export function About() {
    05 · Process — autoplay product tour
    ============================================================ */
 const STEPS = [
-  { t: 'Brief', d: 'Tell us the product, markets and budget. Ten minutes, in English.', notes: ['10 minutes', 'In English'] },
-  { t: 'Shortlist', d: 'Our team in each market suggests creators who fit, with their rates.', notes: ['Rates shown', 'Picked locally'] },
-  { t: 'Launch', d: 'You approve creators and content. We handle contracts, timing and posting.', notes: ['You approve', 'Posted on time'] },
-  { t: 'Learn', d: 'One report across every market, so you can see what actually sold.', notes: ['Every market', 'One report'] },
+  { t: 'Brief', d: 'Tell us the product, the markets and the budget.', you: 'Product, markets, budget', we: 'Read it with our team in each market' },
+  { t: 'Shortlist', d: 'Our team in each market suggests creators who fit, with their rates.', you: 'Pick the creators you like', we: 'Suggest creators, with rates' },
+  { t: 'Launch', d: 'You approve the content. We handle contracts, timing and posting.', you: 'Approve the content', we: 'Contracts, timing and posting' },
+  { t: 'Learn', d: 'One report across every market, so you can see what actually sold.', you: 'See what sold', we: 'One report for every market' },
 ]
-const STEP_MS = 5200
+const STEP_MS = 6000
 const SHORT = CREATORS.filter((c) => ['vn', 'id'].includes(c.market)).slice(0, 4)
 const minRate = (r) => Number(String(r).split('–')[0].replace(/,/g, ''))
 const REPORT = {
@@ -169,109 +170,207 @@ const REPORT = {
 }
 const PHONE_MARKETS = [['vn', 'Vietnam'], ['id', 'Indonesia'], ['tw', 'Taiwan'], ['kr', 'Korea']]
 
-function Screen({ step, s, set, next, live }) {
-  if (step === 0)
-    return (
-      <div className="scr">
-        <p className="scr__title">New brief</p>
-        <label className="scr__field"><small>Product</small><span>Sunscreen SPF50, 50ml</span></label>
-        <div className="scr__field">
-          <small>Markets · tap to change</small>
-          <span className="scr__chips">
-            {PHONE_MARKETS.map(([id, name]) => (
-              <button type="button" key={id} className={s.markets.includes(id) ? '' : 'ghost'}
-                onClick={() => set({ markets: s.markets.includes(id) ? s.markets.filter((x) => x !== id) : [...s.markets, id] })}>
-                {name}
-              </button>
-            ))}
-          </span>
-        </div>
-        <div className="scr__field">
-          <small>Budget</small>
-          <input type="range" min="1000" max="30000" step="500" value={s.budget} className="scr__slider"
-            style={{ '--p': `${((s.budget - 1000) / 29000) * 100}%` }}
-            onChange={(e) => set({ budget: Number(e.target.value) })} aria-label="Budget" />
-          <span className="scr__mono">USD {s.budget.toLocaleString('en-US')}</span>
-        </div>
-        <button type="button" className="scr__btn" onClick={next} disabled={s.markets.length === 0}>
-          {s.markets.length === 0 ? 'Pick a market' : `Send brief · ${s.markets.length} market${s.markets.length > 1 ? 's' : ''}`}
-        </button>
-      </div>
-    )
-
-  if (step === 1) {
-    const picked = SHORT.filter((c) => s.picked.includes(c.handle))
-    return (
-      <div className="scr">
-        <p className="scr__title">Shortlist · Vietnam</p>
-        {SHORT.map((c, k) => {
-          const on = s.picked.includes(c.handle)
-          return (
-            <button type="button" className={`scr__row ${on ? 'is-on' : ''}`} key={c.handle} style={{ animationDelay: `${k * 90}ms` }}
-              onClick={() => set({ picked: on ? s.picked.filter((x) => x !== c.handle) : [...s.picked, c.handle] })} aria-pressed={on}>
-              <span className="scr__av">{c.name[0]}</span>
-              <span className="scr__who"><b>@{c.handle}</b><small>{c.followers} · {c.cat}</small></span>
-              <span className="scr__mono">{localRate(minUsd(c.rate), c.market)}+</span>
-              <span className={`scr__tick ${on ? 'on' : ''}`}>{on ? '✓' : ''}</span>
-            </button>
-          )
-        })}
-        <div className="scr__total"><small>Picked</small><b>{picked.length} of {SHORT.length}</b></div>
-        <button type="button" className="scr__btn" onClick={next} disabled={picked.length === 0}>
-          {picked.length === 0 ? 'Pick a creator' : `Approve ${picked.length} creator${picked.length > 1 ? 's' : ''}`}
-        </button>
-      </div>
-    )
-  }
-
-  if (step === 2)
-    return (
-      <div className="scr">
-        <p className="scr__title">Content review</p>
-        <div className={`scr__video ${s.review === 'ok' ? 'is-ok' : ''}`}>
-          <span className="scr__play" />
-          <span className="scr__progress"><i /></span>
-          <small>@bao.an.eats · draft 2</small>
-        </div>
-        <p className="scr__caption">“Ăn thử bánh mì ngon nhất Sài Gòn, with SPF that lasts in the heat”</p>
-        {s.review === 'ok' && <p className="scr__status ok">✓ Approved · posting Fri 19:00 local</p>}
-        {s.review === 'changes' && <p className="scr__status">Feedback sent to @bao.an.eats</p>}
-        <div className="scr__actions">
-          <button type="button" className="scr__btn" onClick={() => { set({ review: 'ok' }); setTimeout(next, 1400) }}>Approve</button>
-          <button type="button" className="scr__btn ghost" onClick={() => set({ review: 'changes' })}>Changes</button>
-        </div>
-      </div>
-    )
-
-  const data = REPORT[s.rMarket][s.metric]
-  const max = Math.max(...data)
+function AppHead({ title, sub, step }) {
   return (
-    <div className="scr">
-      <p className="scr__title">Report <small className="scr__sample">sample</small></p>
-      <div className="scr__seg">
-        {['Views', 'Clicks', 'Sales'].map((m) => (
-          <button type="button" key={m} className={s.metric === m ? 'on' : ''} onClick={() => set({ metric: m })}>{m}</button>
-        ))}
+    <div className="ah">
+      <div className="ah__row">
+        <span className="ah__logo"><img src="/logo.png" alt="" /></span>
+        <span className="ah__me">R</span>
       </div>
-      <div className="scr__bars">
-        {data.map((v, k) => <i key={k} style={{ height: `${(v / max) * 100}%` }} />)}
-      </div>
-      <div className="scr__split">
-        {[['vn', 'Vietnam'], ['id', 'Indonesia']].map(([id, name]) => {
-          const sum = REPORT[id][s.metric].reduce((a, b) => a + b, 0)
-          const all = REPORT.vn[s.metric].reduce((a, b) => a + b, 0) + REPORT.id[s.metric].reduce((a, b) => a + b, 0)
-          return (
-            <button type="button" key={id} className={s.rMarket === id ? 'on' : ''} onClick={() => set({ rMarket: id })}>
-              <small>{name}</small><b>{Math.round((sum / all) * 100)}%</b>
-            </button>
-          )
-        })}
-      </div>
+      <p className="ah__title">{title}</p>
+      {sub && <p className="ah__sub">{sub}</p>}
+      <div className="ah__steps" aria-hidden="true">{[0, 1, 2, 3].map((k) => <i key={k} className={k <= step ? 'on' : ''} />)}</div>
     </div>
   )
 }
 
-const INITIAL = { markets: ['vn', 'id'], budget: 8000, picked: [], review: null, rMarket: 'vn', metric: 'Views' }
+const PHONE_PLATFORMS = ['TikTok', 'Instagram', 'YouTube']
+const CHECKS = ['Product shown in first 3s', 'Brand tagged in caption', '#ad label added']
+
+function Screen({ step, s, set, next }) {
+  if (step === 0) {
+    const est = Math.max(2, Math.round(s.budget / 1200)) * Math.max(1, s.markets.length)
+    return (
+      <div className="scr scr--brief">
+        <AppHead title="New brief" sub="Step 1 of 4 · Draft" step={0} />
+        <div className="pc">
+          <span className="pc__thumb"><span>SPF</span></span>
+          <span className="pc__txt"><b>Sunscreen SPF50</b><small>Skincare · 50ml</small></span>
+          <span className="pc__edit">Edit</span>
+        </div>
+        <div className="fld">
+          <span className="fld__lbl">Platforms</span>
+          <div className="tg">
+            {PHONE_PLATFORMS.map((p) => {
+              const on = s.platforms.includes(p)
+              return (
+                <button type="button" key={p} className={on ? 'on' : ''} aria-pressed={on}
+                  onClick={() => set({ platforms: on ? s.platforms.filter((x) => x !== p) : [...s.platforms, p] })}>
+                  <PlatformIcon name={p} size={14} />{p}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <div className="fld">
+          <span className="fld__lbl">Markets</span>
+          <div className="tg">
+            {PHONE_MARKETS.map(([id, name]) => {
+              const on = s.markets.includes(id)
+              return (
+                <button type="button" key={id} className={on ? 'on' : ''} aria-pressed={on}
+                  onClick={() => set({ markets: on ? s.markets.filter((x) => x !== id) : [...s.markets, id] })}>
+                  <Flag market={id} />{name}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <div className="fld">
+          <span className="fld__lbl">Budget <b>USD {s.budget.toLocaleString('en-US')}</b></span>
+          <input type="range" min="1000" max="30000" step="500" value={s.budget} className="scr__slider"
+            style={{ '--p': `${((s.budget - 1000) / 29000) * 100}%` }}
+            onChange={(e) => set({ budget: Number(e.target.value) })} aria-label="Budget" />
+        </div>
+        <div className="foot">
+          <span className="foot__note">About {est} creators fit this budget</span>
+          <button type="button" className="scr__btn" onClick={next} disabled={s.markets.length === 0 || s.platforms.length === 0}>
+            {s.markets.length === 0 ? 'Pick a market' : 'Send brief'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (step === 1) {
+    const list = SHORT.filter((c) => s.filter === 'All' || c.platform === s.filter)
+    const picked = SHORT.filter((c) => s.picked.includes(c.handle))
+    return (
+      <div className="scr">
+        <AppHead title="Shortlist" sub="Vietnam · Indonesia" step={1} />
+        <div className="seg2">
+          {['All', 'TikTok', 'Instagram', 'YouTube'].map((f) => (
+            <button type="button" key={f} className={s.filter === f ? 'on' : ''} onClick={() => set({ filter: f })} aria-label={f}>
+              {f === 'All' ? 'All' : <PlatformIcon name={f} size={13} />}
+            </button>
+          ))}
+        </div>
+        <div className="list">
+          {list.length === 0 && <p className="list__empty">No creators on this platform yet.</p>}
+          {list.map((c, k) => {
+            const on = s.picked.includes(c.handle)
+            return (
+              <button type="button" className={`scr__row ${on ? 'is-on' : ''}`} key={c.handle} style={{ animationDelay: `${k * 70}ms` }}
+                onClick={() => set({ picked: on ? s.picked.filter((x) => x !== c.handle) : [...s.picked, c.handle] })} aria-pressed={on}>
+                <span className="scr__av">{c.name[0]}<span className="scr__avflag"><Flag market={c.market} /></span></span>
+                <span className="scr__who">
+                  <b>@{c.handle}</b>
+                  <small><PlatformIcon name={c.platform} size={10} /> {c.followers} · {c.cat}</small>
+                  <em>from {localRate(minUsd(c.rate), c.market)}</em>
+                </span>
+                <span className={`scr__tick ${on ? 'on' : ''}`}>{on ? '✓' : ''}</span>
+              </button>
+            )
+          })}
+        </div>
+        <div className="foot foot--row">
+          <span className="stackav">{picked.map((c) => <i key={c.handle}>{c.name[0]}</i>)}</span>
+          <button type="button" className="scr__btn" onClick={next} disabled={picked.length === 0}>
+            {picked.length === 0 ? 'Pick creators' : `Approve ${picked.length}`}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (step === 2) {
+    const done = s.checks.filter(Boolean).length
+    return (
+      <div className="scr">
+        <AppHead title="Content review" sub="@bao.an.eats · Draft 2" step={2} />
+        <div className="vid">
+          <span className="vid__plat"><PlatformIcon name="TikTok" size={11} mono /> TikTok</span>
+          {s.review === 'ok' && <span className="vid__ok">✓ Approved</span>}
+          <span className="vid__play" />
+          <span className="vid__rail"><i /><i /><i /></span>
+          <span className="vid__cap"><b>@bao.an.eats</b>Ăn thử bánh mì ngon nhất Sài Gòn ☀️</span>
+          <span className="vid__bar"><i /></span>
+        </div>
+        <ul className="chk">
+          {CHECKS.map((t, k) => (
+            <li key={t}>
+              <button type="button" className={s.checks[k] ? 'on' : ''} aria-pressed={s.checks[k]}
+                onClick={() => set({ checks: s.checks.map((v, i) => (i === k ? !v : v)) })}>
+                <span>{s.checks[k] ? '✓' : ''}</span>{t}
+              </button>
+            </li>
+          ))}
+        </ul>
+        {s.review === 'changes' && <p className="scr__status">Feedback sent to @bao.an.eats</p>}
+        <div className="scr__actions">
+          <button type="button" className="scr__btn ghost" onClick={() => set({ review: 'changes' })}>Changes</button>
+          <button type="button" className="scr__btn" disabled={done < CHECKS.length} onClick={() => { set({ review: 'ok' }); setTimeout(next, 1400) }}>
+            {done < CHECKS.length ? `${done}/${CHECKS.length} checked` : 'Approve'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  const data = REPORT[s.rMarket][s.metric]
+  const max = Math.max(...data)
+  const KPI = { Views: ['1.2M', '+18%'], Clicks: ['38.4K', '+11%'], Sales: ['2,140', '+24%'] }
+  const pts = data.map((v, k) => [k * (100 / 6), 38 - (v / max) * 32])
+  const line = pts.map(([x, y], k) => `${k ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ')
+  const vnShare = Math.round((REPORT.vn[s.metric].reduce((a, b) => a + b, 0) /
+    (REPORT.vn[s.metric].reduce((a, b) => a + b, 0) + REPORT.id[s.metric].reduce((a, b) => a + b, 0))) * 100)
+  const TOP = [
+    ['dapurnadia', 'id', 'TikTok', { Views: '420K', Clicks: '14.2K', Sales: '860' }],
+    ['bao.an.eats', 'vn', 'TikTok', { Views: '310K', Clicks: '9.8K', Sales: '540' }],
+    ['rizky.jalan', 'id', 'Instagram', { Views: '180K', Clicks: '6.1K', Sales: '310' }],
+  ]
+  return (
+    <div className="scr">
+      <AppHead title="Report" sub="Sample campaign · 4 weeks" step={3} />
+      <div className="kpis">
+        {['Views', 'Clicks', 'Sales'].map((m) => (
+          <button type="button" key={m} className={s.metric === m ? 'on' : ''} onClick={() => set({ metric: m })}>
+            <small>{m}</small><b>{KPI[m][0]}</b><em>{KPI[m][1]}</em>
+          </button>
+        ))}
+      </div>
+      <div className="area">
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+          {[10, 20, 30].map((y) => <line key={y} x1="0" x2="100" y1={y} y2={y} />)}
+          <path className="area__fill" d={`${line} L100,40 L0,40 Z`} />
+          <path className="area__line" d={line} />
+        </svg>
+        <span className="area__dot" style={{ left: '100%', top: `${(pts[6][1] / 40) * 100}%` }} />
+        <div className="chart__x">{['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, k) => <span key={k}>{d}</span>)}</div>
+      </div>
+      <div className="mix" role="group" aria-label="Market split">
+        <div className="mix__bar"><i style={{ width: `${vnShare}%` }} /></div>
+        <div className="mix__legend">
+          <button type="button" className={s.rMarket === 'vn' ? 'on' : ''} onClick={() => set({ rMarket: 'vn' })}><Flag market="vn" />Vietnam <b>{vnShare}%</b></button>
+          <button type="button" className={s.rMarket === 'id' ? 'on' : ''} onClick={() => set({ rMarket: 'id' })}><Flag market="id" />Indonesia <b>{100 - vnShare}%</b></button>
+        </div>
+      </div>
+      <p className="sect">Top creators</p>
+      <ul className="top">
+        {TOP.map(([h, mk, pl, v], k) => (
+          <li key={h}>
+            <span className="top__n">{k + 1}</span>
+            <span className="top__av">{h[0].toUpperCase()}<span className="scr__avflag"><Flag market={mk} /></span></span>
+            <span className="top__h"><PlatformIcon name={pl} size={10} />@{h}</span>
+            <b>{v[s.metric]}</b>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+const INITIAL = { markets: ['vn', 'id'], platforms: ['TikTok', 'Instagram'], budget: 8000, picked: [], filter: 'All', checks: [true, true, false], review: null, rMarket: 'vn', metric: 'Views' }
 
 export function Process() {
   const reduced = useReduced()
@@ -282,7 +381,15 @@ export function Process() {
   const userActed = useRef(false)
 
   const set = (patch) => setS((p) => ({ ...p, ...patch }))
-  const userSet = (patch) => { userActed.current = true; setTouched(true); set(patch) }
+  const idle = useRef(null)
+  const touch = () => {
+    userActed.current = true
+    setTouched(true)
+    clearTimeout(idle.current)
+    idle.current = setTimeout(() => setTouched(false), 12000)
+  }
+  useEffect(() => () => clearTimeout(idle.current), [])
+  const userSet = (patch) => { touch(); set(patch) }
   const next = () => setStep((x) => Math.min(x + 1, STEPS.length - 1))
 
   // autoplay through steps until the visitor touches the phone
@@ -306,9 +413,10 @@ export function Process() {
   useEffect(() => {
     if (touched) return
     if (step === 2) {
-      set({ review: null })
-      const t = setTimeout(() => set({ review: 'ok' }), 2600)
-      return () => clearTimeout(t)
+      set({ review: null, checks: [true, true, false] })
+      const a = setTimeout(() => set({ checks: [true, true, true] }), 1300)
+      const b = setTimeout(() => set({ review: 'ok' }), 2800)
+      return () => { clearTimeout(a); clearTimeout(b) }
     }
     if (step === 3) {
       set({ metric: 'Views' })
@@ -324,29 +432,62 @@ export function Process() {
     <section className="process2" id="how">
       <div className="wrap">
         <Head label="Process" title="How a campaign runs" layout="split">Four steps. Tap the phone to try each one.</Head>
-        <div className="tour" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-          <ol className="tour__tabs">
-            {STEPS.map((st, k) => (
-              <li key={st.t}>
-                <button className={k === step ? 'is-on' : ''} onClick={() => goto(k)} aria-pressed={k === step}>
-                  <span className="tour__n">0{k + 1}</span>
-                  <span className="tour__t">{st.t}</span>
-                  <span className="tour__d">{st.d}</span>
-                  <span className="tour__bar">
-                    {k === step && !touched && <i key={`${step}-${paused}`} style={{ animationDuration: `${STEP_MS}ms`, animationPlayState: paused || reduced ? 'paused' : 'running' }} />}
-                    {(k < step || (k === step && touched)) && <i className="done" />}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ol>
+        <div className="tour">
+          <div className="tour__left">
+            <ol className="tl">
+              {STEPS.map((st, k) => (
+                <li key={st.t} className={k === step ? 'is-on' : k < step ? 'is-done' : ''}>
+                  <button type="button" onClick={() => goto(k)} aria-pressed={k === step}>
+                    <span className="tl__dot">
+                      {k < step ? <Check /> : k + 1}
+                      {k === step && !touched && !reduced && (
+                        <svg className="tl__ring" viewBox="0 0 36 36" aria-hidden="true">
+                          <circle key={`${step}-${paused}`} cx="18" cy="18" r="16" style={{ animationDuration: `${STEP_MS}ms`, animationPlayState: paused ? 'paused' : 'running' }} />
+                        </svg>
+                      )}
+                    </span>
+                    <span className="tl__body">
+                      <span className="tl__t">{st.t}</span>
+                      <span className="tl__d">{st.d}</span>
+                      <span className="tl__who">
+                        <span><b>You</b>{st.you}</span>
+                        <span><b>We</b>{st.we}</span>
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+            <div className="tour__cta">
+              <a className="btn btn--shine" href="#contact">Start a campaign <Arrow /></a>
+              <span>{touched ? 'You’re driving. It carries on by itself in a moment.' : 'Playing on its own. Tap the phone to take over.'}</span>
+            </div>
+          </div>
           <div className="tour__stage">
             <div className="tour__glow" />
-            <div className="phone2" onPointerDown={() => { userActed.current = true; setTouched(true) }}>
+            <div className="phone2" onPointerDown={touch} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
               <div className="phone2__notch" />
-              <div className="phone2__screen" key={step}>
-                <Screen step={step} s={s} set={userSet} next={next} live={userActed} />
+              <div className="phone2__screen">
+                <div className="sbar" aria-hidden="true">
+                  <span>9:41</span>
+                  <span className="sbar__icons">
+                    <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" rx="1" /><rect x="4.3" y="4" width="3" height="6" rx="1" /><rect x="8.6" y="2" width="3" height="8" rx="1" /><rect x="12.9" y="0" width="3" height="10" rx="1" /></svg>
+                    <svg width="22" height="11" viewBox="0 0 22 11"><rect x="0.5" y="0.5" width="18" height="10" rx="3" fill="none" stroke="currentColor" /><rect x="2" y="2" width="13" height="7" rx="1.6" /><rect x="19.6" y="3.5" width="1.6" height="4" rx="0.8" /></svg>
+                  </span>
+                </div>
+                <div className="scr-body" key={step}>
+                  <Screen step={step} s={s} set={userSet} next={next} live={userActed} />
+                </div>
+                <nav className="tabbar" aria-label="App sections">
+                  {[['Brief', 'M5 4h10l4 4v12H5zM14 4v4h4M8 12h8M8 16h6'], ['Creators', 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm7 0a2.5 2.5 0 1 0 0-5M3.5 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5M15 14c2.6 0 4.6 1.8 5.2 4.6'], ['Content', 'M4 5h16v14H4zM10 9.5v5l4.5-2.5z'], ['Report', 'M5 19V11M10 19V6M15 19v-5M20 19V9']].map(([t, d], k) => (
+                    <button type="button" key={t} className={k === step ? 'on' : ''} onClick={() => { touch(); setStep(k) }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d={d} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                      <small>{t}</small>
+                    </button>
+                  ))}
+                </nav>
               </div>
+              <span className="phone2__btn phone2__btn--a" /><span className="phone2__btn phone2__btn--b" /><span className="phone2__btn phone2__btn--c" />
             </div>
             <span className={`tour__hint ${touched ? 'is-off' : ''}`}>Tap the phone to try it</span>
           </div>
@@ -508,7 +649,7 @@ export function Contact() {
                       <li key={id}>
                         <span className="summary__code">{MARKET_INFO[id].code}</span>
                         <span>{m.city}</span>
-                        <small>{fmt(now, m.tz, { hour: '2-digit', minute: '2-digit' })}</small>
+                        <small className="summary__app"><PlatformIcon name={MARKET_INFO[id].watched[0]} size={12} mono />{MARKET_INFO[id].watched[0]}</small>
                       </li>
                     )
                   })}

@@ -189,8 +189,8 @@ function Hero() {
           <p className="hero__kicker">Creator marketing for brands</p>
           <h1>Find the creators your customers already watch.</h1>
           <p className="hero__lede">
-            We work with creators in Indonesia, Vietnam, Taiwan, Korea, Japan, the US and other markets. You get one
-            point of contact, and our people in each country handle the creators, the contracts and the posting.
+            We work with creators across Southeast and East Asia, India, Egypt, Europe and the US. You get one point
+            of contact, and our people in each country handle the creators, the contracts and the posting.
           </p>
           <div className="hero__actions">
             <a className="btn btn--shine" href="#contact">Start a campaign <Arrow /></a>
@@ -207,15 +207,17 @@ function Hero() {
           <HeroFloaters />
         </div>
       </div>
-      <div className="ribbon" aria-label="Some of the cities we work in">
-        <div className="ribbon__track">
-          {[...MARKETS, ...MARKETS, ...MARKETS, ...MARKETS].map((m, k) => (
-            <span className="chip" key={k} aria-hidden={k >= MARKETS.length}>
-              <Flag market={m.id} />
-              <b>{m.city}</b>
-              <span>{m.country}</span>
-            </span>
-          ))}
+      <div className="wrap">
+        <div className="cbar">
+          <span className="cbar__lbl">Local teams in</span>
+          <ul className="cbar__list">
+            {MARKETS.map((m) => (
+              <li key={m.id} title={m.city}>
+                <Flag market={m.id} />
+                {{ kr: 'Korea', eu: 'EU', us: 'US' }[m.id] || m.country}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

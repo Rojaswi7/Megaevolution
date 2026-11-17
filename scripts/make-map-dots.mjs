@@ -7,7 +7,7 @@ import { geoContains } from 'd3-geo'
 const topo = JSON.parse(readFileSync(new URL('../node_modules/world-atlas/land-110m.json', import.meta.url)))
 const land = feature(topo, topo.objects.land)
 
-export const VIEW = { lon0: 62, lon1: 250, lat0: 58, lat1: -14, step: 1.6 }
+export const VIEW = { lon0: -12, lon1: 250, lat0: 62, lat1: -12, step: 1.7 }
 const dots = []
 for (let lat = VIEW.lat0; lat >= VIEW.lat1; lat -= VIEW.step) {
   for (let lon = VIEW.lon0; lon <= VIEW.lon1; lon += VIEW.step) {

@@ -1,7 +1,7 @@
 // Country flags (country-flag-icons, MIT). SVG so they render the same on every OS.
-import { ID, VN, TW, KR, JP, US } from 'country-flag-icons/react/3x2'
+import { ID, VN, SG, TW, CN, KR, JP, IN, EG, EU, US } from 'country-flag-icons/react/3x2'
 
-const FLAGS = { id: ID, vn: VN, tw: TW, kr: KR, jp: JP, us: US }
+const FLAGS = { id: ID, vn: VN, sg: SG, tw: TW, cn: CN, kr: KR, jp: JP, in: IN, eg: EG, eu: EU, us: US }
 
 export function Flag({ market, title }) {
   const F = FLAGS[market]

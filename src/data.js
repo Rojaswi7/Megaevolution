@@ -3,9 +3,14 @@
 export const MARKETS = [
   { id: 'id', city: 'Jakarta', country: 'Indonesia', tz: 'Asia/Jakarta', langs: 'Bahasa Indonesia', strong: ['Food', 'Beauty', 'Vlog'], region: 'SEA' },
   { id: 'vn', city: 'Ho Chi Minh City', short: 'Saigon', country: 'Vietnam', tz: 'Asia/Ho_Chi_Minh', langs: 'Tiếng Việt', strong: ['Food', 'Vlog', 'Tech'], region: 'SEA' },
+  { id: 'sg', city: 'Singapore', country: 'Singapore', tz: 'Asia/Singapore', langs: 'English, 中文, Bahasa Melayu', strong: ['Food', 'Beauty', 'Tech'], region: 'SEA' },
   { id: 'tw', city: 'Taipei', country: 'Taiwan', tz: 'Asia/Taipei', langs: '繁體中文', strong: ['Food', 'Tech', 'Gaming'], region: 'NE Asia' },
+  { id: 'cn', city: 'Shanghai', country: 'China', tz: 'Asia/Shanghai', langs: '简体中文', strong: ['Beauty', 'Tech', 'Food'], region: 'NE Asia' },
   { id: 'kr', city: 'Seoul', country: 'South Korea', tz: 'Asia/Seoul', langs: '한국어', strong: ['Beauty', 'Vlog', 'Gaming'], region: 'NE Asia' },
   { id: 'jp', city: 'Tokyo', country: 'Japan', tz: 'Asia/Tokyo', langs: '日本語', strong: ['Gaming', 'Tech', 'Food'], region: 'NE Asia' },
+  { id: 'in', city: 'Mumbai', country: 'India', tz: 'Asia/Kolkata', langs: 'हिन्दी, English', strong: ['Tech', 'Food', 'Vlog'], region: 'South Asia' },
+  { id: 'eg', city: 'Cairo', country: 'Egypt', tz: 'Africa/Cairo', langs: 'العربية', strong: ['Food', 'Vlog', 'Beauty'], region: 'MENA' },
+  { id: 'eu', city: 'Berlin', country: 'European Union', short: 'Europe', tz: 'Europe/Berlin', langs: 'English, Deutsch, Français and more', strong: ['Beauty', 'Tech', 'Gaming'], region: 'EU' },
   { id: 'us', city: 'Los Angeles', country: 'United States', tz: 'America/Los_Angeles', langs: 'English, Español', strong: ['Tech', 'Beauty', 'Gaming'], region: 'US' },
 ]
 
@@ -58,12 +63,18 @@ export const MARKET_INFO = {
   tw: { code: 'TW', lat: 25.0, lon: 121.5, team: 'Local manager', watched: ['YouTube', 'Facebook', 'Instagram', 'LINE'], buy: ['Shopee', 'momo', 'PChome'] },
   kr: { code: 'KR', lat: 37.6, lon: 127.0, team: 'Local manager', watched: ['YouTube', 'Instagram', 'Naver', 'TikTok'], buy: ['Coupang', 'Naver Shopping', 'Gmarket'] },
   jp: { code: 'JP', lat: 35.7, lon: 139.7, team: 'Local manager', watched: ['YouTube', 'X', 'Instagram', 'TikTok'], buy: ['Amazon', 'Rakuten', 'Yahoo! Shopping'] },
+  sg: { code: 'SG', lat: 1.35, lon: 103.82, team: '', watched: ['YouTube', 'Instagram', 'TikTok', 'Facebook'], buy: ['Shopee', 'Lazada', 'Amazon'] },
+  cn: { code: 'CN', lat: 31.23, lon: 121.47, team: '', watched: ['Douyin', 'Xiaohongshu', 'Bilibili', 'WeChat'], buy: ['Taobao', 'JD.com', 'Pinduoduo'] },
+  in: { code: 'IN', lat: 19.08, lon: 72.88, team: '', watched: ['YouTube', 'Instagram', 'Facebook', 'X'], buy: ['Amazon', 'Flipkart', 'Meesho'] },
+  eg: { code: 'EG', lat: 30.04, lon: 31.24, team: '', watched: ['Facebook', 'YouTube', 'TikTok', 'Instagram'], buy: ['Amazon', 'Noon', 'Jumia'] },
+  eu: { code: 'EU', lat: 52.52, lon: 13.4, team: '', watched: ['YouTube', 'Instagram', 'TikTok', 'Facebook'], buy: ['Amazon', 'Zalando', 'Temu'] },
   us: { code: 'US', lat: 34.05, lon: -118.24, team: 'Local manager', watched: ['YouTube', 'Instagram', 'TikTok', 'Facebook'], buy: ['Amazon', 'TikTok Shop', 'Walmart'] },
 }
 
 export const PLATFORM_COLORS = {
   TikTok: '#0d0d38', YouTube: '#ff0033', Instagram: '#d6336c', Facebook: '#4c7cf3',
   LINE: '#06c755', Naver: '#03c75a', X: '#111111',
+  Douyin: '#0d0d38', Xiaohongshu: '#ff2442', Bilibili: '#00a1d6', WeChat: '#07c160',
 }
 
 // ------------------------------------------------------------------
@@ -71,7 +82,7 @@ export const PLATFORM_COLORS = {
 // and shown in local currency with rough conversions — replace with real
 // local rates when the creator data is wired up.
 // ------------------------------------------------------------------
-const FX = { id: ['IDR', 16000], vn: ['VND', 25000], tw: ['TWD', 32], kr: ['KRW', 1350], jp: ['JPY', 150], us: ['USD', 1] }
+const FX = { id: ['IDR', 16000], vn: ['VND', 25000], sg: ['SGD', 1.35], tw: ['TWD', 32], cn: ['CNY', 7.2], kr: ['KRW', 1350], jp: ['JPY', 150], in: ['INR', 83], eg: ['EGP', 48], eu: ['EUR', 0.92], us: ['USD', 1] }
 export const minUsd = (rate) => Number(String(rate).split('–')[0].replace(/,/g, ''))
 export function localRate(usd, market) {
   const [cur, r] = FX[market] || FX.us

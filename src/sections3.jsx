@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate, minUsd } from './data.js'
 import { MAP_DOTS, MAP_VIEW } from './mapDots.js'
 import { Head } from './head.jsx'
+import { Flag } from './flag.jsx'
 import { PlatformIcon } from './platformIcon.jsx'
 import { SpotFrame, TileChrome } from './platformFrames.jsx'
 
@@ -170,9 +171,16 @@ const W = MAP_VIEW.lon1 - MAP_VIEW.lon0
 const H = MAP_VIEW.lat0 - MAP_VIEW.lat1
 const project = (lat, lon) => [(lon < 0 ? lon + 360 : lon) - MAP_VIEW.lon0, MAP_VIEW.lat0 - lat]
 
+// Fixed route between markets (west to east), so the lines stay put.
+const ROUTE = [['eu', 'eg'], ['eg', 'in'], ['in', 'sg'], ['sg', 'id'], ['sg', 'vn'], ['vn', 'tw'], ['tw', 'cn'], ['cn', 'kr'], ['kr', 'jp'], ['jp', 'us']]
+// label offset per pin: [dx, dy, anchor]
+const LABEL = {
+  eu: [2.4, -2, 'start'], eg: [2.4, 1, 'start'], in: [-2.4, 1, 'end'], sg: [-2.4, 1.2, 'end'], id: [2.4, 2.6, 'start'],
+  vn: [-2.4, 1, 'end'], tw: [2.4, 1.6, 'start'], cn: [-2.4, -1, 'end'], kr: [-1, -2.8, 'end'], jp: [2.4, 1, 'start'], us: [-2.4, 3.6, 'end'],
+}
+
 export function Markets() {
   const reduced = useReduced()
-  const now = useNow(1000)
   const [active, setActive] = useState('vn')
   const [touched, setTouched] = useState(false)
 
@@ -185,38 +193,38 @@ export function Markets() {
   const pick = (id) => { setTouched(true); setActive(id) }
   const m = marketById[active]
   const info = MARKET_INFO[active]
-  const [ax, ay] = project(info.lat, info.lon)
 
   return (
     <section className="mx" id="markets">
       <div className="wrap">
         <Head label="Markets" title="Where our teams are">
-          Some of the cities we work in. Pick one to see which apps people use and where they shop.
+          Some of the markets we work in. Pick one to see which apps people use and where they shop.
         </Head>
 
         <div className="mx__panel">
           <div className="mx__map">
             <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Map of MegaEvolution markets">
-              <g className="mx__dots">{MAP_DOTS.map(([x, y], k) => <circle key={k} cx={x} cy={y} r="0.46" />)}</g>
+              <g className="mx__dots">{MAP_DOTS.map(([x, y], k) => <circle key={k} cx={x} cy={y} r="0.5" />)}</g>
               <g className="mx__arcs">
-                {MARKETS.filter((x) => x.id !== active).map((x) => {
-                  const i = MARKET_INFO[x.id]
-                  const [bx, by] = project(i.lat, i.lon)
-                  const my = Math.min(ay, by) - Math.abs(bx - ax) * 0.22 - 3
-                  return <path key={x.id} d={`M${ax},${ay} Q${(ax + bx) / 2},${my} ${bx},${by}`} />
+                {ROUTE.map(([a, b]) => {
+                  const [ax, ay] = project(MARKET_INFO[a].lat, MARKET_INFO[a].lon)
+                  const [bx, by] = project(MARKET_INFO[b].lat, MARKET_INFO[b].lon)
+                  const lift = Math.min(18, Math.hypot(bx - ax, by - ay) * 0.28)
+                  const on = a === active || b === active
+                  return <path key={a + b} className={on ? 'is-on' : ''} d={`M${ax},${ay} Q${(ax + bx) / 2},${Math.min(ay, by) - lift} ${bx},${by}`} />
                 })}
               </g>
               {MARKETS.map((x) => {
                 const i = MARKET_INFO[x.id]
                 const [px, py] = project(i.lat, i.lon)
-                const left = ['id', 'vn', 'us'].includes(x.id)
+                const [dx, dy, anchor] = LABEL[x.id] || [2.4, -2, 'start']
                 return (
                   <g key={x.id} className={`mpin ${x.id === active ? 'is-on' : ''}`} transform={`translate(${px} ${py})`}
                     onMouseEnter={() => pick(x.id)} onClick={() => pick(x.id)} role="button" tabIndex={0} aria-label={x.country} onFocus={() => pick(x.id)}>
                     <circle className="mpin__pulse" r="2.4" />
                     <circle className="mpin__hit" r="4" />
                     <circle className="mpin__dot" r="1.1" />
-                    <text x={left ? -2.2 : 2.2} y={x.id === 'vn' ? 3.6 : x.id === 'us' ? 4 : -2} textAnchor={left ? 'end' : 'start'}>{x.short || x.city}</text>
+                    <text x={dx} y={dy} textAnchor={anchor}>{x.short || x.city}</text>
                   </g>
                 )
               })}
@@ -224,7 +232,7 @@ export function Markets() {
 
             <article className="mx__card" key={active} aria-live="polite">
               <header>
-                <span className="mx__code">{info.code}</span>
+                <Flag market={active} />
                 <div>
                   <h3>{m.country}</h3>
                   <small>{m.city} · {m.langs}</small>
@@ -243,7 +251,7 @@ export function Markets() {
                 <div className="mx__chips">{info.buy.map((b) => <span key={b}>{b}</span>)}</div>
               </div>
               <div className="mx__row mx__row--split">
-                <span><span className="mx__label">Strongest</span><b>{m.strong.join(' · ')}</b></span>
+                <span><span className="mx__label">Strongest categories</span><b>{m.strong.join(' · ')}</b></span>
               </div>
             </article>
           </div>
@@ -251,16 +259,12 @@ export function Markets() {
           <div className="mx__rail" role="tablist" aria-label="Markets">
             {MARKETS.map((x) => {
               const i = MARKET_INFO[x.id]
-              const h = Number(fmt(now, x.tz, { hour: '2-digit', hour12: false }))
               return (
                 <button key={x.id} role="tab" aria-selected={x.id === active} className={`mx__tab ${x.id === active ? 'is-on' : ''}`} onClick={() => pick(x.id)}>
-                  <span className="mx__tabtop">
-                    <b>{i.code}</b>
-                    <span className={`mx__dot ${h >= 8 && h < 23 ? 'day' : 'night'}`} />
-                  </span>
+                  <span className="mx__tabtop"><Flag market={x.id} /><b>{i.code}</b></span>
                   <span className="mx__city">{x.short || x.city}</span>
-                  <span className="mx__time">{fmt(now, x.tz, { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
-                  <span className="mx__plats">{i.watched.slice(0, 3).map((p) => <PlatformIcon key={p} name={p} size={13} />)}</span>
+                  <span className="mx__fact"><PlatformIcon name={i.watched[0]} size={12} />{i.watched[0]}</span>
+                  <span className="mx__fact mx__fact--muted">Shops on {i.buy[0]}</span>
                 </button>
               )
             })}
