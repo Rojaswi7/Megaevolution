@@ -1,5 +1,5 @@
 // Official platform marks from Simple Icons (CC0) — https://simpleicons.org
-import { siTiktok, siYoutube, siInstagram, siFacebook, siLine, siNaver, siX, siXiaohongshu, siBilibili, siWechat } from 'simple-icons'
+import { siTiktok, siYoutube, siInstagram, siFacebook, siLine, siNaver, siX, siXiaohongshu, siBilibili, siWechat, siSnapchat } from 'simple-icons'
 
 const ICONS = {
   TikTok: siTiktok,
@@ -13,6 +13,7 @@ const ICONS = {
   Xiaohongshu: siXiaohongshu,
   Bilibili: siBilibili,
   WeChat: siWechat,
+  Snapchat: siSnapchat,
 }
 
 /** Platform logo in its brand colour (or `mono` to inherit text colour). */

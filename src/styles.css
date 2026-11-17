@@ -2448,3 +2448,24 @@ button.scr__row, .scr__row { grid-template-columns: 38px minmax(0, 1fr) 22px !im
   .cbar__lbl { border-right: 0; padding-right: 0; }
   .cbar__list { width: 100%; justify-content: flex-start; }
 }
+
+/* region badge in place of a flag */
+.flag--region { display: grid; place-items: center; width: 20px; height: 14px; border-radius: 3px; background: var(--accent); color: #fff; }
+.flag--region svg { width: 11px; height: 11px; }
+.mx__card header .flag--region { width: 40px; height: 27px; }
+.mx__card header .flag--region svg { width: 18px; height: 18px; }
+.mx__tabtop b { max-width: 60px; overflow: hidden; text-overflow: ellipsis; }
+
+/* creators: header row with small category pills top-right */
+.cx__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: clamp(18px, 2vw, 26px); }
+.cx__head .hd { margin-bottom: 0; }
+.cx .cx__filters {
+  width: auto; margin: 0 0 4px; padding: 3px; gap: 2px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--line);
+}
+.cx .cx__filters button { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; padding: 6px 11px; color: var(--muted); }
+.cx .cx__filters button small { display: none; }
+.cx .cx__filters button.is-on { background: #0d0d38; color: #fff; }
+@media (max-width: 800px) { .cx .cx__filters { overflow-x: auto; flex-wrap: nowrap; max-width: 100%; } }
+
+.stack .stack__more { background: #fff !important; color: var(--text); border-color: var(--line); font-size: 11px; }

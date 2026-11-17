@@ -189,7 +189,7 @@ function Hero() {
           <p className="hero__kicker">Creator marketing for brands</p>
           <h1>Find the creators your customers already watch.</h1>
           <p className="hero__lede">
-            We work with creators across Southeast and East Asia, India, Egypt, Europe and the US. You get one point
+            We work with creators across Southeast and East Asia, India, the Middle East, Europe and the Americas. You get one point
             of contact, and our people in each country handle the creators, the contracts and the posting.
           </p>
           <div className="hero__actions">
@@ -214,7 +214,7 @@ function Hero() {
             {MARKETS.map((m) => (
               <li key={m.id} title={m.city}>
                 <Flag market={m.id} />
-                {{ kr: 'Korea', eu: 'EU', us: 'US' }[m.id] || m.country}
+                {{ kr: 'Korea', eu: 'EU', us: 'US', me: 'Middle East', latam: 'Latin America' }[m.id] || m.country}
               </li>
             ))}
           </ul>

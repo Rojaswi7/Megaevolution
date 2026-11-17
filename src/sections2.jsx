@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate, minUsd } from './data.js'
+import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate, minUsd, money } from './data.js'
 import { Head, Eyebrow } from './head.jsx'
 import { Flag } from './flag.jsx'
 import { PlatformIcon } from './platformIcon.jsx'
@@ -96,14 +96,14 @@ export function About() {
               <p>for every market you launch in. We coordinate the local teams for you.</p>
             </div>
             <div className="codes" aria-hidden="true">
-              {MARKETS.map((m, k) => <span key={m.id} className={k === lit ? 'is-on' : ''}>{MARKET_INFO[m.id].code}</span>)}
+              {MARKETS.slice(0, 8).map((m, k) => <span key={m.id} className={k === lit % 8 ? 'is-on' : ''}>{MARKET_INFO[m.id].code}</span>)}
             </div>
           </article>
 
           <article className="b2 b2--rate">
             <div className="rate" aria-hidden="true">
               <span className="rate__av">B</span>
-              <span className="rate__who"><b>@bao.an.eats</b><small>Food · Saigon · 500K</small></span>
+              <span className="rate__who"><b>@bao.an.eats</b><small>F&amp;B · Saigon · 500K</small></span>
               <span className="rate__price"><small>from</small><b>{localRate(100, 'vn')}</b></span>
             </div>
             <div className="b2__foot">
@@ -114,7 +114,8 @@ export function About() {
 
           <article className="b2 b2--team">
             <div className="stack" aria-hidden="true">
-              {MARKETS.map((m) => <span key={m.id}>{MARKET_INFO[m.id].code}</span>)}
+              {MARKETS.slice(0, 6).map((m) => <span key={m.id}>{MARKET_INFO[m.id].code}</span>)}
+              <span className="stack__more">+{MARKETS.length - 6}</span>
               <i className="stack__live" />
             </div>
             <div className="b2__foot">
@@ -227,7 +228,7 @@ function Screen({ step, s, set, next }) {
           </div>
         </div>
         <div className="fld">
-          <span className="fld__lbl">Budget <b>USD {s.budget.toLocaleString('en-US')}</b></span>
+          <span className="fld__lbl">Budget <b>{money(s.budget)}</b></span>
           <input type="range" min="1000" max="30000" step="500" value={s.budget} className="scr__slider"
             style={{ '--p': `${((s.budget - 1000) / 29000) * 100}%` }}
             onChange={(e) => set({ budget: Number(e.target.value) })} aria-label="Budget" />
@@ -606,13 +607,13 @@ export function Contact() {
             </fieldset>
 
             <fieldset className="q">
-              <legend><span>3</span> Budget <em>USD {budget.toLocaleString('en-US')}{budget >= 100000 ? '+' : ''}</em></legend>
+              <legend><span>3</span> Budget <em>{money(budget)}{budget >= 100000 ? '+' : ''}</em></legend>
               <input
                 type="range" min="1000" max="100000" step="1000" value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
-                className="slider" style={{ '--p': `${pct}%` }} aria-label="Budget in USD"
+                className="slider" style={{ '--p': `${pct}%` }} aria-label="Budget"
               />
-              <div className="slider__scale"><span>1K</span><span>25K</span><span>50K</span><span>100K+</span></div>
+              <div className="slider__scale"><span>{money(1000, { compact: true })}</span><span>{money(25000, { compact: true })}</span><span>{money(50000, { compact: true })}</span><span>{money(100000, { compact: true })}+</span></div>
             </fieldset>
 
             <fieldset className="q q--last">
@@ -638,7 +639,7 @@ export function Contact() {
                 <p className="summary__product">{product || 'Your product'}</p>
                 <dl className="summary__rows">
                   <div><dt>Category</dt><dd>{cat}</dd></div>
-                  <div><dt>Budget</dt><dd>USD {budget.toLocaleString('en-US')}</dd></div>
+                  <div><dt>Budget</dt><dd>{money(budget)}</dd></div>
                 </dl>
                 <p className="summary__label">Local teams on it</p>
                 <ul className="summary__teams">

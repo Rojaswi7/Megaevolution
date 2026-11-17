@@ -3,6 +3,22 @@ import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate,
 import { MAP_DOTS, MAP_VIEW } from './mapDots.js'
 import { Head } from './head.jsx'
 import { Flag } from './flag.jsx'
+
+const CAT_ICONS = {
+  All: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  'F&B': 'M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5M16 21V3c2.5 1.5 3.5 4 3.5 7s-1.5 4-3.5 4',
+  Beauty: 'M12 3l1.8 4.6L18.5 9l-4.7 1.6L12 15l-1.8-4.4L5.5 9l4.7-1.4zM18 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z',
+  Vlog: 'M3 7h12v10H3zM15 10.5 21 7v10l-6-3.5',
+  Gaming: 'M7 9h10a4 4 0 0 1 4 4v1a3 3 0 0 1-5.4 1.8L14.5 14h-5l-1.1 1.8A3 3 0 0 1 3 14v-1a4 4 0 0 1 4-4ZM8 11.5v3M6.5 13h3M16 12h.01M18 14h.01',
+  Tech: 'M7 3h10v18H7zM11 18h2',
+}
+function CatIcon({ name }) {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true">
+      <path d={CAT_ICONS[name]} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
 import { PlatformIcon } from './platformIcon.jsx'
 import { SpotFrame, TileChrome } from './platformFrames.jsx'
 
@@ -73,15 +89,17 @@ export function Creators() {
   return (
     <section className="cx" id="creators">
       <div className="wrap">
-        <Head label="Creators" title="Creators on MegaEvolution" layout="split">
-          Each creator shows a starting rate in their own currency. Tap one to see more.
-        </Head>
-        <div className="cx__filters" role="group" aria-label="Category">
-          {['All', ...CATEGORIES].map((x) => (
-            <button key={x} className={x === cat ? 'is-on' : ''} onClick={() => setCat(x)}>
-              {x}{x !== 'All' && <small>{CREATORS.filter((k) => k.cat === x).length}</small>}
-            </button>
-          ))}
+        <div className="cx__head">
+          <Head label="Creators" title="Creators on MegaEvolution">
+            Each creator shows a starting rate in their own currency. Tap one to see more.
+          </Head>
+          <div className="cx__filters" role="group" aria-label="Category">
+            {['All', ...CATEGORIES].map((x) => (
+              <button key={x} className={x === cat ? 'is-on' : ''} onClick={() => setCat(x)} aria-pressed={x === cat}>
+                <CatIcon name={x} />{x}
+              </button>
+            ))}
+          </div>
         </div>
 
         {c && (
@@ -171,12 +189,11 @@ const W = MAP_VIEW.lon1 - MAP_VIEW.lon0
 const H = MAP_VIEW.lat0 - MAP_VIEW.lat1
 const project = (lat, lon) => [(lon < 0 ? lon + 360 : lon) - MAP_VIEW.lon0, MAP_VIEW.lat0 - lat]
 
-// Fixed route between markets (west to east), so the lines stay put.
-const ROUTE = [['eu', 'eg'], ['eg', 'in'], ['in', 'sg'], ['sg', 'id'], ['sg', 'vn'], ['vn', 'tw'], ['tw', 'cn'], ['cn', 'kr'], ['kr', 'jp'], ['jp', 'us']]
 // label offset per pin: [dx, dy, anchor]
 const LABEL = {
-  eu: [2.4, -2, 'start'], eg: [2.4, 1, 'start'], in: [-2.4, 1, 'end'], sg: [-2.4, 1.2, 'end'], id: [2.4, 2.6, 'start'],
-  vn: [-2.4, 1, 'end'], tw: [2.4, 1.6, 'start'], cn: [-2.4, -1, 'end'], kr: [-1, -2.8, 'end'], jp: [2.4, 1, 'start'], us: [-2.4, 3.6, 'end'],
+  eu: [2.4, -2, 'start'], me: [2.4, 1, 'start'], in: [-2.4, 1, 'end'], th: [-2.4, -1.2, 'end'], sg: [-2.4, 1.6, 'end'], id: [2.4, 2.6, 'start'],
+  vn: [2.2, 2.6, 'start'], ph: [2.4, 1.2, 'start'], tw: [2.4, 0.4, 'start'], cn: [-2.4, -1, 'end'], kr: [-1, -2.8, 'end'], jp: [2.4, 1, 'start'],
+  us: [-2.4, -1.6, 'end'], latam: [-2.4, 3.6, 'end'],
 }
 
 export function Markets() {
@@ -205,15 +222,6 @@ export function Markets() {
           <div className="mx__map">
             <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Map of MegaEvolution markets">
               <g className="mx__dots">{MAP_DOTS.map(([x, y], k) => <circle key={k} cx={x} cy={y} r="0.5" />)}</g>
-              <g className="mx__arcs">
-                {ROUTE.map(([a, b]) => {
-                  const [ax, ay] = project(MARKET_INFO[a].lat, MARKET_INFO[a].lon)
-                  const [bx, by] = project(MARKET_INFO[b].lat, MARKET_INFO[b].lon)
-                  const lift = Math.min(18, Math.hypot(bx - ax, by - ay) * 0.28)
-                  const on = a === active || b === active
-                  return <path key={a + b} className={on ? 'is-on' : ''} d={`M${ax},${ay} Q${(ax + bx) / 2},${Math.min(ay, by) - lift} ${bx},${by}`} />
-                })}
-              </g>
               {MARKETS.map((x) => {
                 const i = MARKET_INFO[x.id]
                 const [px, py] = project(i.lat, i.lon)
