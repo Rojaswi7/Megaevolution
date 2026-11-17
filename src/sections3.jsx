@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS } from './data.js'
+import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate, minUsd } from './data.js'
 import { MAP_DOTS, MAP_VIEW } from './mapDots.js'
 import { Head } from './head.jsx'
+import { PlatformIcon } from './platformIcon.jsx'
 
 const fmt = (date, tz, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: tz, ...opts }).format(date)
 const marketById = Object.fromEntries(MARKETS.map((m) => [m.id, m]))
@@ -70,8 +71,8 @@ export function Creators() {
   return (
     <section className="cx" id="creators">
       <div className="wrap">
-        <Head n="02" label="Creators" title="Creators brands *book* with us.">
-          Every creator lists a starting rate in USD. Tap one to see their profile.
+        <Head label="Creators" title="Creators on MegaEvolution" layout="split">
+          Each creator shows a starting rate in their own currency. Tap one to see more.
         </Head>
         <div className="cx__filters" role="group" aria-label="Category">
           {['All', ...CATEGORIES].map((x) => (
@@ -86,7 +87,7 @@ export function Creators() {
             <article className="spot" key={c.handle}>
               <div className={`spot__media tone-${TONE[c.tone] || 'sand'}`}>
                 {c.img && <img src={c.img} alt={`${c.name}, ${c.cat} creator in ${m.city}`} />}
-                <span className="spot__plat"><i style={{ background: PLATFORM_COLORS[c.platform] }} />{c.platform}</span>
+                <span className="spot__plat"><PlatformIcon name={c.platform} />{c.platform}</span>
                 <span className="spot__live">Featured</span>
                 <div className="spot__over">
                   <p className="spot__caption">“{c.caption}”</p>
@@ -102,7 +103,7 @@ export function Creators() {
                 </div>
                 <dl className="spot__stats">
                   <div><dt>Followers</dt><dd>{c.followers}</dd></div>
-                  <div><dt>From</dt><dd>${c.rate}</dd></div>
+                  <div><dt>From</dt><dd>{localRate(minUsd(c.rate), c.market)}</dd></div>
                   <div><dt>Market</dt><dd>{MARKET_INFO[c.market].code}</dd></div>
                 </dl>
                 <div className="spot__tags">
@@ -135,8 +136,8 @@ export function Creators() {
                         {x.img && <img src={x.img} alt="" />}
                       </span>
                       <span className="reel__top">
-                        <span className="reel__plat"><i style={{ background: PLATFORM_COLORS[x.platform] }} />{x.platform}</span>
-                        <span className="reel__rate">${x.rate.split('–')[0]}+</span>
+                        <span className="reel__plat"><PlatformIcon name={x.platform} size={12} />{x.platform}</span>
+                        <span className="reel__rate">{localRate(minUsd(x.rate), x.market)}+</span>
                       </span>
                       <span className="reel__bottom">
                         <b>@{x.handle}</b>
@@ -194,8 +195,8 @@ export function Markets() {
   return (
     <section className="mx" id="markets">
       <div className="wrap">
-        <Head n="04" label="Markets" title="Where we *work*.">
-          Six cities, six local teams. Pick one to see how people there watch and shop.
+        <Head label="Markets" title="Where our teams are">
+          Some of the cities we work in. Pick one to see which apps people use and where they shop.
         </Head>
 
         <div className="mx__panel">
@@ -238,7 +239,7 @@ export function Markets() {
                 <span className="mx__label">Most watched</span>
                 <ol className="mx__rank">
                   {info.watched.map((p, k) => (
-                    <li key={p}><small>{k + 1}</small><i style={{ background: PLATFORM_COLORS[p] || '#999' }} />{p}</li>
+                    <li key={p}><small>{k + 1}</small><PlatformIcon name={p} size={13} />{p}</li>
                   ))}
                 </ol>
               </div>
@@ -248,7 +249,6 @@ export function Markets() {
               </div>
               <div className="mx__row mx__row--split">
                 <span><span className="mx__label">Strongest</span><b>{m.strong.join(' · ')}</b></span>
-                <span><span className="mx__label">Team</span><b>{info.team}</b></span>
               </div>
             </article>
           </div>
@@ -265,7 +265,7 @@ export function Markets() {
                   </span>
                   <span className="mx__city">{x.short || x.city}</span>
                   <span className="mx__time">{fmt(now, x.tz, { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
-                  <span className="mx__plats">{i.watched.slice(0, 3).map((p) => <i key={p} title={p} style={{ background: PLATFORM_COLORS[p] }} />)}</span>
+                  <span className="mx__plats">{i.watched.slice(0, 3).map((p) => <PlatformIcon key={p} name={p} size={13} />)}</span>
                 </button>
               )
             })}

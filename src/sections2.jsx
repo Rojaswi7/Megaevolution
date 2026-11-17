@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS } from './data.js'
+import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate, minUsd } from './data.js'
 import { Head, Eyebrow } from './head.jsx'
+import { PlatformIcon } from './platformIcon.jsx'
 
 const fmt = (date, tz, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: tz, ...opts }).format(date)
 const SITE = 'https://www.megaevolution.io'
@@ -65,14 +66,13 @@ export function About() {
   return (
     <section className="about2">
       <div className="wrap">
-        <Head n="01" label="About" title="Local first, *everywhere* we work.">A creator marketplace with people on the ground in every market.</Head>
+        <Head label="About us" title="Why brands work with us" />
         <div className="bento2">
           <article className="b2 b2--hello">
             <div className="b2__copy">
-              <p className="b2__kicker">Why MegaEvolution</p>
               <p className="b2__statement">
-                The creator your customer trusts already lives in their city and speaks their language.{' '}
-                <span>We introduce you properly.</span>
+                Your customers already follow creators in their own city, in their own language. We find those
+                creators and run the campaign with them.
               </p>
             </div>
             <div className="chat" aria-hidden="true">
@@ -91,8 +91,8 @@ export function About() {
 
           <article className="b2 b2--markets">
             <div>
-              <span className="b2__big">6</span>
-              <p>markets, each with a team on the ground</p>
+              <span className="b2__big b2__big--text">One contact</span>
+              <p>for every market you launch in. We coordinate the local teams for you.</p>
             </div>
             <div className="codes" aria-hidden="true">
               {MARKETS.map((m, k) => <span key={m.id} className={k === lit ? 'is-on' : ''}>{MARKET_INFO[m.id].code}</span>)}
@@ -103,11 +103,11 @@ export function About() {
             <div className="rate" aria-hidden="true">
               <span className="rate__av">B</span>
               <span className="rate__who"><b>@bao.an.eats</b><small>Food · Saigon · 500K</small></span>
-              <span className="rate__price"><small>from</small><b>$100</b></span>
+              <span className="rate__price"><small>from</small><b>{localRate(100, 'vn')}</b></span>
             </div>
             <div className="b2__foot">
-              <h3>Honest pricing</h3>
-              <p>Every creator shows a starting rate in USD before you message them.</p>
+              <h3>Rates up front</h3>
+              <p>Every creator shows a starting rate in their own currency before you get in touch.</p>
             </div>
           </article>
 
@@ -118,7 +118,7 @@ export function About() {
             </div>
             <div className="b2__foot">
               <h3>Local teams</h3>
-              <p>People who know which creators move product — not just who has big numbers.</p>
+              <p>People in each country who know which creators actually sell, not just who has the most followers.</p>
             </div>
           </article>
 
@@ -130,19 +130,19 @@ export function About() {
             </div>
             <div className="b2__foot">
               <h3>One agreement</h3>
-              <p>One contract, one invoice — one market or six.</p>
+              <p>One contract and one invoice, however many markets you launch in.</p>
             </div>
           </article>
 
           <article className="b2 b2--platforms">
             <div className="plats" aria-hidden="true">
               {Object.keys(PLATFORM_COLORS).map((p) => (
-                <span key={p} style={{ '--pc': PLATFORM_COLORS[p] }}><i />{p}</span>
+                <span key={p} style={{ '--pc': PLATFORM_COLORS[p] }}><PlatformIcon name={p} size={13} />{p}</span>
               ))}
             </div>
             <div className="b2__foot">
               <h3>Campaigns run on</h3>
-              <p>Whatever your customers actually open — market by market.</p>
+              <p>We plan around the apps people in each market actually use.</p>
             </div>
           </article>
         </div>
@@ -156,7 +156,7 @@ export function About() {
    ============================================================ */
 const STEPS = [
   { t: 'Brief', d: 'Tell us the product, markets and budget. Ten minutes, in English.', notes: ['10 minutes', 'In English'] },
-  { t: 'Shortlist', d: 'Our team in each market suggests creators who fit — with rates, before any calls.', notes: ['Rates shown', 'Picked locally'] },
+  { t: 'Shortlist', d: 'Our team in each market suggests creators who fit, with their rates.', notes: ['Rates shown', 'Picked locally'] },
   { t: 'Launch', d: 'You approve creators and content. We handle contracts, timing and posting.', notes: ['You approve', 'Posted on time'] },
   { t: 'Learn', d: 'One report across every market, so you can see what actually sold.', notes: ['Every market', 'One report'] },
 ]
@@ -201,7 +201,6 @@ function Screen({ step, s, set, next, live }) {
 
   if (step === 1) {
     const picked = SHORT.filter((c) => s.picked.includes(c.handle))
-    const total = picked.reduce((a, c) => a + minRate(c.rate), 0)
     return (
       <div className="scr">
         <p className="scr__title">Shortlist · Vietnam</p>
@@ -212,12 +211,12 @@ function Screen({ step, s, set, next, live }) {
               onClick={() => set({ picked: on ? s.picked.filter((x) => x !== c.handle) : [...s.picked, c.handle] })} aria-pressed={on}>
               <span className="scr__av">{c.name[0]}</span>
               <span className="scr__who"><b>@{c.handle}</b><small>{c.followers} · {c.cat}</small></span>
-              <span className="scr__mono">${minRate(c.rate).toLocaleString('en-US')}+</span>
+              <span className="scr__mono">{localRate(minUsd(c.rate), c.market)}+</span>
               <span className={`scr__tick ${on ? 'on' : ''}`}>{on ? '✓' : ''}</span>
             </button>
           )
         })}
-        <div className="scr__total"><small>Estimated from</small><b>${total.toLocaleString('en-US')}</b></div>
+        <div className="scr__total"><small>Picked</small><b>{picked.length} of {SHORT.length}</b></div>
         <button type="button" className="scr__btn" onClick={next} disabled={picked.length === 0}>
           {picked.length === 0 ? 'Pick a creator' : `Approve ${picked.length} creator${picked.length > 1 ? 's' : ''}`}
         </button>
@@ -234,7 +233,7 @@ function Screen({ step, s, set, next, live }) {
           <span className="scr__progress"><i /></span>
           <small>@bao.an.eats · draft 2</small>
         </div>
-        <p className="scr__caption">“Ăn thử bánh mì ngon nhất Sài Gòn — with SPF that survives the heat”</p>
+        <p className="scr__caption">“Ăn thử bánh mì ngon nhất Sài Gòn, with SPF that lasts in the heat”</p>
         {s.review === 'ok' && <p className="scr__status ok">✓ Approved · posting Fri 19:00 local</p>}
         {s.review === 'changes' && <p className="scr__status">Feedback sent to @bao.an.eats</p>}
         <div className="scr__actions">
@@ -324,7 +323,7 @@ export function Process() {
   return (
     <section className="process2" id="how">
       <div className="wrap">
-        <Head n="05" label="Process" title="From brief to *posted* content.">Four steps, a local team on every one. The phone is live — try it.</Head>
+        <Head label="Process" title="How a campaign runs" layout="split">Four steps. Tap the phone to try each one.</Head>
         <div className="tour" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           <ol className="tour__tabs">
             {STEPS.map((st, k) => (
@@ -349,8 +348,6 @@ export function Process() {
                 <Screen step={step} s={s} set={userSet} next={next} live={userActed} />
               </div>
             </div>
-            <span className="note note--a" key={`a${step}`} aria-hidden="true"><Check /> {STEPS[step].notes[0]}</span>
-            <span className="note note--b" key={`b${step}`} aria-hidden="true"><Check /> {STEPS[step].notes[1]}</span>
             <span className={`tour__hint ${touched ? 'is-off' : ''}`}>Tap the phone to try it</span>
           </div>
         </div>
@@ -373,13 +370,13 @@ export function ForCreators() {
     <section className="forc2" id="for-creators">
       <div className="wrap forc2__grid">
         <div className="forc2__copy">
-          <Eyebrow n="06" label="For creators" />
-          <h2 className="hd__title">Work with brands abroad, <em>without the admin.</em></h2>
-          <p>Set your own rate, get verified once, and let brands from Seoul to San Francisco find you. We handle contracts and make sure you get paid.</p>
+          <Eyebrow label="For creators" />
+          <h2 className="hd__title">Get booked by brands in other countries</h2>
+          <p>Set your rate in your own currency and get verified once. Brands from other markets can then find you, and we take care of the contract and the payment.</p>
           <ul className="ticks">
-            <li><Check /> Your rate, your call</li>
-            <li><Check /> Contracts handled for you</li>
-            <li><Check /> Paid on time, every time</li>
+            <li><Check /> You set your own rate</li>
+            <li><Check /> We write and send the contract</li>
+            <li><Check /> We make sure you get paid</li>
           </ul>
           <a className="btn btn--shine" href={SITE}>Get verified as a creator <Arrow /></a>
         </div>
@@ -396,7 +393,7 @@ export function ForCreators() {
             </header>
 
             <div className="dash__rate">
-              <span><small>Your starting rate</small><b>${rate}</b></span>
+              <span><small>Your starting rate</small><b>{localRate(rate, 'vn')}</b></span>
               <span className="dash__step">
                 <button aria-label="Lower rate" onClick={() => setRate((r) => Math.max(50, r - 25))}>−</button>
                 <button aria-label="Raise rate" onClick={() => setRate((r) => Math.min(2000, r + 25))}>+</button>
@@ -409,13 +406,12 @@ export function ForCreators() {
                 <li key={b}>
                   <span className="dash__logo">{b[0]}</span>
                   <span><b>{b}</b><small>{city}</small></span>
-                  <span className="dash__amt">${amt}</span>
+                  <span className="dash__amt">{localRate(amt, 'vn')}</span>
                   <span className={`dash__chip dash__chip--${st.toLowerCase()}`}>{st}</span>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="dash__toast"><span><Check /></span><b>Payout sent</b><small>$600 · Phone brand</small></div>
           <p className="dash__note">Example dashboard</p>
         </div>
       </div>
@@ -444,8 +440,8 @@ export function Contact() {
       <div className="wrap">
         <div className="builder">
           <form className="builder__form" onSubmit={(e) => { e.preventDefault(); setSent(true) }}>
-            <Eyebrow n="07" label="Start a campaign" />
-            <h2 className="hd__title">Build your <em>brief.</em></h2>
+            <Eyebrow label="Start a campaign" />
+            <h2 className="hd__title">Tell us about your launch</h2>
 
             <fieldset className="q">
               <legend><span>1</span> What are you launching?</legend>
@@ -492,7 +488,7 @@ export function Contact() {
               <div className="summary__done">
                 <span className="summary__ok"><Check /></span>
                 <h3>Brief received.</h3>
-                <p>Our teams in {picked.map((id) => MARKETS.find((m) => m.id === id).city).join(', ') || 'your markets'} will reply with a shortlist and rates.</p>
+                <p>Our team in {picked.map((id) => MARKETS.find((m) => m.id === id).city).join(', ') || 'your markets'} will reply with a shortlist and rates.</p>
                 <button className="link" onClick={() => setSent(false)}>Edit brief</button>
               </div>
             ) : (
@@ -519,9 +515,9 @@ export function Contact() {
                 </ul>
                 <p className="summary__label">What happens next</p>
                 <ol className="summary__next">
-                  <li><i>1</i><span>A local manager reads your brief</span></li>
+                  <li><i>1</i><span>Our team in that market reads your brief</span></li>
                   <li><i>2</i><span>You get a shortlist with rates</span></li>
-                  <li><i>3</i><span>You approve — we launch</span></li>
+                  <li><i>3</i><span>You approve, then we launch</span></li>
                 </ol>
                 <div className="summary__match">
                   <div className="summary__avs">

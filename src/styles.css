@@ -2022,3 +2022,80 @@ section { padding-top: clamp(40px, 4.5vw, 64px); }
   .hd__side { padding-left: 14px; }
   .cx .cx__filters { width: auto; overflow-x: auto; flex-wrap: nowrap; border-radius: 18px; }
 }
+
+/* ============================================================
+   Review pass — one solid accent, no gradient text, fewer glows
+   ============================================================ */
+[data-theme="brand"] {
+  --accent: #5b45e0;
+  --g1: var(--accent); --g2: var(--accent); --g3: var(--accent);
+  --a1: var(--accent); --a3: var(--accent); --a-rgb: 91, 69, 224;
+  --sky: linear-gradient(180deg, #f3eefb 0%, #fbf8fd 70%);
+}
+
+/* no gradient text anywhere */
+.hd__title em, .shine-text, .card__statement span, .b2__statement span,
+[data-theme="brand"] .shine-text, [data-theme="brand"] .hero__stats dt, [data-theme="brand"] .card__statement span {
+  background: none !important; -webkit-background-clip: initial !important; background-clip: initial !important;
+  color: inherit !important; animation: none !important;
+}
+
+/* solid buttons */
+[data-theme="brand"] .btn--shine, [data-theme="brand"] .forc .btn, .btn--shine {
+  background: var(--accent) !important; animation: none !important; color: #fff;
+  box-shadow: none !important; filter: none;
+}
+[data-theme="brand"] .btn--shine:hover { background: #0d0d38 !important; }
+.scr__btn { background: var(--accent); }
+
+/* calm backgrounds: no glows */
+.sky__glow, .tour__glow { display: none !important; }
+.hero .collage, [data-theme="brand"] .collage { filter: none !important; }
+.mx__panel { background: var(--card) !important; }
+.tour__stage { background: #f1ecfa !important; }
+.forc2 { background: #f3eefb !important; }
+.summary { background: #0d0d38 !important; }
+.b2--hello { background: var(--card) !important; }
+.b2--markets { box-shadow: none !important; }
+[data-theme="brand"] .footer { border-image: none; border-top: 0; }
+
+/* hero */
+.hero__kicker { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+.hero .hero__copy h1 { font-size: clamp(2.1rem, 3.6vw, 3.3rem); max-width: 15ch; margin: 0 0 18px; color: var(--text); }
+.hero__stats dt { font-size: 1rem !important; font-weight: 600; color: var(--text) !important; }
+.hero__stats dd { font-size: 13px; }
+.chip i { background: var(--accent); box-shadow: none; }
+.float { animation: none; }
+.float__avatar, .rate__av, .spot__av, .dash__av, .scr__av, .summary__avs span { background: var(--accent) !important; }
+.chat__msg.is-right .chat__bubble { background: var(--accent) !important; }
+.spot__live { background: #0d0d38 !important; }
+.ticks svg { background: var(--accent) !important; }
+.codes span.is-on { color: var(--accent); }
+.b2__big--text { font-size: clamp(2rem, 3vw, 2.6rem) !important; letter-spacing: -0.03em; }
+.mx__code, .mx__tab.is-on .mx__tabtop b { background: var(--accent) !important; }
+.tour__bar i { background: var(--accent) !important; }
+.mx__row--split { grid-template-columns: 1fr; }
+
+/* section headers: no numbers, three layouts */
+.hd { display: grid; gap: 10px; margin-bottom: clamp(18px, 2vw, 26px); align-items: end; }
+.hd__eyebrow { display: block; margin: 0 0 8px; font-size: 14px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--accent); }
+.hd__title { font-size: clamp(1.8rem, 3vw, 2.6rem) !important; font-weight: 500 !important; letter-spacing: -0.03em !important; max-width: 22ch; }
+.hd__note { margin: 0; color: var(--muted); font-size: 15.5px; max-width: 46ch; }
+.hd--stack { grid-template-columns: 1fr; }
+.hd--split { grid-template-columns: minmax(0, 1fr) auto; gap: 32px; }
+.hd--split .hd__note { text-align: right; max-width: 36ch; }
+.hd--center { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+.hd--center .hd__title { max-width: none; }
+.hd__side { display: none; }
+@media (max-width: 800px) {
+  .hd--split { grid-template-columns: 1fr; gap: 8px; }
+  .hd--split .hd__note { text-align: left; }
+}
+
+/* platform logos */
+.pi { flex: none; display: block; }
+.spot__plat, .reel__plat, .plats span, .mx__rank li { gap: 6px; }
+.mx__plats { gap: 6px; align-items: center; }
+.reel__plat .pi { width: 12px; height: 12px; }
+
+.mx__map .pi { width: 13px !important; height: 13px !important; }

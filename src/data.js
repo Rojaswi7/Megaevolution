@@ -65,3 +65,19 @@ export const PLATFORM_COLORS = {
   TikTok: '#0d0d38', YouTube: '#ff0033', Instagram: '#d6336c', Facebook: '#4c7cf3',
   LINE: '#06c755', Naver: '#03c75a', X: '#111111',
 }
+
+// ------------------------------------------------------------------
+// Creator rates follow the creator's country. Sample rates are stored in USD
+// and shown in local currency with rough conversions — replace with real
+// local rates when the creator data is wired up.
+// ------------------------------------------------------------------
+const FX = { id: ['IDR', 16000], vn: ['VND', 25000], tw: ['TWD', 32], kr: ['KRW', 1350], jp: ['JPY', 150], us: ['USD', 1] }
+export const minUsd = (rate) => Number(String(rate).split('–')[0].replace(/,/g, ''))
+export function localRate(usd, market) {
+  const [cur, r] = FX[market] || FX.us
+  const v = usd * r
+  return new Intl.NumberFormat('en', {
+    style: 'currency', currency: cur, currencyDisplay: 'symbol',
+    notation: v >= 100000 ? 'compact' : 'standard', maximumFractionDigits: v >= 100000 ? 1 : 0,
+  }).format(v)
+}
