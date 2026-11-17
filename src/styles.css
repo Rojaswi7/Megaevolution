@@ -2099,3 +2099,86 @@ section { padding-top: clamp(40px, 4.5vw, 64px); }
 .reel__plat .pi { width: 12px; height: 12px; }
 
 .mx__map .pi { width: 13px !important; height: 13px !important; }
+
+/* flags in the market ribbon */
+.flag { display: block; flex: none; width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(13, 13, 56, 0.1); overflow: hidden; }
+
+/* ============================================================
+   Platform-specific creator frames
+   ============================================================ */
+.spot__media--frame { position: relative; flex: 1; min-height: 420px; background: #fff; overflow: hidden; display: flex; }
+.spot__media--frame .spot__plat { z-index: 5; }
+.pf { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
+.pf img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* YouTube */
+.pf--yt { background: #fff; color: #0f0f0f; }
+.pf__thumb { position: relative; aspect-ratio: 16 / 9; background: var(--tone); flex: none; }
+.pf__dur { position: absolute; right: 10px; bottom: 12px; font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: rgba(0, 0, 0, 0.8); color: #fff; font-variant-numeric: tabular-nums; }
+.pf__ytbar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255, 255, 255, 0.4); }
+.pf__ytbar i { display: block; height: 100%; width: 38%; background: #ff0000; }
+.pf__ytmeta { display: flex; gap: 12px; padding: 14px 16px 10px; }
+.pf__av { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 600; background: var(--accent, #5b45e0); }
+.pf__yttitle { font-size: 15.5px; font-weight: 600; line-height: 1.3; color: #0f0f0f; }
+.pf__ytsub { font-size: 12.5px; color: #606060; margin-top: 4px; }
+.pf__ytchan { display: flex; justify-content: space-between; align-items: center; margin: 0 16px; padding: 12px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+.pf__ytchan b { display: block; font-size: 14px; }
+.pf__ytchan small { font-size: 12px; color: #606060; }
+.pf__subscribe { font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; background: #0f0f0f; color: #fff; }
+.pf__upnext { padding: 12px 16px 16px; display: grid; gap: 10px; }
+.pf__upnext small { font-size: 12px; font-weight: 600; color: #0f0f0f; }
+.pf__nextrow { display: flex; gap: 10px; align-items: center; }
+.pf__nextthumb { width: 104px; aspect-ratio: 16 / 9; border-radius: 8px; background: var(--tone); flex: none; }
+.pf__nextlines { flex: 1; display: grid; gap: 6px; }
+.pf__nextlines i { height: 8px; border-radius: 4px; background: #eee; }
+.pf__nextlines i + i { width: 60%; }
+
+/* TikTok */
+.pf--tt { background: var(--tone); color: #fff; justify-content: flex-end; }
+.pf--tt::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 45%, rgba(0, 0, 0, 0.25)); }
+.pf__tttabs, .pf__ttrail, .pf__ttcap { position: relative; z-index: 2; }
+.pf__tttabs { position: absolute; top: 18px; left: 0; right: 0; display: flex; justify-content: center; gap: 18px; font-size: 14.5px; }
+.pf__tttabs span { opacity: 0.7; }
+.pf__tttabs b { font-weight: 700; border-bottom: 2px solid #fff; padding-bottom: 4px; }
+.pf__ttrail { position: absolute; right: 12px; bottom: 90px; display: grid; gap: 16px; justify-items: center; text-align: center; }
+.pf__ttrail > span { display: grid; justify-items: center; gap: 2px; }
+.pf__ttrail small { font-size: 11.5px; font-weight: 600; }
+.pf__ttrail svg { width: 30px; height: 30px; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)); }
+.pf__ttav { position: relative; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; background: #0d0d38; border: 2px solid #fff; margin-bottom: 8px; }
+.pf__ttav i { position: absolute; bottom: -9px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 14px; background: #fe2c55; }
+.pf__ttcap { padding: 0 72px 20px 16px; }
+.pf__ttcap b { font-size: 15px; }
+.pf__ttcap p { font-size: 14px; margin: 4px 0 8px; }
+.pf__ttsound { display: flex; align-items: center; gap: 6px; font-size: 13px; overflow: hidden; }
+.pf__ttsound > span { overflow: hidden; white-space: nowrap; flex: 1; }
+.pf__ttsound em { font-style: normal; display: inline-block; padding-left: 100%; animation: sound 9s linear infinite; }
+@keyframes sound { to { transform: translateX(-100%); } }
+
+/* Instagram */
+.pf--ig { background: #fff; color: #000; }
+.pf__ighead { display: flex; align-items: center; gap: 10px; padding: 12px 14px; padding-right: 110px; }
+.pf__ighead b { display: block; font-size: 14px; font-weight: 600; }
+.pf__ighead small { font-size: 12px; color: #737373; }
+.pf__ighead > svg { margin-left: auto; }
+.pf__igring { width: 38px; height: 38px; border-radius: 50%; padding: 2px; flex: none; background: conic-gradient(from 200deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5, #feda75); }
+.pf__igring span { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; font-weight: 600; color: #fff; background: var(--accent, #5b45e0); border: 2px solid #fff; }
+.pf__igmedia { position: relative; flex: 1; min-height: 220px; background: var(--tone); }
+.pf__igactions { display: flex; gap: 14px; padding: 12px 14px 6px; }
+.pf__igsave { margin-left: auto; }
+.pf__iglikes { font-size: 14px; font-weight: 600; padding: 0 14px; }
+.pf__igcap { font-size: 14px; padding: 4px 14px 16px; }
+.pf__igcap b { font-weight: 600; }
+.spot__media--frame:has(.pf--ig) .spot__plat, .spot__media--frame:has(.pf--yt) .spot__plat { top: 12px; right: 12px; left: auto; }
+
+/* tile chrome */
+.tc { position: absolute; inset: 0; pointer-events: none; color: #fff; }
+.tc--tt { display: grid; align-content: end; justify-items: center; gap: 10px; right: 8px; left: auto; width: 34px; bottom: 54px; top: auto; }
+.tc--tt span { display: grid; justify-items: center; }
+.tc--tt small { font-size: 10px; font-weight: 600; }
+.tc--tt svg { filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35)); }
+.reel:has(.tc--tt) .reel__bottom { right: 46px; }
+.tc__dur { position: absolute; right: 10px; bottom: 58px; font-size: 11px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: rgba(0, 0, 0, 0.8); }
+.tc__ytbar { display: none; }
+.reel:has(.tc--yt) .reel__bar i { background: #ff0000; }
+.tc__reels { position: absolute; right: 10px; top: 42px; }
+@media (prefers-reduced-motion: reduce) { .pf__ttsound em { animation: none; padding-left: 0; } }

@@ -3,6 +3,7 @@ import { MARKETS, MARKET_INFO, CATEGORIES, CREATORS, PLATFORM_COLORS, localRate,
 import { MAP_DOTS, MAP_VIEW } from './mapDots.js'
 import { Head } from './head.jsx'
 import { PlatformIcon } from './platformIcon.jsx'
+import { SpotFrame, TileChrome } from './platformFrames.jsx'
 
 const fmt = (date, tz, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: tz, ...opts }).format(date)
 const marketById = Object.fromEntries(MARKETS.map((m) => [m.id, m]))
@@ -85,14 +86,7 @@ export function Creators() {
         {c && (
           <div className="cx__layout" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
             <article className="spot" key={c.handle}>
-              <div className={`spot__media tone-${TONE[c.tone] || 'sand'}`}>
-                {c.img && <img src={c.img} alt={`${c.name}, ${c.cat} creator in ${m.city}`} />}
-                <span className="spot__plat"><PlatformIcon name={c.platform} />{c.platform}</span>
-                <span className="spot__live">Featured</span>
-                <div className="spot__over">
-                  <p className="spot__caption">“{c.caption}”</p>
-                </div>
-              </div>
+              <SpotFrame c={c} m={m} tone={TONE[c.tone] || 'sand'} />
               <div className="spot__body">
                 <div className="spot__who">
                   <span className="spot__av">{c.name[0]}</span>
@@ -143,6 +137,7 @@ export function Creators() {
                         <b>@{x.handle}</b>
                         <small>{x.followers} · {xm.short || xm.city}</small>
                       </span>
+                      <TileChrome c={x} />
                       <span className="reel__bar">
                         {on && <i key={`${idx}-${paused}`} style={{ animationDuration: `${SPOT_MS}ms`, animationPlayState: paused || reduced ? 'paused' : 'running' }} />}
                       </span>

@@ -1,6 +1,7 @@
 import { cloneElement, useEffect, useMemo, useRef, useState } from 'react'
 import { MARKETS, CATEGORIES, CREATORS, MEDIA } from './data.js'
 import { HeroFloaters } from './extras.jsx'
+import { Flag } from './flag.jsx'
 import { Creators as Creators3, Markets as Markets3 } from './sections3.jsx'
 import { Head as Head2 } from './head.jsx'
 import { About as About2, Process as Process2, ForCreators as ForCreators2, Contact as Contact2 } from './sections2.jsx'
@@ -210,7 +211,7 @@ function Hero() {
         <div className="ribbon__track">
           {[...MARKETS, ...MARKETS, ...MARKETS, ...MARKETS].map((m, k) => (
             <span className="chip" key={k} aria-hidden={k >= MARKETS.length}>
-              <i />
+              <Flag market={m.id} />
               <b>{m.city}</b>
               <span>{m.country}</span>
             </span>
