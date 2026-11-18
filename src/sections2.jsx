@@ -67,7 +67,7 @@ export function About() {
   return (
     <section className="about2">
       <div className="wrap">
-        <Head label="About us" title="Why brands work with us" />
+        <Head label="About us" title="Why brands|work with us" />
         <div className="bento2">
           <article className="b2 b2--hello">
             <div className="b2__copy">
@@ -175,7 +175,7 @@ function AppHead({ title, sub, step }) {
   return (
     <div className="ah">
       <div className="ah__row">
-        <span className="ah__logo"><img src="/logo.png" alt="" /></span>
+        <span className="ah__logo"><img className="ah__logo-std" src="/logo.png" alt="" /><img className="ah__logo-deck" src="/logo-deck-light.png" alt="" /></span>
         <span className="ah__me">R</span>
       </div>
       <p className="ah__title">{title}</p>
@@ -432,7 +432,7 @@ export function Process() {
   return (
     <section className="process2" id="how">
       <div className="wrap">
-        <Head label="Process" title="How a campaign runs" layout="split">Four steps. Tap the phone to try each one.</Head>
+        <Head label="Process" title="How a campaign|runs" layout="split">Four steps. Tap the phone to try each one.</Head>
         <div className="tour">
           <div className="tour__left">
             <ol className="tl">
@@ -513,7 +513,7 @@ export function ForCreators() {
       <div className="wrap forc2__grid">
         <div className="forc2__copy">
           <Eyebrow label="For creators" />
-          <h2 className="hd__title">Get booked by brands in other countries</h2>
+          <h2 className="hd__title">Get booked by brands <span className="it">in other countries</span></h2>
           <p>Set your rate in your own currency and get verified once. Brands from other markets can then find you, and we take care of the contract and the payment.</p>
           <ul className="ticks">
             <li><Check /> You set your own rate</li>
@@ -583,7 +583,7 @@ export function Contact() {
         <div className="builder">
           <form className="builder__form" onSubmit={(e) => { e.preventDefault(); setSent(true) }}>
             <Eyebrow label="Start a campaign" />
-            <h2 className="hd__title">Tell us about your launch</h2>
+            <h2 className="hd__title">Tell us about <span className="it">your launch</span></h2>
 
             <fieldset className="q">
               <legend><span>1</span> What are you launching?</legend>

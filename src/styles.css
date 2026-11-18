@@ -2695,3 +2695,143 @@ button.scr__row, .scr__row { grid-template-columns: 38px minmax(0, 1fr) 22px !im
   .pair__arrow { transform: rotate(90deg); justify-self: start; width: 28px; height: 28px; }
   .why2__feats { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   Theme: Deck — matches the MegaEvolution sales deck
+   navy #0D0B38 · lime #C8F04B · grey #F3F4F8 · Poppins + DM Serif Display italic
+   ============================================================ */
+.it { font: inherit; }
+[data-theme="deck"] {
+  --navy: #0d0b38;
+  --lime: #c8f04b;
+  --bg: #f3f4f8;
+  --bg-2: #e9ebf2;
+  --text: #0d0b38;
+  --muted: rgba(13, 11, 56, 0.58);
+  --line: rgba(13, 11, 56, 0.09);
+  --card: #ffffff;
+  --accent: #0d0b38;
+  --coral: #0d0b38;
+  --g1: #0d0b38; --g2: #0d0b38; --g3: #0d0b38;
+  --a1: #0d0b38; --a3: #0d0b38; --a-rgb: 200, 240, 75; --s-rgb: 233, 235, 242;
+  --map-dot: rgba(13, 11, 56, 0.16);
+  --f: 'Poppins', system-ui, sans-serif;
+  --serif: 'DM Serif Display', Georgia, serif;
+}
+[data-theme="deck"] body { font-family: var(--f); background: var(--bg); letter-spacing: -0.005em; }
+[data-theme="deck"] h1, [data-theme="deck"] h2, [data-theme="deck"] h3,
+[data-theme="deck"] .hd__title, [data-theme="deck"] .bhero__title, [data-theme="deck"] .post__title { font-family: var(--f) !important; font-weight: 700 !important; letter-spacing: -0.035em !important; }
+[data-theme="deck"] .it { display: block; font-family: var(--serif) !important; font-style: italic; font-weight: 400 !important; letter-spacing: -0.015em; }
+[data-theme="deck"] .hd__eyebrow { font-size: 11.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--navy); }
+
+/* hero = the deck cover: navy with lime */
+[data-theme="deck"] .top { background: var(--navy); color: #fff; }
+[data-theme="deck"] .sky { display: none; }
+[data-theme="deck"] .logo--onlight { display: none !important; }
+[data-theme="deck"] .logo--ondark { display: block !important; }
+[data-theme="deck"] .nav__links a { color: rgba(255, 255, 255, 0.72) !important; }
+[data-theme="deck"] .nav__links a:hover { color: #fff !important; }
+[data-theme="deck"] .nav__cta { color: #fff; border-color: var(--lime); }
+[data-theme="deck"] .hero__kicker { color: var(--lime); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+[data-theme="deck"] .hero .hero__copy h1 { color: #fff; font-size: clamp(2.3rem, 4vw, 3.8rem); line-height: 1.02; }
+[data-theme="deck"] .hero .hero__copy h1 .it { color: var(--lime); }
+[data-theme="deck"] .hero__lede { color: rgba(255, 255, 255, 0.7) !important; }
+[data-theme="deck"] .btn--shine { background: var(--lime) !important; color: var(--navy) !important; }
+[data-theme="deck"] .btn--shine:hover { background: #fff !important; }
+[data-theme="deck"] .btn--glass { background: transparent !important; color: #fff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important; }
+[data-theme="deck"] .btn--glass:hover { background: #fff !important; color: var(--navy) !important; }
+[data-theme="deck"] .hero__stats { background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.18); border-radius: 0; backdrop-filter: none; }
+[data-theme="deck"] .hero__stats div { padding: 14px 24px 0 0; }
+[data-theme="deck"] .hero__stats div + div { border-left: 0; }
+[data-theme="deck"] .hero__stats dt { font-family: var(--serif); font-weight: 400 !important; font-size: 1.7rem !important; color: var(--lime) !important; letter-spacing: -0.01em; }
+[data-theme="deck"] .hero__stats dd { color: rgba(255, 255, 255, 0.6); }
+[data-theme="deck"] .cbar { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.12); margin-bottom: clamp(32px, 4vw, 56px); }
+[data-theme="deck"] .cbar__lbl { color: rgba(255, 255, 255, 0.6); border-color: rgba(255, 255, 255, 0.15); }
+[data-theme="deck"] .cbar__list li { color: #fff; }
+[data-theme="deck"] .cbar__list li { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.12); }
+
+/* cards: white, no heavy borders, like the deck */
+[data-theme="deck"] .b2, [data-theme="deck"] .spot, [data-theme="deck"] .mx__panel, [data-theme="deck"] .tour,
+[data-theme="deck"] .builder, [data-theme="deck"] .bcard, [data-theme="deck"] .why2 { border-color: transparent; }
+[data-theme="deck"] .mx__panel, [data-theme="deck"] .why2, [data-theme="deck"] .b2--hello { background: #fff !important; }
+
+/* lime + navy accents */
+[data-theme="deck"] .b2--markets { background: var(--navy) !important; }
+[data-theme="deck"] .b2__big, [data-theme="deck"] .b2__big--text { font-family: var(--serif); font-weight: 400; color: var(--lime); letter-spacing: -0.01em; }
+[data-theme="deck"] .codes span.is-on { background: var(--lime); color: var(--navy); }
+[data-theme="deck"] .chat__msg.is-right .chat__bubble { background: var(--lime) !important; color: var(--navy); }
+[data-theme="deck"] .why__stat { background: var(--navy); }
+[data-theme="deck"] .why__stat b, [data-theme="deck"] .spot__stats dd { font-family: var(--serif); font-weight: 400; }
+[data-theme="deck"] .why__stat b { color: var(--lime); font-size: 1.8rem; }
+[data-theme="deck"] .why__k { color: var(--navy); letter-spacing: 0.04em; }
+[data-theme="deck"] .pair__us { background: #f4fbdc; }
+[data-theme="deck"] .pair__arrow { color: var(--navy); background: var(--lime); border-color: var(--lime); }
+[data-theme="deck"] .why2__ico { background: var(--navy); color: var(--lime); }
+[data-theme="deck"] .mpin.is-on .mpin__dot { fill: var(--lime); stroke: var(--navy); stroke-width: 0.5; }
+[data-theme="deck"] .mpin__pulse { fill: var(--lime); }
+[data-theme="deck"] .callout b { color: var(--lime); }
+[data-theme="deck"] .mx__tab.is-on { box-shadow: 0 0 0 2px var(--navy); }
+[data-theme="deck"] .mx__tab.is-on .mx__tabtop b { background: var(--lime) !important; color: var(--navy); }
+[data-theme="deck"] .tl li.is-done .tl__dot { background: var(--lime); border-color: var(--lime); color: var(--navy); }
+[data-theme="deck"] .tl__ring circle { stroke: var(--lime); }
+[data-theme="deck"] .tl__who > span { background: #f4fbdc; }
+[data-theme="deck"] .tl__who > span + span b { background: var(--lime); color: var(--navy); }
+[data-theme="deck"] .tour__stage { background-color: #e9ebf2 !important; background-image: radial-gradient(rgba(13, 11, 56, 0.1) 1px, transparent 1px) !important; }
+[data-theme="deck"] .reel.is-on { outline-color: var(--lime); }
+[data-theme="deck"] .spot__live { background: var(--lime) !important; color: var(--navy); }
+[data-theme="deck"] .ticks svg { background: var(--lime) !important; color: var(--navy); }
+[data-theme="deck"] .fan__item.is-active .fan__label::before { background: var(--lime); box-shadow: 0 0 0 1px var(--navy); }
+[data-theme="deck"] .forc2 { background: var(--bg-2) !important; }
+[data-theme="deck"] .summary { background: var(--navy) !important; }
+[data-theme="deck"] .summary__ok { background: var(--lime); color: var(--navy); }
+[data-theme="deck"] .q legend em { color: var(--navy); }
+[data-theme="deck"] .slider { background: linear-gradient(90deg, var(--lime), var(--lime)) 0 / var(--p) 100% no-repeat, rgba(13, 11, 56, 0.1); }
+[data-theme="deck"] .footer { background: var(--navy); }
+[data-theme="deck"] .footer ul a:hover { color: var(--lime); }
+
+/* lime-spark logo for the Deck theme */
+.logo--deck { display: none !important; }
+[data-theme="deck"] .logo--deck { display: block !important; }
+[data-theme="deck"] .nav__logo .logo--ondark, [data-theme="deck"] .logo--foot { display: none !important; }
+
+/* ============================================================
+   Deck theme: phone app
+   ============================================================ */
+[data-theme="deck"] .phone2 { background: var(--navy); }
+[data-theme="deck"] .phone2__btn { background: var(--navy); }
+[data-theme="deck"] .phone2__screen button.scr__btn { background: var(--lime) !important; color: var(--navy) !important; font-weight: 600; }
+[data-theme="deck"] .phone2__screen button.scr__btn.ghost { background: #fff !important; color: var(--navy) !important; }
+[data-theme="deck"] .phone2__screen button.scr__btn:disabled { background: rgba(13, 11, 56, 0.08) !important; color: rgba(13, 11, 56, 0.45) !important; }
+[data-theme="deck"] .ah__steps i.on { background: var(--lime); }
+[data-theme="deck"] .ah__me { background: var(--lime); color: var(--navy); }
+[data-theme="deck"] .tabbar button.on { color: var(--navy); }
+[data-theme="deck"] .tabbar button.on svg { color: var(--navy); }
+[data-theme="deck"] .tabbar button.on small { position: relative; }
+[data-theme="deck"] .tabbar button.on small::after { content: ''; position: absolute; left: 50%; bottom: -6px; width: 16px; height: 3px; border-radius: 3px; background: var(--lime); transform: translateX(-50%); }
+[data-theme="deck"] .scr__tick.on, [data-theme="deck"] .chk button.on span { background: var(--lime) !important; border-color: var(--lime) !important; color: var(--navy) !important; }
+[data-theme="deck"] button.scr__row.is-on { background: #f6fbe6 !important; border-color: rgba(200, 240, 75, 0.9) !important; }
+[data-theme="deck"] .scr__av, [data-theme="deck"] .topc__av { background: var(--navy) !important; color: var(--lime) !important; }
+[data-theme="deck"] .scr__who em { color: var(--navy); }
+[data-theme="deck"] .stackav i { background: var(--lime); color: var(--navy); }
+[data-theme="deck"] .pc { background: #f6fbe6; }
+[data-theme="deck"] .pc__thumb { background: var(--lime); }
+[data-theme="deck"] .pc__edit { color: var(--navy); text-decoration: underline; text-underline-offset: 2px; }
+[data-theme="deck"] .tg button.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+[data-theme="deck"] .scr__slider { background: linear-gradient(90deg, var(--lime), var(--lime)) 0 / var(--p) 100% no-repeat, rgba(13, 11, 56, 0.08); }
+[data-theme="deck"] .scr__slider::-webkit-slider-thumb { border-color: var(--navy); }
+[data-theme="deck"] .seg2 button.on { background: var(--navy); color: #fff; box-shadow: none; }
+[data-theme="deck"] .seg2 button.on .pi path { fill: #fff; }
+[data-theme="deck"] .vid { background: var(--navy); }
+[data-theme="deck"] .vid__ok { background: var(--lime); color: var(--navy); }
+[data-theme="deck"] .vid__bar i { background: var(--lime); }
+[data-theme="deck"] .kpis button.on { border-color: var(--navy); box-shadow: 0 0 0 1px var(--navy); }
+[data-theme="deck"] .area { background: #f6fbe6; }
+[data-theme="deck"] .area__fill { fill: rgba(200, 240, 75, 0.45); }
+[data-theme="deck"] .area__line { stroke: var(--navy); }
+[data-theme="deck"] .area__dot { background: var(--navy); }
+[data-theme="deck"] .mix__bar i { background: var(--lime); }
+[data-theme="deck"] .scr__status.ok { background: #f1f9d6; color: var(--navy); }
+
+.ah__logo-deck { display: none !important; }
+[data-theme="deck"] .ah__logo-std { display: none !important; }
+[data-theme="deck"] .ah__logo-deck { display: block !important; }

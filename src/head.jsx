@@ -6,7 +6,9 @@ export function Head({ label, title, children, layout = 'stack' }) {
     <div className={`hd hd--${layout}`}>
       <div className="hd__main">
         {label && <p className="hd__eyebrow">{label}</p>}
-        <h2 className="hd__title">{title}</h2>
+        <h2 className="hd__title">
+          {title.includes('|') ? <>{title.split('|')[0]} <span className="it">{title.split('|')[1]}</span></> : title}
+        </h2>
       </div>
       {children && <p className="hd__note">{children}</p>}
     </div>

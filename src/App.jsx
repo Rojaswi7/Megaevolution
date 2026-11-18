@@ -132,6 +132,7 @@ export function Nav({ home = true }) {
       <a href={home ? '#top' : '/'} className="nav__logo" aria-label="MegaEvolution home">
         <img className="logo--onlight" src="/logo.png" alt="MegaEvolution" width="138" height="20" />
         <img className="logo--ondark" src="/logo-light.png" alt="" width="138" height="20" />
+        <img className="logo--deck" src="/logo-deck.png" alt="" width="138" height="20" />
       </a>
       <nav className={`nav__links ${open ? 'is-open' : ''}`} onClick={() => setOpen(false)}>
         <a href={`${pre}#creators`}>Creators</a>
@@ -190,7 +191,7 @@ function Hero() {
       <div className="wrap hero__split">
         <div className="hero__copy">
           <p className="hero__kicker">Creator marketing for brands</p>
-          <h1>Find the creators your customers already watch.</h1>
+          <h1>Find the creators <span className="it">your customers already watch.</span></h1>
           <p className="hero__lede">
             We work with creators across Southeast and East Asia, India, the Middle East, Europe and the Americas. You get one point
             of contact, and our people in each country handle the creators, the contracts and the posting.
@@ -258,7 +259,7 @@ function Services() {
   return (
     <section className="services" id="services">
       <div className="wrap services__head">
-        <Head2 label="Services" title="What we do for brands" layout="center">
+        <Head2 label="Services" title="What we do|for brands" layout="center">
           From the first brief to the last report.
         </Head2>
       </div>
@@ -315,7 +316,8 @@ export function Footer() {
     <footer className="footer">
       <div className="wrap footer__grid">
         <div className="footer__brand">
-          <img src="/logo-light.png" alt="MegaEvolution" width="150" height="22" />
+          <img className="logo--foot" src="/logo-light.png" alt="MegaEvolution" width="150" height="22" />
+          <img className="logo--deck" src="/logo-deck.png" alt="" width="150" height="22" />
           <p className="soft">Reach globally, delivered locally.</p>
           <div className="socials">
             {[['Instagram', 'https://www.instagram.com/megaevo1ution/'], ['TikTok', 'https://tiktok.com/@megaevo1ution'], ['LinkedIn', 'https://www.linkedin.com/company/megaevolution/']].map(([n, u]) => (
@@ -338,7 +340,7 @@ export function Footer() {
   )
 }
 
-const THEMES = [['brand', 'Brand'], ['coast', 'Coast'], ['icy', 'Icy'], ['sakura', 'Sakura'], ['lavender', 'Lavender'], ['sand', 'Sand']]
+const THEMES = [['brand', 'Brand'], ['deck', 'Deck'], ['coast', 'Coast'], ['icy', 'Icy'], ['sakura', 'Sakura'], ['lavender', 'Lavender'], ['sand', 'Sand']]
 
 function ThemeSwitch() {
   const [theme, setTheme] = useState(() => {

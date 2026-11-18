@@ -91,7 +91,7 @@ export function Creators() {
     <section className="cx" id="creators">
       <div className="wrap">
         <div className="cx__head">
-          <Head label="Creators" title="Creators on MegaEvolution">
+          <Head label="Creators" title="Creators on|MegaEvolution">
             Each creator shows a starting rate in their own currency. Tap one to see more.
           </Head>
           <div className="cx__filters" role="group" aria-label="Category">
@@ -197,6 +197,9 @@ const LABEL = {
   us: [-2.4, -1.6, 'end'], latam: [-2.4, 3.6, 'end'],
 }
 
+// rail shows the leading video/social app only (Facebook left out on purpose)
+const topSocial = (i) => i.watched.find((p) => ['YouTube', 'TikTok', 'Instagram', 'Douyin'].includes(p)) || i.watched[0]
+
 export function Markets() {
   const reduced = useReduced()
   const [active, setActive] = useState('vn')
@@ -215,7 +218,7 @@ export function Markets() {
   return (
     <section className="mx" id="markets">
       <div className="wrap">
-        <Head label="Markets" title="Where our teams are">
+        <Head label="Markets" title="Where our|teams are">
           Some of the markets we work in. Pick one to see which apps people use and where they shop.
         </Head>
 
@@ -275,7 +278,7 @@ export function Markets() {
                 <button key={x.id} role="tab" aria-selected={x.id === active} className={`mx__tab ${x.id === active ? 'is-on' : ''}`} onClick={() => pick(x.id)}>
                   <span className="mx__tabtop"><Flag market={x.id} /><b>{i.code}</b></span>
                   <span className="mx__city">{x.short || x.city}</span>
-                  <span className="mx__fact"><PlatformIcon name={i.watched[0]} size={12} />{i.watched[0]}</span>
+                  <span className="mx__fact"><PlatformIcon name={topSocial(i)} size={12} />{topSocial(i)}</span>
                   <span className="mx__fact mx__fact--muted">Shops on {i.buy[0]}</span>
                 </button>
               )
