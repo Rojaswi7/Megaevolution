@@ -64,7 +64,7 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
       <header className={`hdr ${stuck ? 'is-stuck' : ''}`}>
         <div className="wrap hdr__top">
           <Link href={href(lang, '/')} className="hdr__logo" aria-label="MegaEvolution home" data-cta="logo_home">
-            <img src="/logo-black.png" alt="MegaEvolution" width={164} height={24} />
+            <img src="/logo-deck.png" alt="MegaEvolution" width={164} height={24} />
           </Link>
 
           <button className="hdr__search" onClick={() => openSearch('header')} data-cta="header_search" aria-label={dict.searchPlaceholder}>

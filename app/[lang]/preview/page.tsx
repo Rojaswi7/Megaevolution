@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: P) {
   return pageMeta({ lang, path: '/preview', title: 'Logged-in previews', description: 'Every logged-in screen of the MegaEvolution mockup, by role, with dummy accounts.', noindex: true })
 }
 
-const NAMES: Record<string, string> = { brand: 'Brand workspace', agency: 'Agency workspace', creator: 'Creator dashboard', mcn: 'MCN workspace', editor: 'Editor workspace' }
+const NAMES: Record<string, string> = { brand: 'Brand workspace', agency: 'MegaEvolution team workspace', creator: 'Creator dashboard', mcn: 'MCN workspace', editor: 'Editor workspace' }
 
 export default async function PreviewIndex({ params }: P) {
   const { lang } = await params

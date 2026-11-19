@@ -9,7 +9,10 @@ import type { Creator } from '@/data/creators'
 import { MARKETS, marketById } from '@/data/markets'
 import { CATEGORIES, categoryBySlug } from '@/data/categories'
 import { SEARCH_GATE } from '@/data/pricing'
-import { CreatorCard } from './CreatorCard'
+import { CreatorCard, Avatar, Verified, PlatformChrome, postStats } from './CreatorCard'
+import { Money } from './Money'
+import { SaveButton } from './client'
+import { compact, localMoney } from '@/lib/format'
 import { Flag, Icon, PlatformIcon, Arrow } from './Icon'
 import { GateDialog } from './client'
 import { useApp } from './AppState'
@@ -63,6 +66,9 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
   const [gateSeen, setGateSeen] = useState(false)
   const [open, setOpen] = useState(false)
   const top = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0) // spotlight index (home)
+  const [page, setPage] = useState(0)
+  const [hold, setHold] = useState(false)
 
   // read ?q=&country=&category=&platform= on the client so the page itself stays static
   useEffect(() => {
@@ -114,6 +120,18 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
   const relaxName: Record<string, string> = { er: 'engagement', posts: 'minimum posts', followers: 'follower range', language: 'language', platform: 'platform' }
 
   const list = results.slice(0, shown)
+  // home: spotlight + six tiles per page; the spotlight walks through the page on its own
+  const PER = 6
+  const pages = Math.max(1, Math.ceil(Math.min(results.length, 12) / PER))
+  const pageList = results.slice(page * PER, page * PER + PER)
+  const spot = pageList[active] || pageList[0]
+  useEffect(() => { setActive(0); setPage(0) }, [f])
+  useEffect(() => {
+    if (mode !== 'home' || hold || pageList.length < 2) return
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setTimeout(() => setActive((a) => (a + 1) % pageList.length), 4600)
+    return () => clearTimeout(t)
+  }, [mode, hold, active, pageList.length])
   const allHref = href(lang, '/creators') + (f.country || f.category || f.q ? `?${new URLSearchParams(Object.entries({ q: f.q, country: f.country, category: f.category, platform: f.platform }).filter(([, v]) => v) as any).toString()}` : '')
 
   return (
@@ -169,7 +187,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
           {activeCount || f.q ? <button className="ulink cx__reset" onClick={reset}>Clear filters</button> : null}
         </p>
         <label className="cx__sort"><span>Sort</span>
-          <select value={f.sort} onChange={(e) => set('sort', e.target.value)}>
+          <select aria-label="Sort creators" value={f.sort} onChange={(e) => set('sort', e.target.value)}>
             {mode === 'home' ? <option value="featured">Featured</option> : null}<option value="followers">Most followers</option><option value="views">Most views</option><option value="er">Highest engagement</option><option value="rate">Lowest starting rate</option>
             <option value="gmv" disabled>TikTok Shop sales (coming soon)</option>
           </select>
@@ -178,7 +196,23 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
 
       {relax && <p className="cx__relax"><Icon name="sparkle" size={15} /><span><b>+{relax.n} more</b> if you relax {relaxName[relax.k]}.</span><button className="ulink" onClick={() => set(relax.k, '')}>Relax it</button></p>}
 
-      {list.length ? (
+      {list.length && mode === 'home' && spot ? (
+        <div className="show" onMouseEnter={() => setHold(true)} onMouseLeave={() => setHold(false)}>
+          <Spotlight c={spot} lang={lang} />
+          <div className="show__side">
+            <div className="show__grid">
+              {pageList.map((c, i) => <CreatorCard key={c.handle} c={c} lang={lang} selected={i === active} onSelect={() => setActive(i)} />)}
+            </div>
+            {pages > 1 ? (
+              <div className="show__pager">
+                <span className="small muted">Showing {page * PER + 1}–{page * PER + pageList.length} of {results.length}</span>
+                <button className="show__nav" aria-label="Previous creators" disabled={page === 0} onClick={() => { setPage(page - 1); setActive(0) }}><Icon name="arrow" size={18} className="show__flip" /></button>
+                <button className="show__nav" aria-label="More creators" disabled={page >= pages - 1} onClick={() => { setPage(page + 1); setActive(0); track('results_load_more', { source: 'home_pager' }) }}><Icon name="arrow" size={18} /></button>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      ) : list.length ? (
         <div className="cgrid">{list.map((c) => <CreatorCard key={c.handle} c={c} lang={lang} gmvSlot={mode === 'full'} />)}</div>
       ) : (
         <div className="cx__empty card card--pad">
@@ -207,6 +241,56 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
           onClose={closeGate} />
       )}
     </div>
+  )
+}
+
+/** The featured creator on the home page, framed like a post on their main platform. */
+function Spotlight({ c, lang }: { c: Creator; lang: string }) {
+  const m = marketById[c.market]
+  const main = c.platforms[0]
+  const st = postStats(c)
+  return (
+    <article className="spot" key={c.handle} aria-live="polite">
+      <div className={'spot__media tone-' + c.tone + ' spot__media--' + main.platform.toLowerCase()}>
+        <span className="rt__plat"><PlatformIcon name={main.platform} size={15} />{main.platform}</span>
+        <p className="spot__cap">{c.caption}</p>
+        <PlatformChrome c={c} platform={main.platform} />
+        <span className="spot__play" aria-hidden="true"><Icon name="play" size={20} stroke={0} className="pc__fill" /></span>
+      </div>
+      <div className="spot__body">
+        <div className="spot__title">
+          <Avatar c={{ name: c.name, tone: (c.tone + 5) % 8 }} size={46} />
+          <div>
+            <h3>{c.caption}</h3>
+            <p>{c.name} · {compact(Math.round(c.avgViews * 1.3))} views · {st.days} {st.days === 1 ? 'day' : 'days'} ago</p>
+          </div>
+        </div>
+        <div className="spot__chan">
+          <div>
+            <p className="spot__handle">@{c.handle}{c.verified ? <Verified /> : null}</p>
+            <p className="spot__place"><Flag market={c.market} title={m.name} />{c.city}, {m.name} · {categoryBySlug[c.category].label}</p>
+          </div>
+          <div className="row">
+            <SaveButton handle={c.handle} />
+            <Link className="btn btn--dark" href={href(lang, '/@' + c.handle)} data-cta="spotlight_view_profile" prefetch={false}>View profile &amp; rates<Arrow /></Link>
+          </div>
+        </div>
+        <div className="spot__on">
+          <span className="spot__lbl">Available on</span>
+          <ul>
+            {c.platforms.map((p) => (
+              <li key={p.platform}><PlatformIcon name={p.platform} size={17} /><b>{compact(p.followers)}</b><span>{p.platform} · {p.er}% eng.</span></li>
+            ))}
+          </ul>
+        </div>
+        <dl className="spot__stats">
+          <div><dt>Followers</dt><dd>{compact(c.followers)}</dd></div>
+          <div><dt>Avg views</dt><dd>{compact(c.avgViews)}</dd></div>
+          <div><dt>Engagement</dt><dd>{c.er}%</dd></div>
+          <div><dt>From</dt><dd>{localMoney(c.rateLocal, c.currency)}{c.currency !== 'USD' ? <small>≈ <Money usd={c.rateUsd} /></small> : null}</dd></div>
+        </dl>
+      </div>
+    </article>
   )
 }
 

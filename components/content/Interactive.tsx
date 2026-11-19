@@ -55,8 +55,8 @@ export function ConnectTabs() {
   const app = APPS.find((a) => a.id === id)!
   return (
     <div>
-      <div className="ct-tabs" role="tablist" aria-label="AI app">
-        {APPS.map((a) => <button key={a.id} role="tab" aria-selected={a.id === id} aria-pressed={a.id === id} className="chip" onClick={() => { setId(a.id); track('connect_app_selected', { app: a.id }) }}>{a.name}</button>)}
+      <div className="ct-tabs" role="group" aria-label="AI app">
+        {APPS.map((a) => <button key={a.id} aria-pressed={a.id === id} className="chip" onClick={() => { setId(a.id); track('connect_app_selected', { app: a.id }) }}>{a.name}</button>)}
       </div>
       <ol className="ct-steps" aria-label={`Steps for ${app.name}`}>
         {app.steps.map((s) => (

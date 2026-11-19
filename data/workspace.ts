@@ -71,10 +71,11 @@ export const AGENCY_ORDERS: AgencyOrder[] = [
 ]
 
 export const TEAM = [
-  { name: 'Hana Park', email: 'brand@demo.megaevolution.io', role: 'Admin', access: 'Everything', status: 'Active' },
-  { name: 'Leo Martin', email: 'leo@lumiskin.example', role: 'Campaign manager', access: 'Orders, lists, inbox', status: 'Active' },
-  { name: 'Sora Ito', email: 'sora@lumiskin.example', role: 'Finance', access: 'Billing and invoices', status: 'Active' },
-  { name: 'Ana Reyes', email: 'ana@lumiskin.example', role: 'Viewer', access: 'Read only', status: 'Invited' },
+  { name: 'Hana Park', email: 'brand@demo.megaevolution.io', role: 'Owner', access: 'Everything, incl. billing and members', status: 'Active' },
+  { name: 'Leo Martin', email: 'leo@lumiskin.example', role: 'Manager', access: 'Orders, lists, inbox', status: 'Active' },
+  { name: 'Sora Ito', email: 'sora@lumiskin.example', role: 'Admin', access: 'Members, roles, billing', status: 'Active' },
+  { name: 'Ana Reyes', email: 'ana@lumiskin.example', role: 'Member', access: 'Own and assigned orders', status: 'Active' },
+  { name: 'Kai Wong', email: 'kai@lumiskin.example', role: 'Viewer', access: 'Read only', status: 'Invited' },
 ]
 export const ACCESS_REQUESTS = [
   { name: 'Tom Becker', email: 'tom@lumiskin.example', wants: 'Agency Orders', note: 'Need to approve listings for the EU launch.' },

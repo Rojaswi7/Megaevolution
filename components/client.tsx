@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { href } from '@/data/site'
-import { ACCOUNTS } from '@/data/accounts'
+import { ACCOUNTS, ROLE_LABEL } from '@/data/accounts'
 import { Icon, Arrow } from './Icon'
 import { useApp, type Role } from './AppState'
 import { track } from '@/lib/track'
@@ -12,9 +12,11 @@ import { track } from '@/lib/track'
 export function TrackClicks() {
   useEffect(() => {
     const on = (e: MouseEvent) => {
-      const el = (e.target as HTMLElement | null)?.closest?.('[data-cta]') as HTMLElement | null
+      // explicit ids first; any other button or arrow link still gets tracked under an id built from its label
+      const el = (e.target as HTMLElement | null)?.closest?.('[data-cta], .btn, .tlink') as HTMLElement | null
       if (!el) return
-      track('cta_click', { cta: el.dataset.cta, label: (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 60), href: el.getAttribute('href') || undefined })
+      const auto = 'auto_' + (el.textContent || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 40)
+      track('cta_click', { cta: el.dataset.cta || auto, label: (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 60), href: el.getAttribute('href') || undefined })
     }
     document.addEventListener('click', on, true)
     return () => document.removeEventListener('click', on, true)
@@ -99,7 +101,7 @@ export function ReviewDock({ lang }: { lang: string }) {
             <h2>Preview as (dummy accounts)</h2>
             <div className="dock__seg">
               <button aria-pressed={role === 'guest'} onClick={() => pick('guest')}>Logged out</button>
-              {ACCOUNTS.map((a) => <button key={a.role} aria-pressed={role === a.role} onClick={() => pick(a.role)}>{a.role === 'mcn' ? 'MCN' : a.role[0].toUpperCase() + a.role.slice(1)}</button>)}
+              {ACCOUNTS.map((a) => <button key={a.role} aria-pressed={role === a.role} onClick={() => pick(a.role)}>{ROLE_LABEL[a.role]}</button>)}
             </div>
           </div>
           <div>
@@ -119,7 +121,7 @@ export function ReviewDock({ lang }: { lang: string }) {
           <div className="dock__seg"><a href={href(lang, '/login')}>All demo logins</a><a href={href(lang, '/preview')}>All screens</a></div>
         </div>
       )}
-      <button className="dock__btn" onClick={() => setOpen(!open)} aria-expanded={open}><Icon name="settings" size={15} /><span>Review mode</span></button>
+      <button className="dock__btn" onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Review mode (mockup controls)"><Icon name="settings" size={15} /><span>Review mode</span></button>
     </div>
   )
 }

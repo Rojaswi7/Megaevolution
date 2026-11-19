@@ -100,3 +100,51 @@ button.kan__card:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
 .wbar { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
 .wbar i { display: block; height: 100%; background: var(--ink); border-radius: 4px; }
 .wtoast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); z-index: 80; padding: 12px 18px; border-radius: 999px; background: var(--dark); color: #fff; font-size: 14px; font-weight: 500; box-shadow: 0 12px 30px -10px rgba(14, 13, 57, 0.6); }
+
+/* ---------- logged-in workspaces: fully themed ---------- */
+.ws { padding-top: 18px; }
+.ws .ws__grid { grid-template-columns: 264px minmax(0, 1fr); gap: 24px; }
+.ws .ws__side { background: var(--dark); color: #fff; box-shadow: none; border-radius: var(--r-l); padding: 18px 14px; gap: 18px; }
+.ws .ws__acct { border-bottom-color: var(--on-dark-line); padding: 2px 6px 16px; }
+.ws .ws__acct small { color: var(--on-dark-2); }
+.ws .ws__group p { color: var(--accent-on-dark); padding: 0 12px 6px; }
+.ws .ws__group button { color: var(--on-dark-2); min-height: 42px; padding: 0 12px; border-radius: 12px; }
+.ws .ws__group button:hover { background: rgba(255, 255, 255, 0.09); color: #fff; }
+.ws .ws__group button.is-on { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.ws .ws__group button em { background: #fff; color: var(--navy); }
+.ws .ws__group button.is-on em { background: var(--navy); color: #fff; }
+.ws .ws__sidefoot { border-top-color: var(--on-dark-line); color: var(--on-dark-2); padding: 14px 8px 2px; }
+.ws .ws__sidefoot a:hover, .ws .ws__sidefoot button:hover { color: var(--accent-on-dark); }
+.ws .ws__side :focus-visible { outline-color: var(--accent-on-dark); }
+.ws .ws__main > div { gap: 20px; }
+.ws .ws__head { padding: clamp(18px, 2vw, 26px) clamp(18px, 2.2vw, 30px); border-radius: var(--r-l); background: var(--dark); color: #fff; align-items: center; }
+.ws .ws__head .h3 { font-size: clamp(1.5rem, 2.3vw, 2.1rem); letter-spacing: -0.035em; }
+.ws .ws__head .muted { color: var(--on-dark-2); margin-top: 4px; font-size: 14.5px; }
+.ws .ws__head .btn { box-shadow: none; }
+.ws .ws__head .btn--ghost { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.4); }
+.ws .ws__head .btn--ghost:hover { background: rgba(255, 255, 255, 0.1); }
+.ws .ws__head .wseg { background: rgba(255, 255, 255, 0.1); }
+.ws .ws__head .wseg button { color: var(--on-dark-2); }
+.ws .ws__head .wseg button[aria-pressed='true'] { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+.ws .ws__head :focus-visible { outline-color: var(--accent-on-dark); }
+.ws .wcard { padding: 22px; border-radius: var(--r-l); }
+.ws .wcard--flush { padding: 0; }
+.ws .wcard__h { margin-bottom: 16px; }
+.ws .wcard__h h3 { font-size: 16.5px; }
+.ws .kpi { padding: 20px; border-radius: var(--r-l); gap: 6px; }
+.ws .kpi b { font-size: 2.5rem; }
+.ws .wgrid-4 > .kpi:first-child { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+.ws .wgrid-4 > .kpi:first-child > span, .ws .wgrid-4 > .kpi:first-child small { color: var(--accent-ink); }
+.ws .wgrid-4 > .kpi:nth-child(2) { background: var(--dark); color: #fff; box-shadow: none; }
+.ws .wgrid-4 > .kpi:nth-child(2) b { color: var(--accent-on-dark); }
+.ws .wgrid-4 > .kpi:nth-child(2) > span, .ws .wgrid-4 > .kpi:nth-child(2) small { color: var(--on-dark-2); }
+.ws .wgrid-2, .ws .wgrid-3, .ws .wgrid-main { gap: 20px; }
+.ws .wgrid-4 { gap: 16px; }
+.ws .wnote { border-radius: 14px; padding: 14px 16px; }
+.ws .kan__col { background: var(--grey); border-radius: 16px; padding: 12px; }
+.ws .tbl th { border-bottom-color: var(--ink); }
+.ws .pill--do { background: var(--navy); color: #fff; }
+.ws .pill--ok { background: var(--accent); color: var(--accent-ink); }
+.wrap .ws__signin { border-radius: var(--r-m); background: var(--accent); color: var(--accent-ink); padding: 12px 12px 12px 18px; }
+.wrap .ws__signin .btn { background: var(--navy); color: #fff; }
+@media (max-width: 940px) { .ws .ws__grid { grid-template-columns: 1fr; gap: 14px; } }

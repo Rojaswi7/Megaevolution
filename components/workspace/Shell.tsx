@@ -75,8 +75,8 @@ export default function WorkspaceShell({ lang, role, tabs, title }: { lang: stri
           </div>
         </aside>
 
-        <div className="ws__tabs scroller" role="tablist" aria-label={title}>
-          {tabs.map((t) => <button key={t.id} role="tab" aria-selected={t.id === tab} className="chip" aria-pressed={t.id === tab} onClick={() => go(t.id)}><Icon name={t.icon} size={15} />{t.label}</button>)}
+        <div className="ws__tabs scroller" role="group" aria-label={title}>
+          {tabs.map((t) => <button key={t.id} className="chip" aria-pressed={t.id === tab} onClick={() => go(t.id)}><Icon name={t.icon} size={15} />{t.label}</button>)}
         </div>
 
         <section className="ws__main" id="ws-main" aria-label={active.label}>

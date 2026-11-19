@@ -4,7 +4,9 @@
 import Link from 'next/link'
 import { href, CLIENT_LOGOS, PROOF, CTA, MCP_URL } from '@/data/site'
 import { CREATORS, FEATURED, creatorsIn } from '@/data/creators'
-import { CATEGORIES } from '@/data/categories'
+import { CATEGORIES, categoryBySlug } from '@/data/categories'
+import { MARKETS } from '@/data/markets'
+import Collage from '@/components/Collage'
 import { TOOLS } from '@/data/tools'
 import { HOME_CASES } from '@/data/cases'
 import { STUDIO, TOOL_FROM } from '@/data/pricing'
@@ -52,55 +54,51 @@ export default async function Home({ params }: P) {
   const seen = new Set<string>()
   const slice = [...FEATURED, ...chipSets, ...[...CREATORS].sort((a, b) => b.followers - a.followers)].filter((c) => !seen.has(c.handle) && seen.add(c.handle)).slice(0, 84)
     .map(({ bio, captions, mcn, ...c }) => ({ ...c, bio: '', captions: [], mcn: null }))
-  const fan = [FEATURED[0], FEATURED[4], FEATURED[2]]
+  const collage = FEATURED.slice(0, 10).map((c, i) => ({
+    handle: c.handle, name: c.name, city: c.city, caption: c.caption, tone: [6, 5, 1, 2, 0, 3, 4, 7, 1, 5][i], platform: c.platforms[0].platform,
+    followers: compact(c.followers), from: localMoney(c.rateLocal, c.currency), category: categoryBySlug[c.category].label,
+  }))
 
   return (
     <>
       <JsonLd data={[orgLd(), websiteLd()]} />
 
-      {/* 1 — hero */}
-      <section className="wrap hero-wrap">
-        <div className="slab hero">
-          <div className="hero__top">
-            <div className="hero__copy">
-              <p className="eyebrow">Creator marketing · 11 markets</p>
-              <h1 className="h1">Find and book local creators<span className="it">in any market.</span></h1>
-              <p className="lede">See every creator’s rate before you say hello, then book in a few clicks. Or hand the whole campaign to a local manager.</p>
-            </div>
-            <div className="hero__fan" aria-hidden="true">
-              {fan.map((c, i) => (
-                <div className={`hero__tile hero__tile--${i}`} key={c.handle}>
-                  <Thumb c={c} ratio="9 / 14" tone={[1, 3, 2][i]} />
-                  <div className="hero__tilewho"><Avatar c={{ name: c.name, tone: [0, 5, 0][i] }} size={26} /><span>@{c.handle}</span></div>
-                </div>
-              ))}
-              <svg className="hero__stamp" viewBox="0 0 140 140" width="132" height="132">
-                <circle cx="70" cy="70" r="70" fill="var(--accent)" />
-                <defs><path id="stamp" d="M70 70m-55 0a55 55 0 1 1 110 0a55 55 0 1 1-110 0" /></defs>
-                <text fontSize="9.6" fontWeight="600" fill="var(--accent-ink)"><textPath href="#stamp" textLength="336" lengthAdjust="spacing">RATES UP FRONT · LOCAL MANAGERS · BOOK DIRECT ·</textPath></text>
-                <text x="70" y="74" textAnchor="middle" fontSize="30" fontFamily="var(--serif)" fill="var(--accent-ink)">{PROOF.creators}</text>
-                <text x="70" y="90" textAnchor="middle" fontSize="9.5" fontWeight="600" fill="var(--accent-ink)">creators</text>
-              </svg>
-            </div>
+      {/* 1 — hero: full-bleed navy, search first, moving collage of creator posts */}
+      <section className="hero2 on-dark">
+        <div className="wrap hero2__grid">
+          <div className="hero2__copy">
+            <p className="eyebrow">Creator marketing · 11 markets</p>
+            <h1 className="h1">Find and book the creators<span className="it">your customers already watch.</span></h1>
+            <p className="lede">Local creators on TikTok, Instagram and YouTube, with their rate shown before you say hello. Book in a few clicks, or hand the campaign to a manager who lives in that market.</p>
+            <dl className="hero2__stats">
+              <div><dt>One contact</dt><dd>for every market</dd></div>
+              <div><dt>Rates first</dt><dd>before you reach out</dd></div>
+              <div><dt>{PROOF.creators}</dt><dd>creators worked with</dd></div>
+            </dl>
           </div>
+          <Collage items={collage} />
+        </div>
 
+        <div className="wrap hero2__search">
           <HeroSearch lang={lang} />
-
           <div className="hero__under">
             <div className="hero__chips">
               <span className="hero__lbl">Try</span>
               {CHIPS.map((c) => <QuickChip key={c.label} lang={lang} country={c.country} category={c.category}>{c.label}</QuickChip>)}
             </div>
-          </div>
-
-          <div className="hero__alt">
-            <span>Need us to run it? <TLink lang={lang} to="/about-agency" cta="hero_to_agency">Agency</TLink></span>
-            <span>Need videos edited? <TLink lang={lang} to="/video-editing" cta="hero_to_video">Video Editing</TLink></span>
             <nav className="hero__cats" aria-label="Browse by category">
               {CATEGORIES.map((c) => (
                 <Link key={c.slug} href={href(lang, `/creators?category=${c.slug}`)} data-cta="hero_category" prefetch={false}><Icon name={c.icon} size={15} />{c.label}</Link>
               ))}
             </nav>
+          </div>
+          <div className="hero__alt">
+            <span>Need us to run it? <TLink lang={lang} to="/about-agency" cta="hero_to_agency">Agency</TLink></span>
+            <span>Need videos edited? <TLink lang={lang} to="/video-editing" cta="hero_to_video">Video Editing</TLink></span>
+            <ul className="hero2__teams" aria-label="Local managers in">
+              <li className="hero__lbl">Local managers in</li>
+              {MARKETS.map((m) => <li key={m.id}><Link href={href(lang, `/markets/${m.slug}`)} prefetch={false} data-cta="hero_market"><Flag market={m.id} />{m.short}</Link></li>)}
+            </ul>
           </div>
         </div>
       </section>
@@ -108,9 +106,9 @@ export default async function Home({ params }: P) {
       {/* 2 — creator search results, directly below the hero */}
       <section className="wrap sec--tight home-results" aria-labelledby="h-results">
         <div className="home-results__head">
-          <h2 className="h3" id="h-results">Creators you can book <span className="it it--inline">right now</span></h2>
+          <h2 className="h2" id="h-results">Creators on<span className="it">MegaEvolution</span></h2>
           <RoadmapTag status="dev" />
-          <p className="small muted">Powered by AI Listup. Every card shows a starting rate.</p>
+          <p className="home-results__note">Each creator shows a starting rate in their own currency and every platform they post on. Hover one to see more.</p>
         </div>
         <CreatorExplorer lang={lang} creators={slice as any} total={CREATORS.length} pageSize={12} mode="home" initial={{ sort: 'featured' }} />
       </section>
@@ -192,9 +190,9 @@ export default async function Home({ params }: P) {
             <p className="lede">Human editors who cut for TikTok, Reels and YouTube every day. Order online, send your brief, review the draft.</p>
             <dl className="studio__prices">
               {STUDIO.products.map((p) => (
-                <div key={p.id}><dt>{p.name}</dt><dd><Money usd={p.price} from /></dd><small>{p.spec}</small></div>
+                <div key={p.id}><dt>{p.name}</dt><dd><Money usd={p.price} from /><small>{p.spec}</small></dd></div>
               ))}
-              <div className="studio__bundle"><dt>Bundle discount</dt><dd>{typeof STUDIO.bundles[0].percent === 'number' ? `${STUDIO.bundles[0].percent}% off` : 'TBD% off'}</dd><small>{STUDIO.bundles[0].min}+ videos in one order</small></div>
+              <div className="studio__bundle"><dt>Bundle discount</dt><dd>{typeof STUDIO.bundles[0].percent === 'number' ? `${STUDIO.bundles[0].percent}% off` : 'TBD% off'}<small>{STUDIO.bundles[0].min}+ videos in one order</small></dd></div>
             </dl>
             <div className="row">
               <Cta lang={lang} to="/video-editing/checkout" cta="home_order_video" size="lg">{CTA.video}</Cta>

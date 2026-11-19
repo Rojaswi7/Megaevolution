@@ -31,9 +31,9 @@ export default function Portfolio() {
   return (
     <div className="st-pf">
       <div className="st-pf__bar">
-        <div className="st-seg" role="tablist" aria-label="Portfolio market">
+        <div className="st-seg" role="group" aria-label="Portfolio market">
           {TABS.map((t) => (
-            <button key={t.id} role="tab" aria-selected={tab === t.id} aria-pressed={tab === t.id} onClick={() => { setTab(t.id); track('portfolio_tab', { market: t.id }) }} data-cta="studio_portfolio_tab">{t.id} <span>{t.label}</span></button>
+            <button key={t.id} aria-pressed={tab === t.id} onClick={() => { setTab(t.id); track('portfolio_tab', { market: t.id }) }} data-cta="studio_portfolio_tab">{t.id} <span>{t.label}</span></button>
           ))}
         </div>
         <div className="st-pf__nav">

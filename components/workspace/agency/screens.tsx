@@ -1,5 +1,5 @@
 'use client'
-// Agency workspace screens: home, Agency Orders (compact / full, pricing options), Campaign Inbox, reports, clients.
+// MegaEvolution team workspace screens: home, Agency Orders (compact / full, pricing options), Campaign Inbox, reports, clients.
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { href } from '@/data/site'
@@ -27,7 +27,7 @@ export function AgencyHome({ lang }: { lang: string }) {
   const budget = AGENCY_ORDERS.reduce((s, o) => s + o.budgetUsd, 0)
   return (
     <>
-      <WsHead title="Good morning, Daniel" sub="Northside Agency · sample data">
+      <WsHead title="Good morning, Daniel" sub="MegaEvolution team · platform organization · sample data">
         <Link className="btn btn--sm" href={href(lang, '/tools/ai-listup')} data-cta="agency_home_ai_listup" prefetch={false}>New list with AI Listup<Arrow size={14} /></Link>
       </WsHead>
       <div className="wgrid-4">

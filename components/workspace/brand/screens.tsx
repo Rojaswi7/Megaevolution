@@ -41,7 +41,7 @@ export function BrandHome({ lang }: { lang: string }) {
       <div className="wgrid-4">
         <div className="kpi"><b>{CREATOR_ORDERS.filter((o) => o.status !== 'Completed').length}</b><span>Open creator orders</span><small>{review} need your review</small></div>
         <div className="kpi"><b>{STUDIO_ORDERS.flatMap((o) => o.videos).filter((v) => v.status !== 'Final delivered').length}</b><span>Videos in the Studio</span><small>{drafts} draft ready</small></div>
-        <div className="kpi"><b>{proposed}</b><span>Listings to approve</span><small>from Northside Agency</small></div>
+        <div className="kpi"><b>{proposed}</b><span>Listings to approve</span><small>from the MegaEvolution team</small></div>
         <div className="kpi"><b><Money usd={spend} /></b><span>Creator spend this month</span><small>across {CREATOR_ORDERS.length} orders</small></div>
       </div>
       <div className="wgrid-main">
@@ -215,7 +215,7 @@ export function BrandInbox({ lang }: { lang: string }) {
   return (
     <>
       <WsHead title="Campaign Inbox" sub="A read-only board of your agency’s conversations with creators." />
-      <p className="wnote"><Icon name="eye" size={16} /><span><b>Read-only.</b> Northside Agency writes to creators on your behalf. You can follow every thread here, but replies are sent by your campaign manager.</span></p>
+      <p className="wnote"><Icon name="eye" size={16} /><span><b>Read-only.</b> the MegaEvolution team writes to creators on your behalf. You can follow every thread here, but replies are sent by your campaign manager.</span></p>
       <div className="kan">
         {STAGES.map((s) => {
           const items = THREADS.filter((x) => x.stage === s)
@@ -253,7 +253,7 @@ export function BrandAgencyOrders({ lang }: { lang: string }) {
   }
   return (
     <>
-      <WsHead title="Agency Orders" sub="Campaigns Northside Agency runs for you. Approve or decline each proposed creator.">
+      <WsHead title="Agency Orders" sub="Campaigns the MegaEvolution team runs for you. Approve or decline each proposed creator.">
         <div className="wseg" role="group" aria-label="View">
           <button aria-pressed={view === 'compact'} onClick={() => { setView('compact'); track('agency_orders_view', { view: 'compact' }) }}>Compact</button>
           <button aria-pressed={view === 'full'} onClick={() => { setView('full'); track('agency_orders_view', { view: 'full' }) }}>Full</button>

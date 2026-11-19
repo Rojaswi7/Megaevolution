@@ -21,9 +21,9 @@ export default function MarketMap({ lang, initial = 'vn' }: { lang: string; init
 
   return (
     <div className="mm">
-      <div className="mm__tabs scroller" role="tablist" aria-label="Markets">
+      <div className="mm__tabs scroller" role="group" aria-label="Markets">
         {MARKETS.map((x) => (
-          <button key={x.id} role="tab" aria-selected={x.id === active} className="chip" aria-pressed={x.id === active} onClick={() => pick(x.id)}>
+          <button key={x.id} className="chip" aria-pressed={x.id === active} onClick={() => pick(x.id)}>
             <Flag market={x.id} />{x.short}
           </button>
         ))}
@@ -35,10 +35,10 @@ export default function MarketMap({ lang, initial = 'vn' }: { lang: string; init
           {MARKETS.map((x) => {
             const p = project(x.lat, x.lon)
             return (
-              <button key={x.id} className={`mm__pin mm__pin--${SIDE[x.id] || 'r'} ${x.id === active ? 'is-on' : ''}`} style={{ left: `${p.left}%`, top: `${p.top}%` }}
-                onClick={() => pick(x.id)} aria-label={`${x.name}: show market details`} aria-pressed={x.id === active}>
+              <span key={x.id} aria-hidden="true" className={`mm__pin mm__pin--${SIDE[x.id] || 'r'} ${x.id === active ? 'is-on' : ''}`} style={{ left: `${p.left}%`, top: `${p.top}%` }}
+                onClick={() => pick(x.id)}>
                 <i /><span>{x.short}</span>
-              </button>
+              </span>
             )
           })}
           {REGIONS.map((r) => {

@@ -299,3 +299,5 @@
 .nf .hs { margin-top: 10px; }
 .nf__links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 10px; }
 .nf__links .tlink { color: #fff; }
+.mm__stage > span.mm__pin { position: absolute; cursor: pointer; }
+.studio__prices dd small { display: block; font-family: var(--sans); line-height: 1.4; }

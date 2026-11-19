@@ -1,3 +1,6 @@
+// Roles follow "megaevolution.io: Logins, Roles & Pages" (19 Nov): Brand, Creator, MCN, the MegaEvolution team
+// (platform admins, who run Agency Orders — the internal role key stays "agency"), plus the planned video editor.
+// Inside an organization people are Owner, Admin, Manager, Member or Viewer (see ORG_ROLES).
 // SAMPLE DATA — dummy accounts for the mockup. Nothing is checked against a server:
 // picking one on /login (or typing its email with any password) signs you in
 // as that role in this browser only, so every flow can be walked end to end.
@@ -14,15 +17,15 @@ export type Account = {
 export const ACCOUNTS: Account[] = [
   {
     role: 'brand', email: 'brand@demo.megaevolution.io', password: 'demo1234',
-    name: 'Hana Park', org: 'Lumi Skin (sample brand)', title: 'Brand admin', initial: 'H', tone: 2,
+    name: 'Hana Park', org: 'Lumi Skin (sample brand)', title: 'Brand owner', initial: 'H', tone: 2,
     home: '/preview/brand', can: ['orders', 'lists', 'inbox-readonly', 'billing', 'team', 'agency-orders'],
     blurb: 'Search creators, order packages and videos, track orders, manage the team and billing.',
   },
   {
     role: 'agency', email: 'agency@demo.megaevolution.io', password: 'demo1234',
-    name: 'Daniel Cho', org: 'Northside Agency (sample)', title: 'Agency lead', initial: 'D', tone: 0,
+    name: 'Daniel Cho', org: 'MegaEvolution team (platform organization)', title: 'Platform admin', initial: 'D', tone: 0,
     home: '/preview/agency', can: ['agency-orders', 'inbox', 'lists', 'reports', 'billing', 'team'],
-    blurb: 'Run client campaigns: Agency Orders, listings, Campaign Inbox, reports and per-brand invoices.',
+    blurb: 'Our own team (platform admins): Agency Orders for every client, AI Listup, Campaign Inbox, reports and admin tools.',
   },
   {
     role: 'creator', email: 'creator@demo.megaevolution.io', password: 'demo1234',
@@ -32,13 +35,13 @@ export const ACCOUNTS: Account[] = [
   },
   {
     role: 'mcn', email: 'mcn@demo.megaevolution.io', password: 'demo1234',
-    name: 'Trang Lê', org: 'Lotus Talent (sample MCN)', title: 'Talent manager', initial: 'T', tone: 5,
+    name: 'Trang Lê', org: 'Lotus Talent (sample MCN)', title: 'MCN admin', initial: 'T', tone: 5,
     home: '/preview/mcn', can: ['talent', 'contracts', 'homepage-builder', 'inbox', 'agency-orders', 'billing'],
     blurb: 'Talent dashboard, creator applications, contracts and counter-offers, homepage builder.',
   },
   {
     role: 'editor', email: 'editor@demo.megaevolution.io', password: 'demo1234',
-    name: 'Jae Kim', org: 'Video Editing Studio', title: 'Editor', initial: 'J', tone: 4,
+    name: 'Jae Kim', org: 'Video Editing Studio', title: 'Video editor', initial: 'J', tone: 4,
     home: '/preview/editor', can: ['editor-queue'],
     blurb: 'Pick up Studio orders, upload drafts and handle revision requests.',
   },
@@ -49,3 +52,13 @@ export const accountByEmail = Object.fromEntries(ACCOUNTS.map((a) => [a.email, a
 
 /** Roles that may open Agency Orders (the header tab is hidden for everyone else). */
 export const canSeeAgencyOrders = (role: Role) => role !== 'guest' && accountByRole[role]?.can.includes('agency-orders')
+
+/** Role ladder inside any client organization. */
+export const ORG_ROLES = [
+  { role: 'Owner', can: 'Everything, including members, roles, billing and custom domains. One per organization.' },
+  { role: 'Admin', can: 'Manage members and roles, plus all brand and MCN permissions.' },
+  { role: 'Manager', can: 'Day-to-day work: orders, creators, inbox. Cannot manage the organization.' },
+  { role: 'Member', can: 'Works on what they are given. The default role on invites.' },
+  { role: 'Viewer', can: 'Read only.' },
+]
+export const ROLE_LABEL: Record<string, string> = { brand: 'Brand', agency: 'MegaEvolution team', creator: 'Creator', mcn: 'MCN', editor: 'Video editor' }

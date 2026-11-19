@@ -166,7 +166,7 @@ export const PORTAL = {
 }
 
 export const MCN_CHATS: Chat[] = [
-  { id: 'm1', who: 'Northside Agency (sample)', sub: 'Request: 3 beauty creators for Lumi Skin', unread: true, messages: [
+  { id: 'm1', who: 'MegaEvolution team', sub: 'Request: 3 beauty creators for Lumi Skin', unread: true, messages: [
     { me: false, text: 'Hi Trang, we need three beauty creators in Ho Chi Minh City for late November. Can you share who is free?', when: '11:05' },
   ] },
   { id: 'm2', who: 'Thảo · @thao.skincare', sub: 'Contract CT-118', unread: true, messages: [
@@ -179,9 +179,9 @@ export const MCN_CHATS: Chat[] = [
 ]
 export type AgencyRequest = { id: string; agency: string; client: string; wants: string; creators: string[]; budget: number; status: 'Pending' | 'Accepted' | 'Declined' }
 export const AGENCY_REQUESTS: AgencyRequest[] = [
-  { id: 'AO-311', agency: 'Northside Agency (sample)', client: 'Lumi Skin', wants: '3 TikTok videos, late November', creators: ['linh.glow', 'thao.skincare', 'huong.makeup'], budget: 21_000_000, status: 'Pending' },
+  { id: 'AO-311', agency: 'MegaEvolution team', client: 'Lumi Skin', wants: '3 TikTok videos, late November', creators: ['linh.glow', 'thao.skincare', 'huong.makeup'], budget: 21_000_000, status: 'Pending' },
   { id: 'AO-314', agency: 'Harbor Media (sample)', client: 'Petal & Co (sample)', wants: '1 TikTok LIVE before Tết', creators: ['huong.makeup'], budget: 9_500_000, status: 'Accepted' },
-  { id: 'AO-302', agency: 'Northside Agency (sample)', client: 'Sora Sun (sample)', wants: '2 Instagram Reels', creators: ['ngocskin', 'linh.glow'], budget: 10_000_000, status: 'Declined' },
+  { id: 'AO-302', agency: 'MegaEvolution team', client: 'Sora Sun (sample)', wants: '2 Instagram Reels', creators: ['ngocskin', 'linh.glow'], budget: 10_000_000, status: 'Declined' },
 ]
 export const MCN_SPLITS = [
   { id: 'SP-441', date: '2026-11-15', creator: 'linh.glow', deal: 'Dewy Lab (sample) · 1 TikTok video', fee: 6_000_000, share: 20, status: 'Paid' },
@@ -192,7 +192,7 @@ export const MCN_SPLITS = [
 export const MCN_ALERTS = [
   { text: '@thao.skincare sent a counter-offer on contract CT-118', when: '15 Nov', tab: 'contracts' },
   { text: '@minh.beauty applied to join Lotus Talent', when: '2 days ago', tab: 'talent' },
-  { text: 'Northside Agency (sample) requested 3 creators', when: 'Today', tab: 'agency-orders' },
+  { text: 'MegaEvolution team requested 3 creators', when: 'Today', tab: 'agency-orders' },
 ]
 export const MCN_SAVED = [
   { title: 'Scouting: Hanoi beauty', sub: '6 creators · updated last week' },
