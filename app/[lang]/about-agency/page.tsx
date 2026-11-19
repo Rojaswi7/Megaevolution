@@ -13,6 +13,8 @@ import { Icon, Flag } from '@/components/Icon'
 import { CaseCard } from '@/components/CaseCard'
 import MarketMap from '@/components/MarketMap'
 import InquirySection from '@/components/agency/InquirySection'
+import CampaignRuns from '@/components/sections/CampaignRuns'
+import ServicesFan from '@/components/sections/ServicesFan'
 
 type P = { params: Promise<{ lang: string }> }
 const PATH = '/about-agency'
@@ -100,6 +102,9 @@ export default async function AboutAgency({ params }: P) {
         </div>
       </section>
 
+      {/* what we do for brands */}
+      <ServicesFan lang={lang} />
+
       {/* case studies, moved up */}
       <section className="wrap sec" id="results">
         <SectionHead eyebrow="Results" title="Campaigns we ran,|and what they did.">Three recent ones. The numbers are the clients’ own.</SectionHead>
@@ -129,10 +134,7 @@ export default async function AboutAgency({ params }: P) {
 
       {/* how we work */}
       <section className="wrap sec" id="how">
-        <SectionHead eyebrow="How we work" title="Five steps.|You approve two of them.">Everything else is on us.</SectionHead>
-        <ol className="ag-how">
-          {HOW.map((h) => <li key={h.t}><h3>{h.t}</h3><p>{h.d}</p><small>{h.w}</small></li>)}
-        </ol>
+        <CampaignRuns lang={lang} />
         <div className="ag-after">{primary('after_how')}</div>
       </section>
 

@@ -7,6 +7,7 @@ import { CREATORS, FEATURED, creatorsIn } from '@/data/creators'
 import { CATEGORIES, categoryBySlug } from '@/data/categories'
 import { MARKETS } from '@/data/markets'
 import Collage from '@/components/Collage'
+import ServicesFan from '@/components/sections/ServicesFan'
 import { TOOLS } from '@/data/tools'
 import { HOME_CASES } from '@/data/cases'
 import { STUDIO, TOOL_FROM } from '@/data/pricing'
@@ -148,6 +149,9 @@ export default async function Home({ params }: P) {
           </Link>
         </div>
       </section>
+
+      {/* 4b — what we do for brands (services fan) */}
+      <ServicesFan lang={lang} />
 
       {/* 5 — market map */}
       <section className="wrap sec" id="markets">
