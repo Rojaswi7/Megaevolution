@@ -4,22 +4,26 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "blog": "node scripts/fetch-blog.mjs",
-    "markets": "node scripts/fetch-markets.mjs"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "map": "node scripts/make-map-dots.mjs"
   },
   "dependencies": {
     "country-flag-icons": "^1.5.19",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "simple-icons": "^13.21.0"
   },
   "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^4.3.4",
     "d3-geo": "^3.1.1",
     "topojson-client": "^3.1.0",
+    "typescript": "^7.0.2",
     "vite": "^6.0.7",
     "world-atlas": "^2.0.2"
   }
