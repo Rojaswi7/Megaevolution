@@ -37,13 +37,13 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
   const [menu, setMenu] = useState(false)
   const [path, setPath] = useState('')
   const [mac, setMac] = useState(true)
-  const { role, setRole, saved } = useApp()
+  const { role, setRole, saved, currency } = useApp()
   const account = useAccount()
 
   useEffect(() => {
     setPath(barePath())
     setMac(/Mac|iPhone|iPad/.test(navigator.platform))
-    const onScroll = () => setStuck(window.scrollY > 90)
+    const onScroll = () => setStuck(window.scrollY > 8)
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setPalette(true); track('search_opened', { via: 'shortcut' }) }
     }
@@ -62,33 +62,44 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
     <>
       <a className="skip" href="#main">{dict.skip}</a>
       <header className={`hdr ${stuck ? 'is-stuck' : ''}`}>
-        <div className="wrap hdr__top">
+        <div className="wrap hdr__row">
           <Link href={href(lang, '/')} className="hdr__logo" aria-label="MegaEvolution home" data-cta="logo_home">
             <img src="/logo-deck.png" alt="MegaEvolution" width={164} height={24} />
           </Link>
 
-          <button className="hdr__search" onClick={() => openSearch('header')} data-cta="header_search" aria-label={dict.searchPlaceholder}>
-            <Icon name="search" size={17} /><span>{dict.searchPlaceholder}</span><kbd className="kbd">{mac ? '⌘K' : 'Ctrl K'}</kbd>
-          </button>
+          <nav className="hdr__nav" aria-label="Main">
+            {nav.map((n) => (
+              <Link key={n.key} href={href(lang, n.path)} aria-current={isCurrent(n.path) ? 'page' : undefined} data-cta={`nav_${n.key}`}>
+                {n.label}{'isNew' in n && n.isNew ? <span className="tag tag--accent">{dict.new}</span> : null}
+              </Link>
+            ))}
+            {canSeeAgencyOrders(role) && <Link href={href(lang, `/preview/${role}?tab=agency-orders`)} data-cta="nav_agency_orders">Agency Orders</Link>}
+          </nav>
 
           <div className="hdr__tools">
-            <CurrencySwitch label={dict.currency} />
-            <LangSwitch lang={lang} label={dict.language} />
+            <button className="hdr__search" onClick={() => openSearch('header')} data-cta="header_search" aria-label={dict.searchPlaceholder}>
+              <Icon name="search" size={17} /><span>Search</span><kbd className="kbd">{mac ? '⌘K' : 'Ctrl K'}</kbd>
+            </button>
+            <details className="hdr__loc">
+              <summary aria-label={`${dict.language} / ${dict.currency}`}><Icon name="globe" size={17} /><span>{lang.toUpperCase()} · {currency}</span></summary>
+              <div className="hdr__pop">
+                <label><span>{dict.language}</span><LangSwitch lang={lang} label={dict.language} /></label>
+                <label><span>{dict.currency}</span><CurrencySwitch label={dict.currency} /></label>
+              </div>
+            </details>
             {account ? (
               <>
                 <Link className="hdr__icon" href={href(lang, `/preview/${role}?tab=alerts`)} aria-label="Alerts" data-cta="header_alerts"><Icon name="bell" /><i>3</i></Link>
                 <Link className="hdr__icon" href={href(lang, `/preview/${role}?tab=lists`)} aria-label="Saved creators" data-cta="header_saved"><Icon name="bookmark" />{saved.length ? <i>{saved.length}</i> : null}</Link>
                 <Link className="hdr__icon" href={href(lang, `/preview/${role}?tab=messages`)} aria-label="Messages" data-cta="header_messages"><Icon name="message" /><i>2</i></Link>
-                <Link className="hdr__tool" href={href(lang, account.home)} data-cta="header_org_menu" title={`${account.name} · ${account.org}`}>
-                  <span className={`av tone-${account.tone}`} style={{ ['--s' as any]: '30px' }}>{account.initial}</span>
-                  <span style={{ maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{account.org.replace(/ \(.*\)/, '')}</span>
-                  <Icon name="chevron" size={14} />
+                <Link className="hdr__acct" href={href(lang, account.home)} data-cta="header_org_menu" title={`${account.name} · ${account.org} · My workspace`} aria-label={`My workspace: ${account.org}`}>
+                  <span className={`av tone-${account.tone}`}>{account.initial}</span>
                 </Link>
               </>
             ) : (
               <Link className="hdr__tool hdr__login" href={href(lang, '/login')} data-cta="header_login">{dict.login}</Link>
             )}
-            <Link className="btn btn--sm" href={href(lang, '/about-agency#inquiry')} data-cta="header_request_campaign">{dict.request}<Arrow size={14} /></Link>
+            <Link className="btn btn--sm hdr__cta" href={href(lang, '/about-agency#inquiry')} data-cta="header_request_campaign">{dict.request}<Arrow size={14} /></Link>
           </div>
 
           <div className="hdr__mob">
@@ -96,18 +107,6 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
             <button className="hdr__icon" onClick={() => setMenu(true)} aria-label={dict.menu} aria-expanded={menu}><Icon name="menu" size={22} /></button>
           </div>
         </div>
-
-        <nav className="wrap hdr__nav" aria-label="Main">
-          {nav.map((n) => (
-            <Link key={n.key} href={href(lang, n.path)} aria-current={isCurrent(n.path) ? 'page' : undefined} data-cta={`nav_${n.key}`}>
-              {n.label}{'isNew' in n && n.isNew ? <span className="tag tag--accent">{dict.new}</span> : null}
-            </Link>
-          ))}
-          <span className="hdr__nav-right">
-            {canSeeAgencyOrders(role) && <Link href={href(lang, `/preview/${role}?tab=agency-orders`)} data-cta="nav_agency_orders">Agency Orders</Link>}
-            {account && <Link href={href(lang, account.home)} data-cta="nav_workspace">My workspace</Link>}
-          </span>
-        </nav>
       </header>
 
       {menu && (

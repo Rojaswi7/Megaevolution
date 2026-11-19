@@ -6,7 +6,9 @@ import { href, CLIENT_LOGOS, PROOF, CTA, MCP_URL } from '@/data/site'
 import { CREATORS, FEATURED, creatorsIn } from '@/data/creators'
 import { CATEGORIES, categoryBySlug } from '@/data/categories'
 import { MARKETS } from '@/data/markets'
-import Collage from '@/components/Collage'
+import ReelWall from '@/components/home/ReelWall'
+import ToolsShowcase from '@/components/home/ToolsShowcase'
+import BeforeAfter from '@/components/home/BeforeAfter'
 import ServicesFan from '@/components/sections/ServicesFan'
 import { TOOLS } from '@/data/tools'
 import { HOME_CASES } from '@/data/cases'
@@ -55,61 +57,45 @@ export default async function Home({ params }: P) {
   const seen = new Set<string>()
   const slice = [...FEATURED, ...chipSets, ...[...CREATORS].sort((a, b) => b.followers - a.followers)].filter((c) => !seen.has(c.handle) && seen.add(c.handle)).slice(0, 84)
     .map(({ bio, captions, mcn, ...c }) => ({ ...c, bio: '', captions: [], mcn: null }))
-  const collage = FEATURED.slice(0, 10).map((c, i) => ({
-    handle: c.handle, name: c.name, city: c.city, caption: c.caption, tone: [6, 5, 1, 2, 0, 3, 4, 7, 1, 5][i], platform: c.platforms[0].platform,
-    followers: compact(c.followers), from: localMoney(c.rateLocal, c.currency), category: categoryBySlug[c.category].label,
+  const wall = [...FEATURED, ...slice.slice(12, 18)].slice(0, 15).map((c, i) => ({
+    handle: c.handle, name: c.name, place: `${categoryBySlug[c.category].label} · ${c.city}`, caption: c.caption, tone: [6, 5, 1, 2, 0, 3, 4, 7, 1, 5, 2, 6, 0, 4, 3][i],
+    platform: c.platforms[0].platform, followers: compact(c.followers), from: localMoney(c.rateLocal, c.currency),
   }))
 
   return (
     <>
       <JsonLd data={[orgLd(), websiteLd()]} />
 
-      {/* 1 — hero: full-bleed navy, search first, moving collage of creator posts */}
-      <section className="hero2 on-dark">
-        <div className="wrap hero2__grid">
-          <div className="hero2__copy">
+      {/* 1 — hero: headline and search on the left, an ordered wall of creator posts on the right */}
+      <section className="hero3 on-dark">
+        <div className="wrap hero3__grid">
+          <div className="hero3__copy">
             <p className="eyebrow">Creator marketing · 11 markets</p>
             <h1 className="h1">Find and book the creators<span className="it">your customers already watch.</span></h1>
-            <p className="lede">Local creators on TikTok, Instagram and YouTube, with their rate shown before you say hello. Book in a few clicks, or hand the campaign to a manager who lives in that market.</p>
-            <dl className="hero2__stats">
-              <div><dt>One contact</dt><dd>for every market</dd></div>
-              <div><dt>Rates first</dt><dd>before you reach out</dd></div>
-              <div><dt>{PROOF.creators}</dt><dd>creators worked with</dd></div>
-            </dl>
-          </div>
-          <Collage items={collage} />
-        </div>
-
-        <div className="wrap hero2__search">
-          <HeroSearch lang={lang} />
-          <div className="hero__under">
-            <div className="hero__chips">
-              <span className="hero__lbl">Try</span>
+            <p className="lede">Local creators on TikTok, Instagram and YouTube. See the rate first, book in a few clicks.</p>
+            <HeroSearch lang={lang} />
+            <div className="hero3__quick">
               {CHIPS.map((c) => <QuickChip key={c.label} lang={lang} country={c.country} category={c.category}>{c.label}</QuickChip>)}
+              <nav className="hero3__cats" aria-label="Browse by category">
+                {CATEGORIES.map((c) => (
+                  <Link key={c.slug} href={href(lang, `/creators?category=${c.slug}`)} data-cta="hero_category" prefetch={false} title={c.label} aria-label={`${c.label} creators`}><Icon name={c.icon} size={16} /></Link>
+                ))}
+              </nav>
             </div>
-            <nav className="hero__cats" aria-label="Browse by category">
-              {CATEGORIES.map((c) => (
-                <Link key={c.slug} href={href(lang, `/creators?category=${c.slug}`)} data-cta="hero_category" prefetch={false}><Icon name={c.icon} size={15} />{c.label}</Link>
-              ))}
-            </nav>
+            <p className="hero3__alt">
+              <span>Need us to run it? <TLink lang={lang} to="/about-agency" cta="hero_to_agency">Agency</TLink></span>
+              <span>Need videos edited? <TLink lang={lang} to="/video-editing" cta="hero_to_video">Video Editing</TLink></span>
+            </p>
           </div>
-          <div className="hero__alt">
-            <span>Need us to run it? <TLink lang={lang} to="/about-agency" cta="hero_to_agency">Agency</TLink></span>
-            <span>Need videos edited? <TLink lang={lang} to="/video-editing" cta="hero_to_video">Video Editing</TLink></span>
-            <ul className="hero2__teams" aria-label="Local managers in">
-              <li className="hero__lbl">Local managers in</li>
-              {MARKETS.map((m) => <li key={m.id}><Link href={href(lang, `/markets/${m.slug}`)} prefetch={false} data-cta="hero_market"><Flag market={m.id} />{m.short}</Link></li>)}
-            </ul>
-          </div>
+          <ReelWall items={wall} />
         </div>
       </section>
 
       {/* 2 — creator search results, directly below the hero */}
       <section className="wrap sec--tight home-results" aria-labelledby="h-results">
         <div className="home-results__head">
-          <h2 className="h2" id="h-results">Creators on<span className="it">MegaEvolution</span></h2>
+          <h2 className="h2" id="h-results">Creators on <span className="it it--inline">MegaEvolution</span></h2>
           <RoadmapTag status="dev" />
-          <p className="home-results__note">Each creator shows a starting rate in their own currency and every platform they post on. Hover one to see more.</p>
         </div>
         <CreatorExplorer lang={lang} creators={slice as any} total={CREATORS.length} pageSize={12} mode="home" initial={{ sort: 'featured' }} />
       </section>
@@ -161,43 +147,21 @@ export default async function Home({ params }: P) {
 
       {/* 6 — tools */}
       <section className="wrap sec" id="tools">
-        <SectionHead eyebrow="Tools" title="The tools our own managers use,|open to you.">Use one for a single job, or put the set on a plan.</SectionHead>
-        <div className="tools">
-          {TOOLS.map((t, i) => (
-            <article className={`tool tool--${i}`} key={t.slug}>
-              <div className="tool__top">
-                <span className="tool__ico"><Icon name={['list', 'chart', 'film', 'bag', 'pen'][i]} size={20} /></span>
-                {t.comingSoon ? <span className="tag tag--soon">Coming soon</span> : null}
-                <RoadmapTag status={t.status} />
-              </div>
-              <h3 className="h3"><Link href={href(lang, `/tools/${t.slug}`)} prefetch={false} data-cta={`home_tool_title_${t.slug}`}>{t.name}</Link></h3>
-              <p>{t.job}</p>
-              <div className="tool__foot">
-                <span className="tool__price"><Money usd={TOOL_FROM[t.slug]} from per="/mo" /></span>
-                <Cta lang={lang} to={`/tools/${t.slug}`} cta={`home_tool_try_${t.slug}`} size="sm" variant={t.comingSoon ? 'ghost' : 'accent'}>{t.comingSoon ? 'Join waitlist' : 'Try it'}</Cta>
-              </div>
-            </article>
-          ))}
-          <div className="tool tool--all">
-            <p className="h3">Monthly, yearly or pay per use.</p>
-            <Cta lang={lang} to="/tools" cta="home_all_tools" variant="white">See all tools &amp; plans</Cta>
-          </div>
-        </div>
+        <SectionHead eyebrow="Tools" title="The tools our own managers use,|open to you.">Pick one to see it. Use it for a single job, or put the set on a plan.</SectionHead>
+        <ToolsShowcase lang={lang} />
       </section>
 
       {/* 7 — Video Editing Studio */}
       <section className="wrap sec" id="studio">
-        <div className="slab studio">
-          <div className="studio__copy">
+        <div className="slab studio2">
+          <div className="studio2__copy">
             <p className="eyebrow">Video Editing Studio <RoadmapTag status="dev" /></p>
             <h2 className="h2">Raw footage in.<span className="it">Ready-to-post videos out.</span></h2>
-            <p className="lede">Human editors who cut for TikTok, Reels and YouTube every day. Order online, send your brief, review the draft.</p>
-            <dl className="studio__prices">
-              {STUDIO.products.map((p) => (
-                <div key={p.id}><dt>{p.name}</dt><dd><Money usd={p.price} from /><small>{p.spec}</small></dd></div>
-              ))}
-              <div className="studio__bundle"><dt>Bundle discount</dt><dd>{typeof STUDIO.bundles[0].percent === 'number' ? `${STUDIO.bundles[0].percent}% off` : 'TBD% off'}<small>{STUDIO.bundles[0].min}+ videos in one order</small></dd></div>
-            </dl>
+            <p className="lede">Human editors who cut for TikTok, Reels and YouTube every day. Drag the handle to see the difference.</p>
+            <ul className="studio2__prices">
+              {STUDIO.products.map((p) => <li key={p.id}><span>{p.name}</span><b><Money usd={p.price} from /></b><small>{p.spec}</small></li>)}
+              <li className="is-accent"><span>Bundle</span><b>{typeof STUDIO.bundles[0].percent === 'number' ? `${STUDIO.bundles[0].percent}% off` : 'TBD% off'}</b><small>{STUDIO.bundles[0].min}+ videos in one order</small></li>
+            </ul>
             <div className="row">
               <Cta lang={lang} to="/video-editing/checkout" cta="home_order_video" size="lg">{CTA.video}</Cta>
               <TLink lang={lang} to="/video-editing" cta="home_studio_details">See samples and pricing</TLink>
@@ -208,18 +172,7 @@ export default async function Home({ params }: P) {
               { icon: 'clock', text: STUDIO.products[0].delivery },
             ]} />
           </div>
-          <div className="studio__ba" aria-label="Sample before and after">
-            <figure>
-              <div className="studio__clip studio__clip--before" role="img" aria-label="Before: raw clip — TODO: real sample video"><span>Raw clip</span><i>00:47</i></div>
-              <figcaption>Before</figcaption>
-            </figure>
-            <span className="studio__arrow"><Arrow size={22} /></span>
-            <figure>
-              <div className="studio__clip studio__clip--after" role="img" aria-label="After: edited video — TODO: real sample video"><b>3 things I’d buy again</b><span>Captions · cuts · music</span><i>00:21</i></div>
-              <figcaption>After</figcaption>
-            </figure>
-            <p className="studio__todo">TODO: real before / after videos (poster + lazy load, never autoplay with sound)</p>
-          </div>
+          <BeforeAfter />
         </div>
       </section>
 

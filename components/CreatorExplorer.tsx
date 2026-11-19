@@ -136,57 +136,49 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
 
   return (
     <div className="cx" ref={top} id="results">
-      <div className="cx__bar">
-        <label className="cx__q">
-          <Icon name="search" size={17} />
+      {/* row 1: categories as icon tabs. row 2: one line of pill filters, count and sort */}
+      {!lock.includes('category') && (
+        <div className="fcat scroller" role="group" aria-label="Category">
+          <button className={!f.category ? 'is-on' : ''} aria-pressed={!f.category} onClick={() => set('category', '')}><Icon name="layout" size={16} />All</button>
+          {CATEGORIES.map((c) => <button key={c.slug} className={f.category === c.slug ? 'is-on' : ''} aria-pressed={f.category === c.slug} onClick={() => set('category', f.category === c.slug ? '' : c.slug)}><Icon name={c.icon} size={16} />{c.label}</button>)}
+        </div>
+      )}
+      <div className="fbar">
+        <label className="fp fp--q">
+          <Icon name="search" size={16} />
           <span className="sr">Search creators by name, handle or keyword</span>
           <input value={f.q} onChange={(e) => set('q', e.target.value)} placeholder="Name or keyword" />
         </label>
-        <button className="cx__toggle chip" onClick={() => setOpen(!open)} aria-expanded={open}><Icon name="filter" size={15} />Filters{activeCount ? ` · ${activeCount}` : ''}</button>
-        <div className={`cx__filters ${open ? 'is-open' : ''}`}>
+        <div className="fp fp--plat" role="group" aria-label="Platform">
+          {PLATFORMS.map((p) => (
+            <button key={p} aria-pressed={f.platform === p} aria-label={p} title={p} onClick={() => set('platform', f.platform === p ? '' : p)}><PlatformIcon name={p} size={16} /></button>
+          ))}
+        </div>
+        <button className="fp fp--more" onClick={() => setOpen(!open)} aria-expanded={open}><Icon name="filter" size={15} />Filters{activeCount ? ` · ${activeCount}` : ''}</button>
+        <div className={`fbar__more ${open ? 'is-open' : ''}`}>
           {!lock.includes('country') && (
-            <label className="cx__f"><span>Country</span>
-              <select value={f.country} onChange={(e) => set('country', e.target.value)}><option value="">All countries</option>{MARKETS.map((m) => <option key={m.id} value={m.slug}>{m.name}</option>)}</select>
-            </label>
+            <label className={`fp ${f.country ? 'is-set' : ''}`}><span className="sr">Country</span>
+            <select value={f.country} onChange={(e) => set('country', e.target.value)}><option value="">All countries</option>{MARKETS.map((m) => <option key={m.id} value={m.slug}>{m.name}</option>)}</select>
+          </label>
           )}
-          {!lock.includes('category') && (
-            <label className="cx__f"><span>Category</span>
-              <select value={f.category} onChange={(e) => set('category', e.target.value)}><option value="">All categories</option>{CATEGORIES.map((c) => <option key={c.slug} value={c.slug}>{c.label}</option>)}</select>
-            </label>
-          )}
-          <div className="cx__f cx__f--plat" role="group" aria-label="Platform">
-            <span>Platform</span>
-            <div>
-              {PLATFORMS.map((p) => (
-                <button key={p} aria-pressed={f.platform === p} aria-label={p} title={p} onClick={() => set('platform', f.platform === p ? '' : p)}><PlatformIcon name={p} size={17} /></button>
-              ))}
-            </div>
-          </div>
-          <label className="cx__f"><span>Followers</span>
-            <select value={f.followers} onChange={(e) => set('followers', e.target.value)}><option value="">Any size</option>{Object.entries(BANDS).map(([k, v]) => <option key={k} value={k}>{v[2]}</option>)}</select>
+          <label className={`fp ${f.followers ? 'is-set' : ''}`}><span className="sr">Followers</span>
+            <select value={f.followers} onChange={(e) => set('followers', e.target.value)}><option value="">Any followers</option>{Object.entries(BANDS).map(([k, v]) => <option key={k} value={k}>{v[2]}</option>)}</select>
           </label>
-          <label className="cx__f"><span>Engagement</span>
-            <select value={f.er} onChange={(e) => set('er', e.target.value)}><option value="">Any</option><option value="3">3% and up</option><option value="5">5% and up</option><option value="7">7% and up</option></select>
+          <label className={`fp ${f.er ? 'is-set' : ''}`}><span className="sr">Engagement</span>
+            <select value={f.er} onChange={(e) => set('er', e.target.value)}><option value="">Any engagement</option><option value="3">3%+ engagement</option><option value="5">5%+ engagement</option><option value="7">7%+ engagement</option></select>
           </label>
-          <label className="cx__f"><span>Min. posts</span>
-            <select value={f.posts} onChange={(e) => set('posts', e.target.value)}><option value="">Any</option><option value="50">50+ posts</option><option value="150">150+ posts</option><option value="400">400+ posts</option></select>
+          <label className={`fp ${f.posts ? 'is-set' : ''}`}><span className="sr">Minimum posts</span>
+            <select value={f.posts} onChange={(e) => set('posts', e.target.value)}><option value="">Any post count</option><option value="50">50+ posts</option><option value="150">150+ posts</option><option value="400">400+ posts</option></select>
           </label>
-          <label className="cx__f"><span>Language</span>
+          <label className={`fp ${f.language ? 'is-set' : ''}`}><span className="sr">Language</span>
             <select value={f.language} onChange={(e) => set('language', e.target.value)}><option value="">Any language</option>{languages.map((l) => <option key={l}>{l}</option>)}</select>
           </label>
-          <div className="cx__f cx__f--soon" aria-disabled="true" title="Coming soon: TikTok Shop sales per creator">
-            <span>Sales (GMV)</span>
-            <em><Icon name="lock" size={12} />Coming soon</em>
-          </div>
+          <span className="fp fp--soon" aria-disabled="true" title="Coming soon: TikTok Shop sales per creator"><Icon name="lock" size={12} />Sales (GMV) · soon</span>
         </div>
-      </div>
-
-      <div className="cx__meta">
-        <p aria-live="polite"><b className="tnum">{results.length}</b> {results.length === 1 ? 'creator' : 'creators'}
-          {f.country ? <> in <Flag market={MARKETS.find((m) => m.slug === f.country)!.id} /> {MARKETS.find((m) => m.slug === f.country)!.name}</> : null}
-          {activeCount || f.q ? <button className="ulink cx__reset" onClick={reset}>Clear filters</button> : null}
+        <p className="fbar__count" aria-live="polite"><b className="tnum">{results.length}</b> {results.length === 1 ? 'creator' : 'creators'}
+          {activeCount || f.q ? <button className="ulink" onClick={reset}>Clear</button> : null}
         </p>
-        <label className="cx__sort"><span>Sort</span>
+        <label className="fp fp--sort"><span className="sr">Sort</span>
           <select aria-label="Sort creators" value={f.sort} onChange={(e) => set('sort', e.target.value)}>
             {mode === 'home' ? <option value="featured">Featured</option> : null}<option value="followers">Most followers</option><option value="views">Most views</option><option value="er">Highest engagement</option><option value="rate">Lowest starting rate</option>
             <option value="gmv" disabled>TikTok Shop sales (coming soon)</option>
@@ -231,7 +223,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
         ) : shown < results.length ? (
           <button className="btn btn--ghost btn--lg" onClick={more} data-cta="results_load_more">Show more creators</button>
         ) : null}
-        <p className="small muted">Sample profiles for the mockup. Rates are each creator’s own starting rate.</p>
+        {mode === 'full' ? <p className="small muted">Sample profiles for the mockup.</p> : null}
       </div>
 
       {gate && (
