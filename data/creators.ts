@@ -147,14 +147,15 @@ function build(): Creator[] {
         const rateLocal = nice(usd * fx)
         const caps = CAPTIONS[m.id][cat]
         const cities = CITIES[m.id]
+        const city = cities[Math.floor(r() * cities.length)]
         const label = CATEGORIES.find((c) => c.slug === cat)!
         out.push({
-          handle, name, market: m.id, city: cities[Math.floor(r() * cities.length)], category: cat,
+          handle, name, market: m.id, city, category: cat,
           platforms, followers, avgViews: platforms[0].avgViews, er: platforms[0].er, posts: platforms[0].posts,
           langs: m.langs.slice(0, r() > 0.6 ? 2 : 1).concat(m.id !== 'us' && m.id !== 'ph' && r() > 0.75 ? ['English'] : []).filter((v, i, a) => a.indexOf(v) === i),
           currency: m.currency, rateLocal, rateUsd: Math.round(rateLocal / fx),
           verified: r() > 0.35, caption: caps[k % caps.length], captions: caps, tone: Math.floor(r() * 8),
-          bio: `${label.label} creator in ${cities[0]}. ${label.blurb.split(',')[0].replace(/^./, (c) => c.toUpperCase())} and more, in ${m.langs[0]}.`,
+          bio: `${label.label} creator in ${city}. ${label.blurb.split(',')[0].replace(/^./, (c) => c.toUpperCase())} and more, in ${m.langs[0]}.`,
           mcn: MCNS[Math.floor(r() * MCNS.length)],
           gmv: null,
         })
@@ -162,6 +163,14 @@ function build(): Creator[] {
     })
   }
   return out
+}
+
+/** Six cover captions for a profile: the creator's own niche first, then the off-topic posts every creator has. */
+export function captionMix(c: Creator): string[] {
+  const own = CAPTIONS[c.market][c.category]
+  const side = (['lifestyle', 'food', 'fashion'] as const).filter((k) => k !== c.category)
+  const a = CAPTIONS[c.market][side[0]], b = CAPTIONS[c.market][side[1]]
+  return [own[0], own[1], a[0], own[0] === c.caption ? b[0] : own[0], a[1], b[1]]
 }
 
 export const CREATORS: Creator[] = build()

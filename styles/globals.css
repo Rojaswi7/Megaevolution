@@ -281,7 +281,7 @@ a.card:hover, .card--link:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
 .trust li { display: flex; align-items: flex-start; gap: 9px; }
 .trust .ico { flex: none; margin-top: 2px; color: var(--ink); }
 .trust--row { grid-auto-flow: column; grid-auto-columns: max-content; gap: 8px 22px; }
-@media (max-width: 900px) { .trust--row { grid-auto-flow: row; } }
+@media (max-width: 900px) { .trust--row { grid-auto-flow: row; grid-auto-columns: minmax(0, 1fr); } }
 
 /* ---------- big number stat ---------- */
 .stat b { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(2.3rem, 4.4vw, 3.6rem); line-height: 0.95; letter-spacing: -0.02em; }
@@ -436,7 +436,7 @@ a.card:hover, .card--link:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
 .tbl { width: 100%; border-collapse: collapse; font-size: 14.5px; }
 .tbl th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); padding: 10px 12px; border-bottom: 1.5px solid var(--ink); white-space: nowrap; }
 .tbl td { padding: 13px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-.tbl-wrap { overflow-x: auto; }
+.tbl-wrap { overflow-x: auto; position: relative; }
 
 /* creator card: long city names and handles must truncate, never widen the grid */
 .cc__id { overflow: hidden; flex: 1; }

@@ -2,7 +2,8 @@
    Prefix: ws / pill / kpi / kan. Screens add their own classes with their own prefix. */
 .ws { padding-top: 14px; }
 .ws__signin { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 10px 10px 10px 16px; margin-bottom: 14px; border-radius: 14px; background: var(--dark); color: #fff; font-size: 14px; }
-.ws__signin span { display: inline-flex; align-items: center; gap: 8px; }
+.ws__signin span { display: block; }
+.ws__signin span .ico { display: inline-block; vertical-align: -2px; margin-right: 8px; }
 .ws__signin .btn { box-shadow: none; }
 .ws__grid { display: grid; grid-template-columns: 248px minmax(0, 1fr); gap: 18px; align-items: start; }
 .ws__side { position: sticky; top: calc(var(--hdr) + 14px); display: grid; gap: 14px; padding: 14px; background: var(--surface); border-radius: var(--r-m); box-shadow: inset 0 0 0 1px var(--line); max-height: calc(100vh - var(--hdr) - 28px); overflow-y: auto; }
@@ -54,7 +55,7 @@
 /* KPI tile */
 .kpi { display: grid; gap: 4px; padding: 16px; background: var(--surface); border-radius: var(--r-m); box-shadow: inset 0 0 0 1px var(--line); }
 .kpi b { font-family: var(--serif); font-weight: 400; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; }
-.kpi span { font-size: 13px; color: var(--ink-2); }
+.kpi > span { font-size: 13px; color: var(--ink-2); }
 .kpi small { font-size: 12px; color: var(--ink-3); }
 
 /* status pill */

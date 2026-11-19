@@ -100,7 +100,7 @@ export function WsHead({ title, sub, children }: { title: string; sub?: string; 
 
 const PILL: Record<string, string> = {
   'Final delivered': 'ok', Completed: 'ok', Posted: 'ok', Paid: 'ok', Active: 'ok', 'Approved by brand': 'ok', Contracted: 'ok', Signed: 'ok', Accepted: 'ok', Live: 'ok',
-  'Draft ready': 'do', 'Draft review': 'do', 'Script review': 'do', 'Brand approval': 'do', 'Awaiting creator': 'do', Proposed: 'do', Invited: 'do', Pending: 'do', 'Counter-offer': 'do', 'Waiting for brief': 'do',
+  'Draft ready': 'do', 'Draft review': 'do', 'Script review': 'do', 'Brand approval': 'do', 'Awaiting creator': 'do', Proposed: 'do', Invited: 'do', Pending: 'do', 'Counter-offer': 'do', 'Waiting for brief': 'do', 'New request': 'do', 'Script needed': 'do', 'Draft needed': 'do', Editing: 'do', Scheduled: 'do', 'Counter sent': 'do', New: 'do', Negotiating: 'do', Agreed: 'ok',
   'Revision requested': 'warn', Revision: 'warn', Refunded: 'warn', Declined: 'bad', Overdue: 'bad',
 }
 /** Status pill. Colour comes from the status text; unknown statuses are neutral. */

@@ -27,6 +27,8 @@ const config = {
       // one URL per page: the English prefix and the internal profile path never show
       { source: '/en', destination: '/', permanent: true },
       { source: '/en/profile/:handle', destination: '/@:handle', permanent: true },
+      { source: '/profile/:handle', destination: '/@:handle', permanent: true },
+      { source: `/:lang(${OTHER})/profile/:handle`, destination: '/:lang/@:handle', permanent: true },
       { source: '/en/:path*', destination: '/:path*', permanent: true },
       // 301 map from the current megaevolution.io URLs — keep in sync with REDIRECTS.md
       { source: '/search', destination: '/creators', permanent: true },
