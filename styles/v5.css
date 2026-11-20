@@ -422,3 +422,6 @@
 /* site-wide: tighter rhythm between sections */
 .sec { padding-block: clamp(28px, 3vw, 48px); }
 .sec--tight { padding-block: clamp(20px, 2.2vw, 32px); }
+
+/* the last section already has its padding: no extra band above the footer */
+.ftr { margin-top: clamp(4px, 0.8vw, 12px); }
