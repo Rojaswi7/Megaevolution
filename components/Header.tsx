@@ -10,6 +10,7 @@ import type { Dict } from '@/data/i18n'
 import { Icon, Arrow } from './Icon'
 import { CurrencySwitch } from './Money'
 import LocalePicker from './LocalePicker'
+import HeaderPanels from './HeaderPanels'
 import { useApp, useAccount, canSeeAgencyOrders } from './AppState'
 import { track } from '@/lib/track'
 
@@ -115,9 +116,7 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
             </details>
             {account ? (
               <>
-                <Link className="hdr__icon" href={href(lang, `/preview/${role}?tab=alerts`)} aria-label="Alerts" data-cta="header_alerts"><Icon name="bell" /><i>3</i></Link>
-                <Link className="hdr__icon hdr__opt" href={href(lang, `/preview/${role}?tab=lists`)} aria-label="Saved creators" data-cta="header_saved"><Icon name="bookmark" />{saved.length ? <i>{saved.length}</i> : null}</Link>
-                <Link className="hdr__icon hdr__opt" href={href(lang, `/preview/${role}?tab=messages`)} aria-label="Messages" data-cta="header_messages"><Icon name="message" /><i>2</i></Link>
+                <HeaderPanels lang={lang} role={role} saved={saved.length} />
                 <Link className="hdr__acct" href={href(lang, account.home)} data-cta="header_org_menu" title={`${account.name} · ${account.org} · My workspace`} aria-label={`My workspace: ${account.org}`}>
                   <span className={`av tone-${account.tone}`}>{account.initial}</span>
                 </Link>

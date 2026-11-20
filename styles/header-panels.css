@@ -1,0 +1,31 @@
+/* Signed-in header: one tight icon group, and the Alerts / Messages panels */
+.hdr__tools { gap: 6px; }
+.hp { position: relative; display: flex; align-items: center; gap: 2px; padding: 3px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16); }
+.hp .hdr__icon { width: 36px; height: 36px; color: #fff; }
+.hp .hdr__icon:hover, .hp .hdr__icon.is-open { background: rgba(255, 255, 255, 0.12); }
+.hp .hdr__icon i { top: 3px; right: 2px; }
+
+.hp__panel { position: absolute; right: 0; top: calc(100% + 12px); z-index: 30; width: 360px; display: grid; border-radius: 20px; background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1.5px var(--navy), 0 5px 0 var(--accent), 0 24px 50px -20px rgba(14, 13, 57, 0.45); overflow: hidden; animation: hp-in 0.16s ease-out; }
+.hp__panel header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
+.hp__panel header b { font-size: 15px; font-weight: 600; }
+.hp__panel header span { font-size: 12px; color: var(--ink-3); }
+.hp__panel header button { font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+.hp__panel header button:hover { color: var(--ink); text-decoration: underline; }
+.hp__panel ol { display: grid; gap: 2px; padding: 0 6px 6px; max-height: 340px; overflow-y: auto; }
+.hp__panel li > button { position: relative; width: 100%; display: flex; align-items: flex-start; gap: 10px; padding: 10px; border-radius: 12px; text-align: left; transition: background 0.12s; }
+.hp__panel li > button:hover { background: var(--surface-2); }
+.hp__panel li > button.is-new::after { content: ''; position: absolute; right: 12px; top: 16px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1.5px var(--navy); }
+.hp__ico { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 10px; background: var(--grey); flex: none; }
+.hp__panel li > button.is-new .hp__ico { background: var(--accent); box-shadow: inset 0 0 0 1.5px var(--navy); }
+.hp__panel .av { --s: 32px; flex: none; font-size: 13px; }
+.hp__t { flex: 1; min-width: 0; display: grid; gap: 2px; padding-right: 20px; }
+.hp__t b { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; font-weight: 500; line-height: 1.35; }
+.hp__panel li > button.is-new .hp__t b { font-weight: 600; }
+.hp__t b em { font-style: normal; font-size: 11.5px; font-weight: 400; color: var(--ink-3); white-space: nowrap; }
+.hp__t small { font-size: 12px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hp__empty { padding: 4px 16px 14px; font-size: 13.5px; color: var(--ink-2); }
+.hp__panel footer { border-top: 1px solid var(--line); background: var(--surface-2); }
+.hp__panel footer button { width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; font-size: 13px; font-weight: 600; }
+.hp__panel footer button:hover { background: var(--grey); }
+@keyframes hp-in { from { opacity: 0; transform: translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { .hp__panel { animation: none; } }
