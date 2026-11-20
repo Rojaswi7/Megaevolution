@@ -2,6 +2,9 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import '@/styles/content.css'
+import '@/styles/help.css'
+import { Icon } from '@/components/Icon'
+import HelpFeedback from '@/components/content/HelpFeedback'
 import { href, CONTACT_EMAIL } from '@/data/site'
 import { HELP, helpBySlug, type HelpArticle } from '@/data/help'
 import { pageMeta, articleLd } from '@/lib/seo'
@@ -38,15 +41,18 @@ export default async function HelpArticlePage({ params }: P) {
     <div className="wrap">
       <JsonLd data={articleLd({ title: a.title, description: a.summary, path: `/help/${a.slug}`, date: '2026-11-01' })} />
       <Breadcrumbs lang={lang} items={[{ name: 'Help center', path: '/help' }, { name: a.title, path: `/help/${a.slug}` }]} />
-      <header className="ct-post__head">
-        <p className="eyebrow">{a.legal ? 'Legal' : a.topic}</p>
-        <h1>{a.title}</h1>
-        <div className="ct-post__meta"><span className="tag">{a.audience}</span><span>{a.summary}</span></div>
+      <header className="ha-head">
+        <p className="ha-tags"><span className="ha-topic">{a.legal ? 'Legal' : a.topic}</span><span>For {a.audience.toLowerCase()}</span><span>· {Math.max(1, Math.round(a.body.join(' ').split(' ').length / 200))} min read</span></p>
+        <h1 className="h2">{a.title}</h1>
+        <p className="ha-sum">{a.summary}</p>
       </header>
-      <div className="ct-post">
-        <article className="ct-prose">
-          {a.body.map((p, i) => <p key={i}>{p}</p>)}
-          {a.legal ? null : <p className="small muted">Placeholder article for the mockup. Still have a question? Write to <span style={{ userSelect: 'all' }}>{CONTACT_EMAIL}</span>.</p>}
+      <div className="ct-post ha-post">
+        <article className="ha-body">
+          {a.legal ? a.body.map((p, i) => <p key={i}>{p}</p>) : (
+            <ol className="ha-steps">{a.body.map((p, i) => <li key={i}><span>{i + 1}</span><p>{p}</p></li>)}</ol>
+          )}
+          {a.legal ? null : <HelpFeedback slug={a.slug} />}
+          {a.legal ? null : <p className="ha-note"><Icon name="file" size={14} />Placeholder article for the mockup.</p>}
         </article>
         <aside className="ct-aside">
           {!a.legal && (

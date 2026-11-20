@@ -103,3 +103,10 @@ Every event automatically carries: `path`, `ts`, and any captured ad parameters 
 4. **Audience analytics upgrade:** `audience_viewed` → `gate_shown (audience_analytics)` → `gate_converted`
 5. **Agency inquiry:** `cta_click (*explore_your_campaign_options*)` → `form_submitted (agency_inquiry)`
 6. **Sign-up from gates:** `gate_shown` → `gate_converted` → `signup`
+
+### Help center
+
+| Event | When | Main props |
+|---|---|---|
+| `help_answer_opened` | An answer is expanded in place on /help | `slug` |
+| `help_feedback` | "Was this helpful?" on an article | `slug`, `helpful` |
