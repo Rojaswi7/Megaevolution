@@ -2,7 +2,7 @@
 // Loaded only when the palette opens, so it costs nothing on first paint.
 import { CREATORS } from './creators'
 import { MARKETS, marketById } from './markets'
-import { CATEGORIES, categoryBySlug } from './categories'
+import { categoryBySlug } from './categories'
 import { TOOLS } from './tools'
 import { CASES } from './cases'
 import { HELP } from './help'
@@ -53,7 +53,20 @@ export const SEARCH_INDEX: SearchItem[] = [
   ...HELP.map((h): SearchItem => ({ group: 'Help', title: h.title, sub: h.topic, path: `/help/${h.slug}`, keywords: h.summary })),
 ]
 
-export const SUGGESTED: SearchItem[] = [
-  ...CATEGORIES.slice(0, 3).map((c, i): SearchItem => ({ group: 'Pages', title: `${c.label} creators in ${MARKETS[[3, 6, 1][i]].name}`, path: `/creators/${MARKETS[[3, 6, 1][i]].slug}/${c.slug}` })),
-  pages[0], pages[1], pages[2], pages[4],
+// shown before anything is typed: big jump tiles, then popular searches
+export const QUICK: (SearchItem & { icon: string })[] = [
+  { ...pages[0], icon: 'users' },
+  { ...pages[1], icon: 'building' },
+  { ...pages[2], icon: 'film' },
+  { ...pages[3], icon: 'sparkle' },
+  { ...pages[5], icon: 'globe' },
+  { ...pages[4], icon: 'card' },
 ]
+const used = new Set<string>()
+export const POPULAR: (SearchItem & { market: string; icon: string })[] = (['vn', 'kr', 'jp', 'th', 'ph', 'us'] as const).map((id) => {
+  const m = marketById[id]
+  const slug = m.strong.find((x) => !used.has(x)) ?? m.strong[0]
+  used.add(slug)
+  const c = categoryBySlug[slug]
+  return { group: 'Pages', title: `${c.label} in ${m.short}`, path: `/creators/${m.slug}/${c.slug}`, market: id, icon: c.slug }
+})
