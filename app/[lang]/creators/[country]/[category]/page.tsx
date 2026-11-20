@@ -9,10 +9,11 @@ import { CATEGORIES, categoryBySlug } from '@/data/categories'
 import { creatorsIn, MIN_INDEXABLE } from '@/data/creators'
 import { pageMeta, itemListLd } from '@/lib/seo'
 import { hubTitle, hubDescription, hubIntro, hubFaq } from '@/lib/hubCopy'
-import { Breadcrumbs, JsonLd, StickyCta, Cta, TLink, Faq } from '@/components/ui'
+import { Breadcrumbs, JsonLd, StickyCta, Cta, TLink } from '@/components/ui'
 import { Flag, Icon } from '@/components/Icon'
 import { CreatorCard } from '@/components/CreatorCard'
 import CreatorExplorer from '@/components/CreatorExplorer'
+import FaqCards from '@/components/home/FaqCards'
 import { slim, MarketFacts, CategoryLinks, CountryLinks } from '@/components/creators/HubParts'
 
 type P = { params: Promise<{ lang: string; country: string; category: string }> }
@@ -77,9 +78,8 @@ export default async function CategoryHub({ params }: P) {
           <CountryLinks lang={lang} category={cat.slug} only={m.near} />
         </section>
 
-        <section className="sec--tight cr-faq">
-          <h2 className="h3">{cat.label} creators in {m.name}: common questions</h2>
-          <Faq items={hubFaq(m, list, cat)} />
+        <section className="sec--tight">
+          <FaqCards lang={lang} items={hubFaq(m, list, cat)} title={`${cat.label} creators|in ${m.name}.`} />
         </section>
 
         <div className="slab cr-help">

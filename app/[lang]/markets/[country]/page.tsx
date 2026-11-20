@@ -9,9 +9,10 @@ import { categoryBySlug } from '@/data/categories'
 import { creatorsIn } from '@/data/creators'
 import { CASES } from '@/data/cases'
 import { pageMeta, serviceLd } from '@/lib/seo'
-import { Cta, TLink, SectionHead, JsonLd, Breadcrumbs, StickyCta, Faq, Todo } from '@/components/ui'
+import { Cta, TLink, SectionHead, JsonLd, Breadcrumbs, StickyCta, Todo } from '@/components/ui'
 import { Flag, Icon, PlatformIcon, Arrow } from '@/components/Icon'
 import { CreatorCard } from '@/components/CreatorCard'
+import FaqCards from '@/components/home/FaqCards'
 import { CaseCard } from '@/components/CaseCard'
 
 type P = { params: Promise<{ lang: string; country: string }> }
@@ -153,10 +154,7 @@ export default async function MarketPage({ params }: P) {
 
       {/* FAQ */}
       <section className="wrap sec">
-        <div className="ag-faq">
-          <SectionHead eyebrow="FAQ" title={`${m.name},|in short.`} />
-          <Faq items={faq} />
-        </div>
+        <FaqCards lang={lang} items={faq} title={`${m.name},|in short.`} />
       </section>
 
       {/* nearby */}

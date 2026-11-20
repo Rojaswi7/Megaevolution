@@ -4,7 +4,8 @@ import '@/styles/content.css'
 import { MCN_FAQ } from '@/data/faq'
 import { MCNS } from '@/data/mcns'
 import { pageMeta, serviceLd } from '@/lib/seo'
-import { Cta, TLink, SectionHead, Breadcrumbs, Faq, JsonLd, RoadmapTag, StickyCta } from '@/components/ui'
+import { Cta, TLink, SectionHead, Breadcrumbs, JsonLd, RoadmapTag, StickyCta } from '@/components/ui'
+import FaqCards from '@/components/home/FaqCards'
 import { Icon } from '@/components/Icon'
 
 type P = { params: Promise<{ lang: string }> }
@@ -101,10 +102,7 @@ export default async function McnPage({ params }: P) {
       </section>
 
       <section className="wrap sec">
-        <div className="faqwrap">
-          <SectionHead eyebrow="FAQ" title="Questions|from MCNs." />
-          <Faq items={MCN_FAQ} />
-        </div>
+        <FaqCards lang={lang} items={MCN_FAQ} title="Questions|from MCNs." />
       </section>
 
       <section className="wrap">

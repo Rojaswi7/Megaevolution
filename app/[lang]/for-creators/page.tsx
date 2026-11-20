@@ -2,9 +2,10 @@
 import '@/styles/content.css'
 import { CREATOR_FAQ } from '@/data/faq'
 import { pageMeta, serviceLd } from '@/lib/seo'
-import { Cta, TLink, SectionHead, Breadcrumbs, Faq, JsonLd, RoadmapTag, StickyCta } from '@/components/ui'
+import { Cta, TLink, SectionHead, Breadcrumbs, JsonLd, RoadmapTag, StickyCta } from '@/components/ui'
 import { Icon } from '@/components/Icon'
 import { RateCardMock } from '@/components/content/Interactive'
+import FaqCards from '@/components/home/FaqCards'
 import { GatedButton } from '@/components/client'
 
 type P = { params: Promise<{ lang: string }> }
@@ -121,10 +122,7 @@ export default async function ForCreators({ params }: P) {
       </section>
 
       <section className="wrap sec">
-        <div className="faqwrap">
-          <SectionHead eyebrow="FAQ" title="Questions|from creators." />
-          <Faq items={CREATOR_FAQ} />
-        </div>
+        <FaqCards lang={lang} items={CREATOR_FAQ} title="Questions|from creators." />
       </section>
 
       <section className="wrap">

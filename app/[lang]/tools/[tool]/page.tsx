@@ -6,10 +6,11 @@ import { href, CTA, LOCALES } from '@/data/site'
 import { TOOLS, toolBySlug } from '@/data/tools'
 import { TOOL_FROM, PAY_PER_USE, TOOL_PLANS } from '@/data/pricing'
 import { pageMeta, productLd, offerLd, abs } from '@/lib/seo'
-import { Cta, TLink, SectionHead, Breadcrumbs, Faq, JsonLd, RoadmapTag, StickyCta, Trust } from '@/components/ui'
+import { Cta, TLink, SectionHead, Breadcrumbs, JsonLd, RoadmapTag, StickyCta, Trust } from '@/components/ui'
 import { Icon } from '@/components/Icon'
 import { Money } from '@/components/Money'
 import ToolDemo from '@/components/tools/demos'
+import FaqCards from '@/components/home/FaqCards'
 import { planTrustItems } from '@/components/tools/shared'
 
 type P = { params: Promise<{ lang: string; tool: string }> }
@@ -145,16 +146,11 @@ export default async function ToolPage({ params }: P) {
 
       {/* FAQ */}
       <section className="wrap sec" id="faq">
-        <div className="faqwrap">
-          <SectionHead eyebrow="FAQ" title={`About|${t.name}.`} />
-          <div>
-            <Faq items={t.faq} />
-            <div className="row tl-after">
-              <a className="btn" href="#demo" data-cta={`tool_faq_try_${t.slug}`}>{tryLabel}<Icon name="arrow" size={16} className="arr" stroke={1.9} /></a>
-              <TLink lang={lang} to="/pricing" cta={`tool_faq_pricing_${t.slug}`}>Pricing</TLink>
-            </div>
+        <FaqCards lang={lang} items={t.faq} title={`About|${t.name}.`} />
+          <div className="row tl-after">
+            <a className="btn" href="#demo" data-cta={`tool_faq_try_${t.slug}`}>{tryLabel}<Icon name="arrow" size={16} className="arr" stroke={1.9} /></a>
+            <TLink lang={lang} to="/pricing" cta={`tool_faq_pricing_${t.slug}`}>Pricing</TLink>
           </div>
-        </div>
       </section>
 
       {/* other tools */}

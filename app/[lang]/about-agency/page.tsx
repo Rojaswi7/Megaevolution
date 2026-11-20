@@ -8,12 +8,13 @@ import { MARKETS, REGIONS } from '@/data/markets'
 import { HOME_CASES } from '@/data/cases'
 import { AGENCY_FAQ } from '@/data/faq'
 import { pageMeta, serviceLd, offerLd } from '@/lib/seo'
-import { Cta, TLink, SectionHead, Faq, JsonLd, Breadcrumbs, StickyCta, Stat } from '@/components/ui'
+import { Cta, TLink, SectionHead, JsonLd, Breadcrumbs, StickyCta, Stat } from '@/components/ui'
 import { Icon, Flag } from '@/components/Icon'
 import { CaseCard } from '@/components/CaseCard'
 import MarketMap from '@/components/MarketMap'
 import InquirySection from '@/components/agency/InquirySection'
 import CampaignRuns from '@/components/sections/CampaignRuns'
+import FaqCards from '@/components/home/FaqCards'
 import ServicesFan from '@/components/sections/ServicesFan'
 
 type P = { params: Promise<{ lang: string }> }
@@ -174,10 +175,7 @@ export default async function AboutAgency({ params }: P) {
 
       {/* FAQ */}
       <section className="wrap sec" id="faq">
-        <div className="ag-faq">
-          <SectionHead eyebrow="FAQ" title="Questions brands|ask first." />
-          <Faq items={AGENCY_FAQ} />
-        </div>
+        <FaqCards lang={lang} items={AGENCY_FAQ} title="Questions brands|ask first." />
         <div className="ag-after">{primary('after_faq')}<TLink lang={lang} to="/creators" cta="agency_to_search">Or search creators yourself</TLink></div>
       </section>
 

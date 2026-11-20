@@ -6,9 +6,10 @@ import { MARKETS, marketBySlug } from '@/data/markets'
 import { creatorsIn } from '@/data/creators'
 import { pageMeta, itemListLd } from '@/lib/seo'
 import { hubTitle, hubDescription, hubIntro, hubFaq } from '@/lib/hubCopy'
-import { Breadcrumbs, JsonLd, StickyCta, Cta, TLink, Faq } from '@/components/ui'
+import { Breadcrumbs, JsonLd, StickyCta, Cta, TLink } from '@/components/ui'
 import { Flag } from '@/components/Icon'
 import CreatorExplorer from '@/components/CreatorExplorer'
+import FaqCards from '@/components/home/FaqCards'
 import { slim, MarketFacts, CategoryLinks, CountryLinks } from '@/components/creators/HubParts'
 
 type P = { params: Promise<{ lang: string; country: string }> }
@@ -65,9 +66,8 @@ export default async function CountryHub({ params }: P) {
           <CountryLinks lang={lang} only={m.near} />
         </section>
 
-        <section className="sec--tight cr-faq">
-          <h2 className="h3">Hiring creators in {m.name}: common questions</h2>
-          <Faq items={hubFaq(m, list)} />
+        <section className="sec--tight">
+          <FaqCards lang={lang} items={hubFaq(m, list)} title={`Hiring creators|in ${m.name}.`} />
         </section>
 
         <div className="slab cr-help">
