@@ -9,7 +9,7 @@ import { track } from '@/lib/track'
 
 const TABS: { id: PortfolioItem['market']; label: string }[] = [{ id: 'KR', label: 'Korea' }, { id: 'JP', label: 'Japan' }, { id: 'EN', label: 'English' }]
 
-export default function Portfolio() {
+export default function Portfolio({ orderHref }: { orderHref?: string }) {
   const [tab, setTab] = useState<PortfolioItem['market']>('KR')
   const [items, setItems] = useState(PORTFOLIO.map((p) => ({ ...p, hidden: false })))
   const [admin, setAdmin] = useState(false)
@@ -65,6 +65,14 @@ export default function Portfolio() {
         {admin && (
           <button className="st-pf__add" onClick={add} data-cta="studio_portfolio_admin_add"><Icon name="plus" size={20} />Add a video to {tab}</button>
         )}
+        {!admin && orderHref ? (
+          <a className="st-pf__end" href={orderHref} data-cta="studio_portfolio_end_order">
+            <span className="st-pf__play"><Icon name="plus" size={16} stroke={2} /></span>
+            <b>Your video next</b>
+            <small>Send raw footage, get an edit cut for {TABS.find((t) => t.id === tab)!.label}.</small>
+            <span className="st-pf__end-go">Order a video<Icon name="arrow" size={15} /></span>
+          </a>
+        ) : null}
       </div>
       {admin && <p className="small muted">Admin view is a mock: changes stay in this browser tab. Hidden items are dimmed here and not shown to visitors.</p>}
     </div>
