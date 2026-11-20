@@ -1,12 +1,14 @@
-// Markets index: the map plus one card per market. Taiwan is intentionally not listed.
-import Link from 'next/link'
+// Markets index: the map in a navy hero, then every market compared side by side, then the
+// regions we cover on request. Taiwan is intentionally not listed.
 import '@/styles/agency.css'
-import { href, CTA } from '@/data/site'
-import { MARKETS, REGIONS, LOGO_PLATFORMS } from '@/data/markets'
+import '@/styles/markets-hub.css'
+import { CTA } from '@/data/site'
+import { MARKETS, REGIONS } from '@/data/markets'
 import { pageMeta, itemListLd } from '@/lib/seo'
 import { Cta, TLink, SectionHead, JsonLd, Breadcrumbs, StickyCta } from '@/components/ui'
-import { Flag, PlatformIcon, Arrow } from '@/components/Icon'
+import { Icon } from '@/components/Icon'
 import MarketMap from '@/components/MarketMap'
+import MarketCompare from '@/components/markets/MarketCompare'
 
 type P = { params: Promise<{ lang: string }> }
 const PATH = '/markets'
@@ -21,49 +23,49 @@ export async function generateMetadata({ params }: P) {
 
 export default async function Markets({ params }: P) {
   const { lang } = await params
+  const languages = new Set(MARKETS.flatMap((m) => m.langs)).size
+  const apps = new Set(MARKETS.flatMap((m) => m.shops)).size
   return (
     <>
       <JsonLd data={itemListLd(MARKETS.map((m) => ({ name: `Influencer marketing in ${m.name}`, url: `${PATH}/${m.slug}` })))} />
       <div className="wrap"><Breadcrumbs lang={lang} items={[{ name: 'Markets', path: PATH }]} /></div>
 
-      <section className="wrap phero">
-        <SectionHead as="h1" eyebrow={`Markets · ${MARKETS.length} with a local manager`} title="Every market works differently.|Here’s how each one does.">
-          The apps people watch, the places they shop and the seasons that matter change from country to country. Pick one to see the details and who would run your campaign there.
-        </SectionHead>
-        <MarketMap lang={lang} />
+      <section className="mh-hero on-dark">
+        <div className="wrap">
+          <div className="mh-hero__top">
+            <div>
+              <p className="eyebrow">Markets</p>
+              <h1 className="h1">Every market works differently.<span className="it">Here’s how each one does.</span></h1>
+            </div>
+            <div className="mh-hero__side">
+              <p>The apps people watch, the places they shop and the seasons that matter change from country to country. Pick one on the map, or compare them all below.</p>
+              <dl className="mh-stats">
+                <div><dt>markets with a local manager</dt><dd className="num">{MARKETS.length}</dd></div>
+                <div><dt>languages briefed natively</dt><dd className="num">{languages}</dd></div>
+                <div><dt>shopping apps covered</dt><dd className="num">{apps}</dd></div>
+              </dl>
+            </div>
+          </div>
+          <MarketMap lang={lang} />
+        </div>
       </section>
 
-      <section className="wrap sec" aria-labelledby="all-markets">
-        <SectionHead eyebrow="All markets" title="Country by country" id="all-markets" />
-        <div className="ag-mgrid">
-          {MARKETS.map((m) => (
-            <article className="ag-mcard" key={m.id}>
-              <header>
-                <Flag market={m.id} />
-                <div>
-                  <h3 className="h3"><Link href={href(lang, `${PATH}/${m.slug}`)} data-cta="markets_card" prefetch={false}>{m.name}</Link></h3>
-                  <span className="small muted">{m.city} · {m.langs.join(', ')}</span>
-                </div>
-              </header>
-              <p>{m.fact}</p>
-              <dl>
-                <div><dt>Watches</dt><dd>{m.watches.slice(0, 3).map((p) => <span className="pname" key={p}>{LOGO_PLATFORMS.includes(p) ? <PlatformIcon name={p} size={14} /> : null}{p}</span>)}</dd></div>
-                <div><dt>Shops on</dt><dd>{m.shops.slice(0, 3).join(' · ')}</dd></div>
-              </dl>
-              <span className="tlink" style={{ alignSelf: 'flex-start', fontSize: 14 }}>Influencer marketing in {m.short}<Arrow size={15} /></span>
-            </article>
-          ))}
-          {REGIONS.map((r) => (
-            <article className="ag-mcard ag-mcard--region" key={r.id}>
-              <header><div><h3 className="h3"><Link href={href(lang, '/about-agency#inquiry')} data-cta={`markets_region_${r.id}`} prefetch={false}>{r.name}</Link></h3><span className="small muted">Run through our agency team</span></div></header>
-              <p>We run campaigns here on request. Tell us the country and the product and a manager will come back with options.</p>
-              <span className="tlink" style={{ alignSelf: 'flex-start', fontSize: 14, marginTop: 'auto' }}>{CTA.agency}<Arrow size={15} /></span>
-            </article>
-          ))}
-        </div>
-        <div className="ag-after">
-          <Cta lang={lang} to="/creators" cta="markets_search_creators">{CTA.search}</Cta>
-          <TLink lang={lang} to="/about-agency#inquiry" cta="markets_explore_options">{CTA.agency}</TLink>
+      <section className="wrap sec" id="compare">
+        <SectionHead eyebrow="Compare markets" title="Side by side.|Pick where to start.">Filter by region or by the category you sell. Every row opens that market’s full page.</SectionHead>
+        <MarketCompare lang={lang} />
+      </section>
+
+      <section className="wrap sec" aria-label="Other regions">
+        <div className="mh-more on-dark">
+          <span className="mh-more__ico"><Icon name="globe" size={22} /></span>
+          <div>
+            <b>Not on the list?</b>
+            <p>We also run campaigns in {REGIONS.map((r) => (r.name === 'Latin America' ? 'the rest of Latin America' : `the ${r.name}`)).join(' and ')} on request, through our agency team.</p>
+          </div>
+          <div className="mh-more__cta">
+            <Cta lang={lang} to="/about-agency#inquiry" cta="markets_other_region" size="sm">{CTA.agency}</Cta>
+            <TLink lang={lang} to="/creators" cta="markets_search_creators">{CTA.search}</TLink>
+          </div>
         </div>
       </section>
 
