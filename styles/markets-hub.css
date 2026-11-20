@@ -2,7 +2,7 @@
 
 /* ---------- hero with the map ---------- */
 .mh-hero { background: var(--navy); padding-block: clamp(28px, 3.4vw, 56px); margin-top: 8px; }
-.mh-hero__top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px clamp(32px, 5vw, 88px); align-items: end; margin-bottom: clamp(22px, 2.8vw, 40px); }
+.mh-hero__top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px clamp(32px, 5vw, 88px); align-items: end; }
 .mh-hero__top .h1 { margin-top: 14px; font-size: clamp(2.4rem, 4.4vw, 4.6rem); }
 .mh-hero__side { display: grid; gap: 18px; }
 .mh-hero__side > p { color: var(--on-dark-2); max-width: 48ch; }
@@ -12,22 +12,13 @@
 .mh-stats dd { font-family: var(--serif); font-size: clamp(2rem, 3vw, 2.8rem); line-height: 1; }
 .mh-stats dt { font-size: 12.5px; color: var(--on-dark-2); }
 .mh-stats div:first-child dt { color: var(--accent-ink); }
-/* the map's chips and panel sit on navy here */
-.mh-hero .mm__tabs .chip { background: var(--inner); color: #fff; box-shadow: none; }
-.mh-hero .mm__tabs .chip:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
-.mh-hero .mm__tabs .chip[aria-pressed='true'] { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
-.mh-hero .mm__card { background: var(--inner); box-shadow: none; }
-/* the map sits straight on navy: light dots, white pins, lime for the active market */
-.mh-hero .mm__body { align-items: center; }
-.mh-hero .mm__map { background: none; box-shadow: none; padding: 0; align-self: center; }
-.mh-hero .mm__stage::before { content: ''; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.4); -webkit-mask: url(/map-dots.svg) center / 100% 100% no-repeat; mask: url(/map-dots.svg) center / 100% 100% no-repeat; pointer-events: none; }
-.mh-hero .mm__stage img { visibility: hidden; }
-.mh-hero .mm__pin i { width: 12px; height: 12px; background: #fff; box-shadow: 0 0 0 3px var(--navy); }
-.mh-hero .mm__pin span { background: #fff; color: var(--navy); box-shadow: none; }
-.mh-hero .mm__pin.is-on i { width: 14px; height: 14px; background: var(--accent); box-shadow: 0 0 0 3px var(--navy), 0 0 0 9px rgba(214, 255, 77, 0.22); }
-.mh-hero .mm__pin.is-on span { background: var(--accent); color: var(--accent-ink); }
-.mh-hero .mm__region { color: var(--on-dark-2); border-bottom-color: var(--on-dark-line); }
-.mh-hero .mm__region:hover { color: #fff; }
+/* map section: the map takes the full width, the country panel is a strip below it */
+.mh-map .mm__body { grid-template-columns: 1fr; gap: 10px; }
+.mh-map .mm__map { padding: clamp(10px, 1.6vw, 24px) clamp(14px, 3vw, 48px); box-shadow: inset 0 0 0 1.5px var(--navy); }
+.mh-map .mm__card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1.1fr); gap: 18px 28px; align-items: start; }
+.mh-map .mm__cta { margin-top: 0; align-self: center; }
+@media (max-width: 900px) { .mh-map .mm__card { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .mh-map .mm__card { grid-template-columns: 1fr; } }
 @media (max-width: 1000px) { .mh-hero__top { grid-template-columns: 1fr; } }
 @media (max-width: 480px) { .mh-stats { gap: 6px; } .mh-stats div { padding: 12px; border-radius: 14px; } .mh-stats dd { font-size: 1.8rem; } .mh-stats dt { font-size: 11.5px; } }
 
@@ -89,4 +80,3 @@
 .mh-more b { font-weight: 600; }
 .mh-more p { color: var(--on-dark-2); }
 .mh-more__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
-.mh-hero .mm__mgr { background: rgba(255, 255, 255, 0.06); }

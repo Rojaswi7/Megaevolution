@@ -38,7 +38,7 @@ export default async function Markets({ params }: P) {
               <h1 className="h1">Every market works differently.<span className="it">Here’s how each one does.</span></h1>
             </div>
             <div className="mh-hero__side">
-              <p>The apps people watch, the places they shop and the seasons that matter change from country to country. Pick one on the map, or compare them all below.</p>
+              <p>The apps people watch, the places they shop and the seasons that matter change from country to country. Pick one on the map, or compare them all side by side.</p>
               <dl className="mh-stats">
                 <div><dt>markets with a local manager</dt><dd className="num">{MARKETS.length}</dd></div>
                 <div><dt>languages briefed natively</dt><dd className="num">{languages}</dd></div>
@@ -46,8 +46,12 @@ export default async function Markets({ params }: P) {
               </dl>
             </div>
           </div>
-          <MarketMap lang={lang} />
         </div>
+      </section>
+
+      <section className="wrap sec mh-map" id="map">
+        <SectionHead eyebrow="Map" title="Pick a country.|See what works there.">What people watch, where they shop and who runs your campaign locally.</SectionHead>
+        <MarketMap lang={lang} />
       </section>
 
       <section className="wrap sec" id="compare">
