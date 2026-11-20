@@ -1,26 +1,20 @@
-// Agency landing page — also the Google Ads landing page. Follows the reviewed design
-// (Pattern A v2, Mai's 2nd feedback): hero with rotating market → client logos → results and
-// client quotes → creator videos → usual way vs us → services → how we work → markets →
-// inquiry → FAQ. The primary CTA repeats after each block.
+// Agency landing page — also the Google Ads landing page (Pattern A):
+// hero → compact market list → case studies (moved up) → why → how we work →
+// markets → one merged inquiry section → FAQ. The primary CTA repeats after each block.
 import Link from 'next/link'
 import '@/styles/agency.css'
-import '@/styles/cases.css'
-import '@/styles/agency2.css'
-import { href, PROOF, CTA, CLIENT_LOGOS } from '@/data/site'
+import { href, PROOF, CTA } from '@/data/site'
 import { MARKETS, REGIONS } from '@/data/markets'
 import { HOME_CASES } from '@/data/cases'
 import { AGENCY_FAQ } from '@/data/faq'
 import { pageMeta, serviceLd, offerLd } from '@/lib/seo'
-import { Cta, TLink, SectionHead, JsonLd, Breadcrumbs, StickyCta } from '@/components/ui'
-import { Icon, Flag, Arrow } from '@/components/Icon'
-import { CaseTile } from '@/components/CaseTile'
+import { Cta, TLink, SectionHead, Faq, JsonLd, Breadcrumbs, StickyCta, Stat } from '@/components/ui'
+import { Icon, Flag } from '@/components/Icon'
+import { CaseCard } from '@/components/CaseCard'
 import MarketMap from '@/components/MarketMap'
 import InquirySection from '@/components/agency/InquirySection'
-import RotatingMarket from '@/components/agency/RotatingMarket'
-import CreatorShorts from '@/components/agency/CreatorShorts'
+import CampaignRuns from '@/components/sections/CampaignRuns'
 import ServicesFan from '@/components/sections/ServicesFan'
-import Testimonials from '@/components/home/Testimonials'
-import FaqCards from '@/components/home/FaqCards'
 
 type P = { params: Promise<{ lang: string }> }
 const PATH = '/about-agency'
@@ -31,28 +25,25 @@ export async function generateMetadata({ params }: P) {
   return pageMeta({ lang, path: PATH, title: 'Influencer Marketing Agency — Local Managers in Every Market', description: DESC })
 }
 
-const USUAL = ['A different agency in every country', 'Quality that changes from market to market', 'Briefs lost in translation', 'Creators you can’t vet yourself', 'Reports that don’t line up']
-const WITH_US = ['One dedicated account manager, plus a local manager in each market', 'The same process and checks in every market', 'Native managers brief creators in their own language', 'Every creator hand-picked and checked by a local manager', 'One report across all markets']
-const SHAPE = [
-  { t: 'Strategy', d: 'Built on your KPI: awareness, traffic or sales' },
-  { t: 'Campaign format', d: 'Seeding, paid posts, TikTok LIVE or on-site events, per market' },
-  { t: 'Creator selection', d: '60%+ of each creator’s audience in your target country' },
+const WHY = [
+  { t: 'One person to talk to', d: 'Your account manager speaks your language and owns the whole campaign. You never chase five people in five inboxes.' },
+  { t: 'Someone local in every market', d: 'A manager who lives there picks the creators, rewrites the brief so it sounds native, and handles contracts and posting.' },
+  { t: 'Rates you can check', d: 'Creator fees and our management fee are shown separately. You approve the budget before anything is booked.' },
+  { t: 'Data from the platforms', d: PROOF.approvals.join(', ') + '. Channel numbers come from official access, not screenshots.' },
+  { t: 'One report for every country', d: 'Views, engagement and sales in one place, with each platform shown next to the totals.' },
 ]
-const RUN = [
-  { t: 'Plan and cast', d: 'Goals, markets and budget agreed. Creators shortlisted per market.' },
-  { t: 'Run', d: 'Briefs in each creator’s language. You approve every draft before it goes live.' },
-  { t: 'Report', d: 'One report across all markets: views, engagement and sales.' },
-]
-const NEXT = [
-  { t: 'Within 24 hours', d: 'Your account manager replies' },
-  { t: 'Short call', d: 'We go over goals, markets and timing' },
-  { t: 'Your plan', d: 'Creator shortlist and proposal for each market' },
+
+const HOW = [
+  { t: 'Tell us the product and the market', d: 'A short form is enough. No brief needed.', w: 'Day 1' },
+  { t: 'Get two or three campaign options', d: 'Your account manager sends options with creators, formats and rough costs.', w: 'Within one business day' },
+  { t: 'Approve creators and budget', d: 'You see every creator and their fee before we contract anyone.', w: 'You decide' },
+  { t: 'Local managers run it', d: 'Briefing, scripts, drafts, revisions and posting, in the local language.', w: 'Timeline in your plan' },
+  { t: 'Read one report', d: 'Results for every market and platform, with the links to every post.', w: 'After the last post' },
 ]
 
 export default async function AboutAgency({ params }: P) {
   const { lang } = await params
-  const primary = (id: string, size: 'md' | 'lg' = 'md', variant?: 'dark') => <Cta lang={lang} to={`${PATH}#inquiry`} cta={`agency_${id}`} size={size} variant={variant}>{CTA.agency}</Cta>
-  const names = MARKETS.map((m) => (m.id === 'us' ? 'the US' : m.short))
+  const primary = (id: string, size: 'md' | 'lg' = 'md') => <Cta lang={lang} to={`${PATH}#inquiry`} cta={`agency_${id}`} size={size}>{CTA.agency}</Cta>
 
   return (
     <>
@@ -65,147 +56,129 @@ export default async function AboutAgency({ params }: P) {
       <div className="wrap"><Breadcrumbs lang={lang} items={[{ name: 'Agency', path: PATH }]} /></div>
 
       {/* hero */}
-      <section className="ag2-hero on-dark">
-        <div className="wrap">
-          <div className="ag2-hero__top">
-            <div>
-              <p className="eyebrow">Overseas influencer campaigns, run for you</p>
-              <h1 className="h1">Launching campaigns in <RotatingMarket names={names} suffix="?" /></h1>
+      <section className="wrap">
+        <div className="slab ag-hero">
+          <div>
+            <p className="eyebrow">Agency · full-service campaigns</p>
+            <h1 className="h1">One dedicated account manager.<span className="it">A local manager in every market.</span></h1>
+            <p className="lede">Tell us the product and where you want to sell it. We find the creators, handle the contracts and get the posts live, in each country’s own language.</p>
+            <div className="ag-hero__cta">
+              {primary('hero', 'lg')}
+              <TLink lang={lang} to="/case-studies" cta="agency_hero_cases">See results</TLink>
             </div>
-            <div className="ag2-hero__side">
-              <h2 className="h3">One dedicated account manager.<span className="it">A local manager in every market.</span></h2>
-              <p>Campaigns built around your KPIs and adapted to each market.</p>
-              <div className="ag2-hero__cta">
-                {primary('hero', 'lg')}
-                <TLink lang={lang} to="/case-studies" cta="agency_hero_cases">See case studies</TLink>
-              </div>
-            </div>
+            <p className="ag-hero__note">No brief needed. Reply within one business day.</p>
           </div>
-
-          <div className="ag2-collage">
-            <div className="ag2-mk">
-              <p className="ag2-k">Markets we run</p>
-              <p className="ag2-mk__n"><b>{MARKETS.length}</b> markets</p>
-              <ul>
-                {MARKETS.map((m) => <li key={m.id}><Link href={href(lang, `/markets/${m.slug}`)} data-cta="agency_hero_market" prefetch={false}><Flag market={m.id} />{m.id === 'us' ? 'United States' : m.short}</Link></li>)}
-              </ul>
-              <Link className="tlink" href={href(lang, '/markets')} data-cta="agency_hero_all_markets" prefetch={false}>See all markets<Arrow size={15} /></Link>
+          <div className="ag-desk" aria-label="How your team is set up">
+            <div className="ag-desk__row ag-desk__row--you">
+              <span className="ag-desk__ph"><Icon name="user" size={18} /></span>
+              <div><b>Your account manager</b><small>One contact, in your language</small></div>
             </div>
-            <div className="ag2-ph ag2-ph--a tone-7" role="img" aria-label="Creator photo — TODO: real photo"><small>TODO: real photo</small></div>
-            <div className="ag2-ph ag2-ph--b tone-2" role="img" aria-label="Creator photo — TODO: real photo"><small>TODO: real photo</small></div>
-            <div className="ag2-ph ag2-ph--tall tone-3" role="img" aria-label="JINRO creator post — TODO: real photo">
-              <span className="ag2-ph__chip"><i />JINRO · 670 creators, 14 countries</span>
-              <small>TODO: real photo</small>
-            </div>
+            <span className="ag-desk__link" />
+            {(['kr', 'vn', 'ph'] as const).map((id) => {
+              const m = MARKETS.find((x) => x.id === id)!
+              return (
+                <div className="ag-desk__row" key={id}>
+                  <span className="ag-desk__ph" role="img" aria-label="TODO: real photo"><Icon name="user" size={18} /></span>
+                  <div><b>{m.manager.role}</b><small>Lives in {m.city}</small></div>
+                  <Flag market={id} />
+                </div>
+              )
+            })}
+            <p className="ag-desk__todo">+ {MARKETS.length - 3} more markets · photos TODO: real photo</p>
           </div>
         </div>
       </section>
 
-      {/* client logos */}
-      <section className="wrap" aria-label="Brands we have worked with">
-        <p className="ag2-logos">
-          {CLIENT_LOGOS.map((l) => <b key={l} title={`${l} logo — TODO: real logo file`}>{l}</b>)}
-          <span>+ Bibigo, Rejuran, Round Lab and more</span>
-        </p>
-      </section>
-
-      {/* results */}
-      <section className="wrap sec" id="results">
-        <SectionHead eyebrow="Case studies" title="Real campaigns.|Real sales.">The same format for every case: what the brand wanted, where it ran, and what it delivered.</SectionHead>
-        <div className="cs-grid">{HOME_CASES.map((c, i) => <CaseTile key={c.slug} c={c} lang={lang} tone={(['dark', 'accent', 'light'] as const)[i % 3]} />)}</div>
-        <div className="ag-after">{primary('after_cases')}<TLink lang={lang} to="/case-studies" cta="agency_all_cases">See all case studies</TLink></div>
-      </section>
-
-      <section className="tq-sec" aria-label="What clients say">
-        <Testimonials lang={lang} />
-      </section>
-
-      {/* creator videos */}
-      <section className="wrap sec" id="shorts">
-        <SectionHead eyebrow="Creator content" title="Local creators,|for local audiences.">Short-form posts from creators we work with, in their own language and style. Samples until real videos are added.</SectionHead>
-        <CreatorShorts />
-      </section>
-
-      {/* usual way vs us */}
-      <section className="wrap sec" id="why">
-        <SectionHead eyebrow="Why MegaEvolution" title="One manager.|Every market." />
-        <div className="ag2-vs">
-          <div className="ag2-vs__col">
-            <p className="ag2-k">The usual way</p>
-            <ul>{USUAL.map((t) => <li key={t}><span className="ag2-vs__x"><Icon name="close" size={12} stroke={2.4} /></span>{t}</li>)}</ul>
-          </div>
-          <div className="ag2-vs__col ag2-vs__col--us on-dark">
-            <p className="ag2-k">With MegaEvolution</p>
-            <ul>{WITH_US.map((t) => <li key={t}><span className="ag2-vs__ok"><Icon name="check" size={13} stroke={2.6} /></span>{t}</li>)}</ul>
-          </div>
+      {/* compact market list */}
+      <section className="wrap" aria-label="Markets we run campaigns in">
+        <div className="ag-mk">
+          <p className="eyebrow eyebrow--plain">Local managers in</p>
+          <ul>
+            {MARKETS.map((m) => (
+              <li key={m.id}><Link className="chip" href={href(lang, `/markets/${m.slug}`)} data-cta="agency_market_chip" prefetch={false}><Flag market={m.id} />{m.short}</Link></li>
+            ))}
+            {REGIONS.map((r) => <li key={r.id}><span className="chip chip--region">{r.name}</span></li>)}
+          </ul>
         </div>
-        <div className="ag-after">{primary('after_why', 'md', 'dark')}<span className="small muted">A reply within 24 hours, from the manager who would run your campaign.</span></div>
       </section>
 
       {/* what we do for brands */}
       <ServicesFan lang={lang} />
 
+      {/* case studies, moved up */}
+      <section className="wrap sec" id="results">
+        <SectionHead eyebrow="Results" title="Campaigns we ran,|and what they did.">Three recent ones. The numbers are the clients’ own.</SectionHead>
+        <div className="ag-proof">
+          <Stat value={PROOF.creators} label="creators worked with" />
+          <Stat value={PROOF.views} label="views" />
+          <Stat value={PROOF.engagement} label={`average engagement on paid posts, from ${PROOF.reports} campaign reports`} />
+        </div>
+        <div className="grid-3">{HOME_CASES.map((c) => <CaseCard key={c.slug} c={c} lang={lang} />)}</div>
+        <div className="ag-after">{primary('after_cases')}<TLink lang={lang} to="/case-studies" cta="agency_all_cases">See all case studies</TLink></div>
+      </section>
+
+      {/* why */}
+      <section className="wrap sec" id="why">
+        <SectionHead eyebrow="Why MegaEvolution" title="What you get|that a spreadsheet can’t." />
+        <div className="ag-why">
+          {WHY.map((w, i) => (
+            <article className="ag-why__c" key={w.t}>
+              <span className="ag-why__n">0{i + 1}</span>
+              <h3 className="h3">{w.t}</h3>
+              <p>{w.d}</p>
+            </article>
+          ))}
+        </div>
+        <div className="ag-after">{primary('after_why')}</div>
+      </section>
+
       {/* how we work */}
       <section className="wrap sec" id="how">
-        <div className="ag2-how">
-          <div className="ag2-how__left on-dark">
-            <p className="eyebrow">How we work</p>
-            <h2 className="h2">Built around your goals.<span className="it">Adapted to each market.</span></h2>
-            <p>No fixed package. We shape the plan around your KPIs and what works in each country.</p>
-            <ol className="ag2-shape">
-              {SHAPE.map((s, i) => <li key={s.t}><span className="num">0{i + 1}</span><div><b>{s.t}</b><small>{s.d}</small></div></li>)}
-            </ol>
-          </div>
-          <div className="ag2-how__right">
-            <p className="ag2-k">How we run a campaign</p>
-            <ol className="ag2-run">
-              {RUN.map((s, i) => <li key={s.t}><span className="num">0{i + 1}</span><div><b>{s.t}</b><p>{s.d}</p></div></li>)}
-            </ol>
-            <div className="ag2-proof on-dark">
-              <dl>
-                <div><dt>creators worked with</dt><dd className="num">{PROOF.creators}</dd></div>
-                <div><dt>views across our campaigns</dt><dd className="num">{PROOF.views}</dd></div>
-                <div><dt>average engagement on paid posts</dt><dd className="num">{PROOF.engagement}</dd></div>
-              </dl>
-              <p>From {PROOF.reports} campaign reports · {PROOF.approvals.join(' · ')}</p>
-            </div>
-          </div>
-        </div>
+        <CampaignRuns lang={lang} />
+        <div className="ag-after">{primary('after_how')}</div>
       </section>
 
       {/* markets */}
       <section className="wrap sec" id="markets">
-        <SectionHead eyebrow="Markets" title="Every market,|run the same way.">A local manager in each market who knows its creators and platforms. For the Middle East and the rest of Latin America, ask us.</SectionHead>
-        <MarketMap lang={lang} initial="vn" />
-        <div className="ag-after">{primary('after_markets', 'md', 'dark')}<span className="small muted">Not sure which market to start with? We’ll help you choose.</span></div>
+        <SectionHead eyebrow="Markets" title="Where we can run|your campaign.">Pick a country to see what people watch and where they shop. For the Middle East and the rest of Latin America, ask us.</SectionHead>
+        <MarketMap lang={lang} initial="kr" />
+        <div className="ag-after">{primary('after_markets')}<TLink lang={lang} to="/markets" cta="agency_all_markets">All market pages</TLink></div>
       </section>
 
-      {/* inquiry */}
+      {/* the one inquiry section */}
       <section className="wrap sec">
-        <div className="ag2-inq on-dark" id="inquiry">
-          <div className="ag2-inq__copy">
-            <p className="eyebrow">Explore your campaign options</p>
-            <h2 className="h1">Let’s make something<span className="it">happen.</span></h2>
-            <p className="lede">No brief needed. A quick note on your markets or goals is enough to start.</p>
+        <div className="slab ag-inq" id="inquiry">
+          <div className="ag-inq__copy">
+            <span className="tag tag--accent">No brief needed</span>
+            <h2 className="h2">Explore your<span className="it">campaign options.</span></h2>
             <div>
-              <p className="ag2-k">What you get</p>
+              <h3>What you get</h3>
               <ul className="ticks">
-                <li><Icon name="check" size={16} />Suggested markets, creators and campaign format for your goal</li>
-                <li><Icon name="check" size={16} />A rough budget range and timeline</li>
+                <li><Icon name="check" size={16} />Two or three campaign options for your market</li>
+                <li><Icon name="check" size={16} />Example creators with their real rates</li>
+                <li><Icon name="check" size={16} />A rough cost and a timeline</li>
               </ul>
             </div>
             <div>
-              <p className="ag2-k">What happens next</p>
-              <ol className="ag2-next">{NEXT.map((n, i) => <li key={n.t}><span>{i + 1}</span><div><b>{n.t}</b><small>{n.d}</small></div></li>)}</ol>
+              <h3>What happens next</h3>
+              <ol className="ag-inq__next">
+                <li>A campaign manager reads your note and replies within one business day.</li>
+                <li>You get the options by email. A call is optional.</li>
+                <li>Nothing is booked or charged until you approve a budget.</li>
+              </ol>
             </div>
           </div>
-          <div className="ag2-inq__form"><InquirySection source="agency" /></div>
+          <div className="ag-inq__form"><InquirySection source="agency" /></div>
         </div>
       </section>
 
       {/* FAQ */}
       <section className="wrap sec" id="faq">
-        <FaqCards lang={lang} items={AGENCY_FAQ} title="Questions brands|ask first." />
+        <div className="ag-faq">
+          <SectionHead eyebrow="FAQ" title="Questions brands|ask first." />
+          <Faq items={AGENCY_FAQ} />
+        </div>
+        <div className="ag-after">{primary('after_faq')}<TLink lang={lang} to="/creators" cta="agency_to_search">Or search creators yourself</TLink></div>
       </section>
 
       <StickyCta lang={lang} to={`${PATH}#inquiry`} cta="agency_inquiry" label={CTA.agency} />
