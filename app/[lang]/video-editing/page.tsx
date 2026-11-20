@@ -1,7 +1,7 @@
 // Video Editing Studio. Sells edited videos: one primary CTA ("Order a video") that goes straight to checkout.
 import '@/styles/studio.css'
 import '@/styles/video-editing.css'
-import { CTA, href } from '@/data/site'
+import { CTA, href, CLIENT_LOGOS } from '@/data/site'
 import { STUDIO, STUDIO_SUBSCRIPTIONS, isTBD } from '@/data/pricing'
 import { STUDIO_FAQ } from '@/data/faq'
 import { pageMeta, serviceLd, offerLd, abs } from '@/lib/seo'
@@ -11,7 +11,7 @@ import { Money } from '@/components/Money'
 import Portfolio from '@/components/studio/Portfolio'
 import BeforeAfter from '@/components/home/BeforeAfter'
 import FaqCards from '@/components/home/FaqCards'
-import { StudioTrust, pct } from '@/components/studio/shared'
+import { pct } from '@/components/studio/shared'
 
 type P = { params: Promise<{ lang: string }> }
 const PATH = '/video-editing'
@@ -95,20 +95,29 @@ export default async function Studio({ params }: P) {
             )
           })}
         </div>
-        <div className="ve-extras">
-          <div>
-            <p className="ve-extras__k">Every video includes</p>
-            <ul className="ve-chips">{INCLUDED.map((t) => <li key={t}><Icon name="check" size={14} />{t}</li>)}</ul>
+        <div className="ve-fine">
+          <div className="ve-fine__col">
+            <p className="ve-fine__k">Every video includes</p>
+            <ul className="ve-fine__ticks">{INCLUDED.map((t) => <li key={t}><Icon name="check" size={15} />{t}</li>)}</ul>
           </div>
-          <div>
-            <p className="ve-extras__k">Bundles and revisions</p>
-            <ul className="ve-chips ve-chips--accent">
-              {STUDIO.bundles.map((b) => <li key={b.min}><b>{pct(b.percent)} off</b>{b.min}+ videos in one order</li>)}
-              <li><b>{revisions} free</b>revisions, then <Money usd={STUDIO.paidRevision} /> each</li>
+          <div className="ve-fine__col">
+            <p className="ve-fine__k">Order more, pay less</p>
+            <dl className="ve-fine__rows">
+              {STUDIO.bundles.map((b) => <div key={b.min}><dt>{b.min}+ videos in one order</dt><dd>{pct(b.percent)} off</dd></div>)}
+              <div><dt>Revisions included</dt><dd>{revisions}</dd></div>
+              <div><dt>Each extra revision</dt><dd><Money usd={STUDIO.paidRevision} /></dd></div>
+            </dl>
+          </div>
+          <div className="ve-fine__col">
+            <p className="ve-fine__k">Paying</p>
+            <ul className="ve-fine__ticks">
+              <li><Icon name="lock" size={15} />Secure card checkout</li>
+              <li><Icon name="clock" size={15} />{STUDIO.products[0].delivery}</li>
+              <li><Icon name="shield" size={15} />{STUDIO.refundNote}</li>
             </ul>
           </div>
+          <p className="ve-fine__logos"><span>Trusted by teams at</span>{CLIENT_LOGOS.map((l) => <b key={l} title={`${l} logo — TODO: real logo file`}>{l}</b>)}</p>
         </div>
-        <div className="ve-trust"><StudioTrust row /></div>
       </section>
 
       <section className="wrap sec" id="how">

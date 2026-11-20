@@ -38,15 +38,23 @@
 @media (max-width: 1100px) { .ve-price { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .ve-price { grid-template-columns: 1fr; } }
 
-.ve-extras { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px 28px; margin-top: 14px; padding: 18px 20px; border-radius: 20px; background: var(--surface-2); }
-.ve-extras > div { display: grid; gap: 10px; align-content: start; }
-.ve-extras__k { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
-.ve-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.ve-chips li { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 6px 12px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-size: 13.5px; }
-.ve-chips--accent li b { font-weight: 600; padding-right: 2px; }
-.ve-chips--accent li:not(:last-child) { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
-.ve-trust { margin-top: 14px; }
-@media (max-width: 900px) { .ve-extras { grid-template-columns: 1fr; } }
+.ve-fine { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); margin-top: 14px; border-radius: 22px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.ve-fine__col { display: grid; gap: 12px; align-content: start; padding: 20px 24px; }
+.ve-fine__col + .ve-fine__col { border-left: 1px solid var(--line); }
+.ve-fine__k { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.ve-fine__ticks { display: grid; gap: 8px; font-size: 14.5px; }
+.ve-fine__col:first-child .ve-fine__ticks { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
+.ve-fine__ticks li { display: flex; align-items: flex-start; gap: 9px; }
+.ve-fine__ticks .ico { flex: none; margin-top: 3px; }
+.ve-fine__rows { display: grid; }
+.ve-fine__rows div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 14.5px; }
+.ve-fine__rows div:last-child { border-bottom: 0; }
+.ve-fine__rows dd { font-weight: 600; white-space: nowrap; }
+.ve-fine__logos { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 26px; padding: 14px 24px; border-top: 1px solid var(--line); font-size: 15px; }
+.ve-fine__logos span { font-size: 12.5px; color: var(--ink-3); }
+.ve-fine__logos b { font-weight: 600; color: var(--ink-2); }
+@media (max-width: 1000px) { .ve-fine { grid-template-columns: 1fr; } .ve-fine__col + .ve-fine__col { border-left: 0; border-top: 1px solid var(--line); } }
+@media (max-width: 480px) { .ve-fine__col:first-child .ve-fine__ticks { grid-template-columns: 1fr; } }
 
 /* ---------- how it works: an order-status track ---------- */
 .ve-steps { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
