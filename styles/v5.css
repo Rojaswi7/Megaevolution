@@ -524,3 +524,26 @@
 .cmdk__chip .flag { width: 17px; }
 .cmdk__chip svg { width: 13px; height: 13px; }
 .cmdk__grp { padding: 10px 2px 6px; }
+
+/* ---------- language and currency popover ---------- */
+.hdr .hdr__pop--lp { width: 272px; padding: 8px; gap: 0; border-radius: 18px; animation: lp-in 0.16s ease-out; }
+.lp { display: grid; }
+.lp__k { padding: 8px 8px 6px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.lp__langs { display: grid; gap: 2px; }
+.lp__langs button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 11px; text-align: left; color: var(--navy); transition: background 0.12s; }
+.lp__langs button:hover { background: var(--surface-2); }
+.lp__code { width: 30px; height: 26px; display: grid; place-items: center; border-radius: 7px; background: var(--grey); font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; flex: none; }
+.lp__name { flex: 1; display: flex; align-items: baseline; gap: 6px; font-size: 14px; font-weight: 500; }
+.lp__name small { font-size: 11.5px; color: var(--ink-3); font-weight: 400; }
+.lp__tick { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; opacity: 0; }
+.lp__langs button[aria-checked='true'] { background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--navy); }
+.lp__langs button[aria-checked='true'] .lp__code { background: var(--navy); color: #fff; }
+.lp__langs button[aria-checked='true'] .lp__tick { opacity: 1; background: var(--accent); color: var(--accent-ink); }
+.lp__cur { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin: 0 4px; border-radius: 12px; background: var(--grey); }
+.lp__cur button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 34px; border-radius: 9px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); transition: background 0.12s, color 0.12s; }
+.lp__cur button b { font-family: var(--serif); font-size: 16px; font-weight: 400; }
+.lp__cur button:hover { color: var(--ink); }
+.lp__cur button[aria-checked='true'] { background: var(--navy); color: #fff; }
+.lp__cur button[aria-checked='true'] b { color: var(--accent); }
+.lp__note { padding: 8px 8px 4px; font-size: 11.5px; color: var(--ink-3); }
+@keyframes lp-in { from { opacity: 0; transform: translateY(-4px); } }

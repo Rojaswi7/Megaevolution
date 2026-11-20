@@ -9,6 +9,7 @@ import { NAV, LOCALES, LOCALE_NAMES, href } from '@/data/site'
 import type { Dict } from '@/data/i18n'
 import { Icon, Arrow } from './Icon'
 import { CurrencySwitch } from './Money'
+import LocalePicker from './LocalePicker'
 import { useApp, useAccount, canSeeAgencyOrders } from './AppState'
 import { track } from '@/lib/track'
 
@@ -110,10 +111,7 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
             </button>
             <details className="hdr__loc" ref={locRef}>
               <summary aria-label={`${dict.language} / ${dict.currency}`} title={`${dict.language} · ${dict.currency}`}><Icon name="globe" size={18} /></summary>
-              <div className="hdr__pop">
-                <label><span>{dict.language}</span><LangSwitch lang={lang} label={dict.language} /></label>
-                <label><span>{dict.currency}</span><CurrencySwitch label={dict.currency} /></label>
-              </div>
+              <div className="hdr__pop hdr__pop--lp"><LocalePicker lang={lang} labels={{ language: dict.language, currency: dict.currency }} /></div>
             </details>
             {account ? (
               <>
