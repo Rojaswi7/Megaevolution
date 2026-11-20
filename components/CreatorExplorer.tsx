@@ -124,7 +124,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
 
   const list = results.slice(0, shown)
   // home: spotlight + six tiles per page; the spotlight walks through the page on its own
-  const PER = 6
+  const PER = 4
   const pages = Math.max(1, Math.ceil(Math.min(results.length, 12) / PER))
   const pageList = results.slice(page * PER, page * PER + PER)
   const spot = pageList[active] || pageList[0]

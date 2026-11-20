@@ -271,3 +271,32 @@
 .tw__steps b { font-size: 14.5px; }
 .tw__buy { padding-top: 12px; }
 .tw__buy b span { display: inline; }
+
+/* ---------- home creators: featured creator across the top, one row of four below ---------- */
+.show { grid-template-columns: 1fr; gap: 20px; }
+.show .spot { position: static; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; }
+.show .spot__media { aspect-ratio: 16 / 9; min-height: 0; }
+.show .spot__media--youtube .pf__thumb { height: 100%; }
+.show .spot--vert { grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1fr); }
+.show .spot--vert .spot__media { aspect-ratio: auto; min-height: 460px; }
+.show .spot__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: center; gap: 18px 28px; padding: clamp(20px, 2.4vw, 34px); }
+.show .spot__title, .show .spot__chan { grid-column: 1 / -1; }
+.show .spot__chan { flex-direction: row; align-items: center; }
+.show .spot__chan .row { width: auto; }
+.show .spot__on ul { flex-direction: column; }
+.show .spot__on li { flex: none; }
+.show .spot__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); align-self: start; }
+.show .spot--vert .spot__body { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+.show__side { display: grid; gap: 14px; }
+.show__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.show__grid .rt__media { aspect-ratio: 4 / 3.7; }
+@media (max-width: 1280px) { .show .spot, .show .spot--vert { grid-template-columns: 1fr; } .show .spot--vert .spot__media { min-height: 0; aspect-ratio: 4 / 3; } .show__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .show .spot__body { grid-template-columns: 1fr; } .show .spot__chan { flex-direction: column; align-items: flex-start; } }
+.show__grid .rt__media { aspect-ratio: 16 / 12; }
+.show .spot__title { display: none; }
+.show .spot__body { align-content: center; }
+.show .spot__chan { border-top: 0; padding-top: 0; }
+@media (max-width: 760px) {
+  .show .spot__body, .show .spot--vert .spot__body { grid-template-columns: 1fr; }
+  .show .spot__on ul { flex-direction: row; flex-wrap: wrap; }
+}
