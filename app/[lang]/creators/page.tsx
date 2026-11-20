@@ -5,7 +5,8 @@ import { MARKETS } from '@/data/markets'
 import { CATEGORIES } from '@/data/categories'
 import { PROOF } from '@/data/site'
 import { pageMeta, itemListLd } from '@/lib/seo'
-import { Breadcrumbs, JsonLd, RoadmapTag, StickyCta, Cta, Faq } from '@/components/ui'
+import { Breadcrumbs, JsonLd, RoadmapTag, StickyCta, Cta, SectionHead } from '@/components/ui'
+import FaqCards from '@/components/home/FaqCards'
 import CreatorExplorer from '@/components/CreatorExplorer'
 import { slim, CountryLinks } from '@/components/creators/HubParts'
 import { HOME_FAQ } from '@/data/faq'
@@ -34,20 +35,27 @@ export default async function Creators({ params }: P) {
             <p className="eyebrow">Creator search <RoadmapTag status="dev" /></p>
             <h1 className="h2">Find creators<span className="it">with rates up front.</span></h1>
           </div>
-          <p className="cr-top__note">{CREATORS.length} sample creators in {MARKETS.length} markets on TikTok, Instagram and YouTube. Filter, open a profile, save to a list or order a package.</p>
+          <p className="cr-top__note">{CREATORS.length} sample creators in {MARKETS.length} markets on TikTok, Instagram and YouTube. Filter, open a profile, save to a list or order a package. TikTok Shop sales per creator are coming soon.</p>
         </header>
 
-        <CreatorExplorer lang={lang} creators={slim(sorted) as any} pageSize={20} mode="full" />
+        <CreatorExplorer lang={lang} creators={slim(sorted) as any} pageSize={24} mode="full" />
 
-        <section className="sec--tight cr-browse" aria-labelledby="h-browse">
-          <h2 className="h3" id="h-browse">Browse creators by country</h2>
-          <CountryLinks lang={lang} />
-          <h2 className="h3">Browse by category</h2>
-          <ul className="cr-links">
-            {CATEGORIES.flatMap((c) => MARKETS.filter((m) => m.strong[0] === c.slug || m.strong[1] === c.slug).slice(0, 3).map((m) => (
-              <li key={c.slug + m.id}><a href={lang === 'en' ? `/creators/${m.slug}/${c.slug}` : `/${lang}/creators/${m.slug}/${c.slug}`} data-cta="search_category_hub"><span>{c.label} creators in {m.short}</span></a></li>
-            )))}
-          </ul>
+        <section className="sec--tight" aria-label="Browse creators">
+          <SectionHead eyebrow="Browse" title="By country|or by category.">Every market and category has its own page with local creators and rates.</SectionHead>
+          <div className="cr-browse">
+            <div>
+              <h3 className="cr-browse__k">Countries</h3>
+              <CountryLinks lang={lang} />
+            </div>
+            <div>
+              <h3 className="cr-browse__k">Popular categories</h3>
+              <ul className="cr-links">
+                {CATEGORIES.flatMap((c) => MARKETS.filter((m) => m.strong[0] === c.slug || m.strong[1] === c.slug).slice(0, 3).map((m) => (
+                  <li key={c.slug + m.id}><a href={lang === 'en' ? `/creators/${m.slug}/${c.slug}` : `/${lang}/creators/${m.slug}/${c.slug}`} data-cta="search_category_hub"><span>{c.label} creators in {m.short}</span></a></li>
+                )))}
+              </ul>
+            </div>
+          </div>
         </section>
 
         <section className="sec--tight">
@@ -61,9 +69,8 @@ export default async function Creators({ params }: P) {
           </div>
         </section>
 
-        <section className="sec--tight cr-faq">
-          <h2 className="h3">Questions about finding creators</h2>
-          <Faq items={HOME_FAQ.slice(0, 4)} />
+        <section className="sec--tight">
+          <FaqCards lang={lang} items={HOME_FAQ.slice(0, 4)} title="Finding|creators." />
         </section>
       </div>
       <StickyCta lang={lang} to="/about-agency#inquiry" cta="request_campaign" label="Request a campaign" note="Want a shortlist made for you?" />

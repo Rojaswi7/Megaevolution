@@ -56,7 +56,7 @@ export default async function CategoryHub({ params }: P) {
         {thin ? (
           <>
             <p className="wnote cr-thin"><Icon name="sparkle" size={15} />Only {list.length} {cat.noun} {list.length === 1 ? 'creator' : 'creators'} listed in {m.name} so far. Our {m.short} manager can find more for you, or see <Link className="ulink" href={href(lang, `/creators/${m.slug}`)} prefetch={false}>all creators in {m.name}</Link>.</p>
-            <div className="cgrid">{list.map((c) => <CreatorCard key={c.handle} c={c} lang={lang} gmvSlot />)}</div>
+            <div className="cgrid">{list.map((c) => <CreatorCard key={c.handle} c={c} lang={lang} />)}</div>
           </>
         ) : (
           <CreatorExplorer lang={lang} creators={slim(list) as any} pageSize={20} mode="full" lock={['country', 'category']} initial={{ country: m.slug, category: cat.slug }} />

@@ -214,7 +214,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
           <button className="ct__clear" onClick={reset}>Clear all</button>
           {!heading ? <span className="ct__n"><b>{results.length}</b> creators</span> : null}
         </div>
-      ) : !heading ? <p className="ct__chips"><span className="ct__n"><b>{results.length}</b> creators</span></p> : null}
+      ) : null}
 
       {relax && <p className="cx__relax"><Icon name="sparkle" size={15} /><span><b>+{relax.n} more</b> if you relax {relaxName[relax.k]}.</span><button className="ulink" onClick={() => set(relax.k, '')}>Relax it</button></p>}
 
@@ -235,7 +235,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
           </div>
         </div>
       ) : list.length ? (
-        <div className="cgrid">{list.map((c) => <CreatorCard key={c.handle} c={c} lang={lang} gmvSlot={mode === 'full'} />)}</div>
+        <div className="cgrid">{list.map((c) => <CreatorCard key={c.handle} c={c} lang={lang} />)}</div>
       ) : (
         <div className="cx__empty card card--pad">
           <h3 className="h3">No creators match all of that.</h3>

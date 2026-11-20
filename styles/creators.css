@@ -10,8 +10,11 @@
 @media (max-width: 860px) { .cr-top { grid-template-columns: 1fr; } }
 
 .cr-h { margin-bottom: 14px; }
-.cr-browse { display: grid; gap: 14px; }
-.cr-browse h2:not(:first-child) { margin-top: 14px; }
+.cr-browse { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; align-items: start; }
+.cr-browse > div { display: grid; gap: 10px; }
+.cr-browse__k { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.cr-browse .cr-links { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+@media (max-width: 960px) { .cr-browse { grid-template-columns: 1fr; } }
 .cr-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; }
 .cr-links a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 14px; border-radius: 12px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-size: 14.5px; font-weight: 500; }
 .cr-links a:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }

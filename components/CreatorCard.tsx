@@ -50,9 +50,9 @@ export function PlatformList({ c, size = 14 }: { c: Creator; size?: number }) {
   )
 }
 
-type CardProps = { c: Creator; lang: string; gmvSlot?: boolean; selected?: boolean; onSelect?: () => void }
+type CardProps = { c: Creator; lang: string; selected?: boolean; onSelect?: () => void }
 
-export function CreatorCard({ c, lang, gmvSlot = false, selected = false, onSelect }: CardProps) {
+export function CreatorCard({ c, lang, selected = false, onSelect }: CardProps) {
   const m = marketById[c.market]
   return (
     <article className={`rt ${selected ? 'is-on' : ''} ${onSelect ? 'rt--pick' : ''}`} data-handle={c.handle}>
@@ -79,7 +79,6 @@ export function CreatorCard({ c, lang, gmvSlot = false, selected = false, onSele
           <p className="rt__from">from <b>{localMoney(c.rateLocal, c.currency)}</b>{c.currency !== 'USD' ? <small>≈ <Money usd={c.rateUsd} /></small> : null}</p>
           <SaveButton handle={c.handle} />
         </div>
-        {gmvSlot && <p className="rt__gmv" title="Coming soon: TikTok Shop sales per creator"><Icon name="bag" size={13} />TikTok Shop sales · coming soon</p>}
       </div>
     </article>
   )
