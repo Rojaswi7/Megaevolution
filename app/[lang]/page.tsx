@@ -9,6 +9,7 @@ import { MARKETS } from '@/data/markets'
 import ReelWall from '@/components/home/ReelWall'
 import ToolsShowcase from '@/components/home/ToolsShowcase'
 import BeforeAfter from '@/components/home/BeforeAfter'
+import BriefForm from '@/components/home/BriefForm'
 import ServicesFan from '@/components/sections/ServicesFan'
 import { TOOLS } from '@/data/tools'
 import { HOME_CASES } from '@/data/cases'
@@ -76,12 +77,13 @@ export default async function Home({ params }: P) {
             <HeroSearch lang={lang} />
             <div className="hero3__quick">
               {CHIPS.map((c) => <QuickChip key={c.label} lang={lang} country={c.country} category={c.category}>{c.label}</QuickChip>)}
-              <nav className="hero3__cats" aria-label="Browse by category">
-                {CATEGORIES.map((c) => (
-                  <Link key={c.slug} href={href(lang, `/creators?category=${c.slug}`)} data-cta="hero_category" prefetch={false} title={c.label} aria-label={`${c.label} creators`}><Icon name={c.icon} size={16} /></Link>
-                ))}
-              </nav>
-            </div>
+                          </div>
+            <nav className="hero3__cats" aria-label="Browse by category">
+              <span>Browse</span>
+              {CATEGORIES.map((c) => (
+                <Link key={c.slug} href={href(lang, '/creators?category=' + c.slug)} data-cta="hero_category" prefetch={false}><Icon name={c.icon} size={14} />{c.label}</Link>
+              ))}
+            </nav>
             <p className="hero3__alt">
               <span>Need us to run it? <TLink lang={lang} to="/about-agency" cta="hero_to_agency">Agency</TLink></span>
               <span>Need videos edited? <TLink lang={lang} to="/video-editing" cta="hero_to_video">Video Editing</TLink></span>
@@ -93,11 +95,8 @@ export default async function Home({ params }: P) {
 
       {/* 2 — creator search results, directly below the hero */}
       <section className="wrap sec--tight home-results" aria-labelledby="h-results">
-        <div className="home-results__head">
-          <h2 className="h2" id="h-results">Creators on <span className="it it--inline">MegaEvolution</span></h2>
-          <RoadmapTag status="dev" />
-        </div>
-        <CreatorExplorer lang={lang} creators={slice as any} total={CREATORS.length} pageSize={12} mode="home" initial={{ sort: 'featured' }} />
+        <CreatorExplorer lang={lang} creators={slice as any} total={CREATORS.length} pageSize={12} mode="home" initial={{ sort: 'featured' }}
+          heading={<><p className="eyebrow">Creator search <RoadmapTag status="dev" /></p><h2 className="h2" id="h-results">Creators on <span className="it it--inline">MegaEvolution</span></h2></>} />
       </section>
 
       {/* 3 — logo strip */}
@@ -236,17 +235,10 @@ export default async function Home({ params }: P) {
         </div>
       </section>
 
-      {/* 12 — final CTA */}
-      <section className="wrap">
-        <div className="slab final">
-          <h2 className="h1">Ready when<span className="it">you are.</span></h2>
-          <p className="lede">Tell us the market and the product. No brief needed. You’ll hear back within one business day.</p>
-          <div className="row">
-            <Cta lang={lang} to="/about-agency#inquiry" cta="final_request_campaign" size="lg">{CTA.request}</Cta>
-            <Cta lang={lang} to="/creators" cta="final_search_creators" size="lg" variant="ghost">{CTA.search}</Cta>
-          </div>
-          <ul className="final__ok">{PROOF.approvals.map((a) => <li key={a}><Icon name="check" size={15} />{a}</li>)}</ul>
-        </div>
+      {/* 12 — start a campaign: the brief form */}
+      <section className="wrap sec" id="brief">
+        <BriefForm lang={lang} />
+        <ul className="bf__ok">{PROOF.approvals.map((a) => <li key={a}><Icon name="check" size={15} />{a}</li>)}</ul>
       </section>
 
       <StickyCta lang={lang} to="/creators" cta="search_creators" label={CTA.search} />

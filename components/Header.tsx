@@ -78,7 +78,7 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
 
           <div className="hdr__tools">
             <button className="hdr__search" onClick={() => openSearch('header')} data-cta="header_search" aria-label={dict.searchPlaceholder}>
-              <Icon name="search" size={17} /><span>Search</span><kbd className="kbd">{mac ? '⌘K' : 'Ctrl K'}</kbd>
+              <Icon name="search" size={17} /><span>Search creators</span>
             </button>
             <details className="hdr__loc">
               <summary aria-label={`${dict.language} / ${dict.currency}`}><Icon name="globe" size={17} /><span>{lang.toUpperCase()} · {currency}</span></summary>

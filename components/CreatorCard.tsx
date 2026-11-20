@@ -1,9 +1,7 @@
 // Creator tile used on the home page, search, hubs and "similar creators".
-// It looks like the creator's own post on their main platform (TikTok side counts,
-// YouTube duration + progress, Instagram reel mark), and then says everything a
-// buyer needs: handle, flag, every platform they are on with follower counts,
-// followers, average views, engagement, and a "from" rate in the creator's
-// currency plus the visitor's currency.
+// Top: the creator's post as their main platform shows it (PostFrame).
+// Bottom: always the same four rows, so every tile in a row lines up:
+//   who · stats · platforms they post on · starting rate + save
 import Link from 'next/link'
 import { href } from '@/data/site'
 import type { Creator } from '@/data/creators'
@@ -13,6 +11,9 @@ import { compact, localMoney } from '@/lib/format'
 import { Flag, Icon, PlatformIcon } from './Icon'
 import { Money } from './Money'
 import { SaveButton } from './client'
+import { PostFrame, postStats } from './PostFrame'
+
+export { postStats }
 
 export function Verified() {
   return (
@@ -27,31 +28,7 @@ export function Avatar({ c, size }: { c: { name: string; tone: number }; size?: 
   return <span className={`av tone-${c.tone}`} style={size ? ({ ['--s' as any]: `${size}px` }) : undefined} aria-hidden="true">{c.name[0]}</span>
 }
 
-// deterministic sample numbers for the post chrome
-function seed(s: string) { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h }
-export function postStats(c: Creator) {
-  const s = seed(c.handle)
-  return { likes: compact(Math.round(c.avgViews * (0.05 + (s % 9) / 100))), comments: compact(300 + (s % 9000)), mins: `${6 + (s % 14)}:${String(s % 60).padStart(2, '0')}`, days: 1 + (s % 6), progress: 22 + (s % 55) }
-}
-
-/** The look of a post on that platform, drawn flat. No real media in the mockup. */
-export function PlatformChrome({ c, platform }: { c: Creator; platform: string }) {
-  const st = postStats(c)
-  if (platform === 'TikTok') {
-    return (
-      <span className="pc pc--tt" aria-hidden="true">
-        <span><Icon name="heart" size={17} stroke={0} className="pc__fill" />{st.likes}</span>
-        <span><Icon name="message" size={16} stroke={0} className="pc__fill" />{st.comments}</span>
-        <span><Icon name="arrowUpRight" size={16} stroke={2.2} /></span>
-      </span>
-    )
-  }
-  if (platform === 'YouTube') return <span className="pc pc--yt" aria-hidden="true"><b>{st.mins}</b><i style={{ width: `${st.progress}%` }} /></span>
-  if (platform === 'Instagram') return <span className="pc pc--ig" aria-hidden="true"><Icon name="film" size={17} /></span>
-  return null
-}
-
-/** Flat cover tile: the creator's caption as cover text, like a video title card. */
+/** Flat cover tile: the creator's caption as cover text (used on profiles and the hero). */
 export function Thumb({ c, caption, views, ratio, tone, platform }: { c: Creator; caption?: string; views?: number; ratio?: string; tone?: number; platform?: string }) {
   const p = platform || c.platforms[0].platform
   return (
@@ -76,22 +53,12 @@ type CardProps = { c: Creator; lang: string; gmvSlot?: boolean; selected?: boole
 
 export function CreatorCard({ c, lang, gmvSlot = false, selected = false, onSelect }: CardProps) {
   const m = marketById[c.market]
-  const main = c.platforms[0].platform
   return (
     <article className={`rt ${selected ? 'is-on' : ''}`} data-handle={c.handle} onMouseEnter={onSelect} onFocus={onSelect}>
-      <div className={`rt__media tone-${c.tone}`}>
-        <div className="rt__top">
-          <span className="rt__plat"><PlatformIcon name={main} size={14} />{main}</span>
-          <span className="rt__rate" title="Starting rate in the creator's own currency">{localMoney(c.rateLocal, c.currency)}+</span>
-        </div>
-        <PlatformChrome c={c} platform={main} />
-        <p className="rt__cap">{c.caption}</p>
-        <span className="rt__views"><Icon name="play" size={11} stroke={2.2} />{compact(c.avgViews)} avg views</span>
-      </div>
-      <SaveButton handle={c.handle} />
+      <div className="rt__media"><PostFrame c={c} /></div>
       <div className="rt__body">
         <div className="rt__who">
-          <Avatar c={{ name: c.name, tone: (c.tone + 5) % 8 }} size={38} />
+          <Avatar c={{ name: c.name, tone: (c.tone + 5) % 8 }} size={36} />
           <div className="rt__id">
             <p className="rt__handle">
               <Link href={href(lang, `/@${c.handle}`)} className="rt__link" data-cta="creator_card_view_profile" prefetch={false}>@{c.handle}</Link>
@@ -105,9 +72,10 @@ export function CreatorCard({ c, lang, gmvSlot = false, selected = false, onSele
           <div><dt>Avg views</dt><dd>{compact(c.avgViews)}</dd></div>
           <div><dt>Eng.</dt><dd>{c.er}%</dd></div>
         </dl>
+        <div className="rt__on"><span>On</span><PlatformList c={c} size={13} /></div>
         <div className="rt__foot">
-          <PlatformList c={c} />
-          <p className="rt__from">from <b>{c.currency === 'USD' ? localMoney(c.rateLocal, 'USD') : <Money usd={c.rateUsd} />}</b></p>
+          <p className="rt__from">from <b>{localMoney(c.rateLocal, c.currency)}</b>{c.currency !== 'USD' ? <small>≈ <Money usd={c.rateUsd} /></small> : null}</p>
+          <SaveButton handle={c.handle} />
         </div>
         {gmvSlot && <p className="rt__gmv" title="Coming soon: TikTok Shop sales per creator"><Icon name="bag" size={13} />TikTok Shop sales · coming soon</p>}
       </div>
