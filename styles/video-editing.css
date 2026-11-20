@@ -1,0 +1,81 @@
+/* Video Editing Studio page (ve-) */
+
+/* ---------- hero ---------- */
+.ve-hero { background: var(--navy); padding-block: clamp(28px, 3.4vw, 56px); margin-top: 8px; }
+.ve-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px clamp(32px, 4vw, 72px); align-items: center; }
+.ve-hero__copy { display: grid; gap: 20px; justify-items: start; }
+.ve-hero__copy .h1 { font-size: var(--fs-h1); }
+.ve-hero__copy .lede { max-width: 44ch; }
+.ve-hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.ve-hero__from { display: flex; flex-wrap: wrap; gap: 8px; }
+.ve-hero__from li { display: grid; gap: 2px; padding: 10px 14px; border-radius: 14px; background: var(--inner); }
+.ve-hero__k { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--on-dark-2); }
+.ve-hero__from b { font-family: var(--serif); font-weight: 400; font-size: 1.3rem; color: var(--accent-on-dark); }
+.ve-hero .ba__frame { width: 100%; }
+@media (max-width: 1000px) { .ve-hero__grid { grid-template-columns: 1fr; } }
+
+/* ---------- portfolio: real tile shapes, the end tile takes the rest of the row ---------- */
+.st-pf__end { flex: 1 0 260px; height: 380px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; position: relative; padding: 18px; border-radius: var(--r-m); border: 1.5px dashed var(--navy); color: var(--ink); transition: background 0.15s; }
+.st-pf__end:hover { background: var(--accent); border-style: solid; }
+.st-pf__end b { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.03em; }
+.st-pf__end small { font-size: 14px; color: var(--ink-2); max-width: 28ch; }
+.st-pf__end-go { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-weight: 600; font-size: 14.5px; }
+
+/* ---------- pricing ---------- */
+.ve-price { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.ve-card { display: flex; flex-direction: column; gap: 10px; padding: clamp(20px, 2vw, 26px); border-radius: 26px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--navy); }
+.ve-card__k { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.ve-card__amt { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; }
+.ve-card__amt b { font-family: var(--serif); font-size: clamp(2.4rem, 3.4vw, 3.2rem); line-height: 1; }
+.ve-card__per { font-size: 13.5px; color: var(--ink-3); }
+.ve-card__note { font-size: 14px; color: var(--ink-2); margin-bottom: 8px; }
+.ve-card .btn { margin-top: auto; }
+.ve-card--accent { background: var(--accent); color: var(--accent-ink); }
+.ve-card--accent .ve-card__k, .ve-card--accent .ve-card__per, .ve-card--accent .ve-card__note { color: var(--accent-ink); }
+.ve-card--dark { background: var(--navy); box-shadow: 0 6px 0 var(--accent); }
+.ve-card--dark .ve-card__k, .ve-card--dark .ve-card__per, .ve-card--dark .ve-card__note { color: var(--on-dark-2); }
+.ve-card--dark .ve-card__amt b { color: var(--accent-on-dark); }
+@media (max-width: 1100px) { .ve-price { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .ve-price { grid-template-columns: 1fr; } }
+
+.ve-fine { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); margin-top: 14px; border-radius: 22px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.ve-fine__col { display: grid; gap: 12px; align-content: start; padding: 20px 24px; }
+.ve-fine__col + .ve-fine__col { border-left: 1px solid var(--line); }
+.ve-fine__k { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.ve-fine__ticks { display: grid; gap: 8px; font-size: 14.5px; }
+.ve-fine__col:first-child .ve-fine__ticks { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
+.ve-fine__ticks li { display: flex; align-items: flex-start; gap: 9px; }
+.ve-fine__ticks .ico { flex: none; margin-top: 3px; }
+.ve-fine__rows { display: grid; }
+.ve-fine__rows div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 14.5px; }
+.ve-fine__rows div:last-child { border-bottom: 0; }
+.ve-fine__rows dd { font-weight: 600; white-space: nowrap; }
+.ve-fine__logos { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 26px; padding: 14px 24px; border-top: 1px solid var(--line); font-size: 15px; }
+.ve-fine__logos span { font-size: 12.5px; color: var(--ink-3); }
+.ve-fine__logos b { font-weight: 600; color: var(--ink-2); }
+@media (max-width: 1000px) { .ve-fine { grid-template-columns: 1fr; } .ve-fine__col + .ve-fine__col { border-left: 0; border-top: 1px solid var(--line); } }
+@media (max-width: 480px) { .ve-fine__col:first-child .ve-fine__ticks { grid-template-columns: 1fr; } }
+
+/* ---------- how it works: an order-status track ---------- */
+.ve-steps { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.ve-steps::before { content: ''; position: absolute; left: 40px; right: 40px; top: 41px; height: 2px; background: repeating-linear-gradient(90deg, var(--navy) 0 8px, transparent 8px 14px); }
+.ve-steps li { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 22px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--navy); }
+.ve-steps li.is-last { background: var(--accent); color: var(--accent-ink); }
+.ve-steps__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ve-steps__ico { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: var(--navy); color: var(--accent-on-dark); }
+.ve-steps__status { padding: 4px 10px; border-radius: 999px; background: var(--grey); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.ve-steps li.is-last .ve-steps__status { background: var(--navy); color: #fff; }
+.ve-steps h3 { display: flex; align-items: baseline; gap: 8px; font-size: var(--fs-h4); font-weight: 600; letter-spacing: -0.02em; }
+.ve-steps h3 .num { font-family: var(--serif); font-style: italic; font-size: 1.4rem; font-weight: 400; }
+.ve-steps p { font-size: 14px; color: var(--ink-2); }
+.ve-steps li.is-last p { color: var(--accent-ink); }
+.ve-after { margin-top: 16px; }
+#how + .sec { padding-top: 0; }
+@media (max-width: 1100px) { .ve-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ve-steps::before { display: none; } }
+@media (max-width: 560px) { .ve-steps { grid-template-columns: 1fr; } }
+
+/* ---------- agency strip ---------- */
+.ve-cross { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; padding: 16px 20px; border-radius: 20px; background: var(--navy); }
+.ve-cross__ico { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; background: var(--accent); color: var(--accent-ink); flex: none; }
+.ve-cross p { flex: 1 1 320px; color: var(--on-dark-2); }
+.ve-cross p b { color: #fff; font-weight: 600; }

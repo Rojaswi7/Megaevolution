@@ -1,0 +1,77 @@
+/* Markets hub (mh-, mc-) */
+
+/* ---------- hero with the map ---------- */
+.mh-hero { background: var(--navy); padding-block: clamp(28px, 3.4vw, 56px); margin-top: 8px; }
+.mh-hero__top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px clamp(32px, 5vw, 88px); align-items: end; }
+.mh-hero__top .h1 { margin-top: 14px; font-size: var(--fs-h1); }
+.mh-hero__side { display: grid; gap: 18px; }
+.mh-hero__side > p { color: var(--on-dark-2); max-width: 48ch; }
+.mh-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.mh-stats div { display: flex; flex-direction: column-reverse; gap: 4px; padding: 14px 16px; border-radius: 18px; background: var(--inner); }
+.mh-stats div:first-child { background: var(--accent); color: var(--accent-ink); }
+.mh-stats dd { font-family: var(--serif); font-size: clamp(2rem, 3vw, 2.8rem); line-height: 1; }
+.mh-stats dt { font-size: 12.5px; color: var(--on-dark-2); }
+.mh-stats div:first-child dt { color: var(--accent-ink); }
+/* map section: map and country panel side by side */
+.mh-map .mm__map { box-shadow: inset 0 0 0 1.5px var(--navy); }
+@media (max-width: 1000px) { .mh-hero__top { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .mh-stats { gap: 6px; } .mh-stats div { padding: 12px; border-radius: 14px; } .mh-stats dd { font-size: 1.8rem; } .mh-stats dt { font-size: 11.5px; } }
+
+/* ---------- compare ---------- */
+.mc { display: grid; gap: 14px; }
+.mc__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.mc__seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 5px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--navy); }
+.mc__seg button { height: 38px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.mc__seg button:hover { background: var(--grey); color: var(--ink); }
+.mc__seg button[aria-pressed='true'] { background: var(--navy); color: #fff; }
+.mc__cats { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mc__cats > span { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-right: 4px; }
+.mc__cats button { height: 34px; padding: 0 13px; border-radius: 999px; font-size: 13.5px; font-weight: 500; box-shadow: inset 0 0 0 1px var(--line-strong); background: var(--surface); }
+.mc__cats button:hover { box-shadow: inset 0 0 0 1.5px var(--navy); }
+.mc__cats button[aria-pressed='true'] { background: var(--accent); color: var(--accent-ink); box-shadow: inset 0 0 0 1.5px var(--navy); font-weight: 600; }
+.mc__count { font-size: 14px; color: var(--ink-2); }
+.mc__count b { color: var(--ink); }
+
+.mc__table { display: grid; border-radius: 24px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--navy); overflow: hidden; }
+.mc__row { position: relative; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.5fr) minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.5fr) 28px; align-items: center; gap: 16px; padding: 14px 20px; border-top: 1px solid var(--line); transition: background 0.15s, opacity 0.2s; }
+.mc__row--head { border-top: 0; padding-block: 12px; background: var(--grey); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.mc__row:not(.mc__row--head):hover { background: var(--surface-2); }
+.mc__row.is-dim { opacity: 0.32; }
+.mc__name { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.mc__name .flag { width: 30px; height: auto; border-radius: 4px; flex: none; }
+.mc__name > span { display: grid; min-width: 0; }
+.mc__name a { font-weight: 600; font-size: 15.5px; letter-spacing: -0.02em; }
+.mc__name a::after { content: ''; position: absolute; inset: 0; }
+.mc__name small { font-size: 12.5px; color: var(--ink-3); }
+.mc__watch { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13.5px; }
+.mc__watch > span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.mc__watch i { font-style: normal; width: 17px; height: 17px; display: grid; place-items: center; border-radius: 50%; background: var(--grey); font-size: 10.5px; font-weight: 700; }
+.mc__watch > span:first-child i { background: var(--accent); }
+.mc__shops { font-size: 13.5px; color: var(--ink-2); }
+.mc__strong { display: flex; flex-wrap: wrap; gap: 4px; }
+.mc__strong em { font-style: normal; padding: 3px 9px; border-radius: 999px; background: var(--grey); font-size: 12px; font-weight: 600; }
+.mc__strong em.is-hit { background: var(--accent); box-shadow: inset 0 0 0 1px var(--navy); }
+.mc__season { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.mc__go { color: var(--ink-3); transition: transform 0.15s, color 0.15s; }
+.mc__row:hover .mc__go { color: var(--ink); transform: translateX(3px); }
+
+@media (max-width: 1100px) {
+  .mc__row--head { display: none; }
+  .mc__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px 20px; padding: 16px 18px; }
+  .mc__name { grid-column: 1 / -1; }
+  .mc__go { position: absolute; top: 18px; right: 18px; }
+  .mc__watch::before, .mc__shops::before, .mc__strong::before, .mc__season::before { display: block; width: 100%; margin-bottom: 3px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .mc__watch::before { content: 'Most watched'; }
+  .mc__shops::before { content: 'Shops on'; }
+  .mc__strong::before { content: 'Strong in'; }
+  .mc__season::before { content: 'Big seasons'; }
+}
+@media (max-width: 560px) { .mc__row { grid-template-columns: 1fr; } .mc__seg { border-radius: 22px; } }
+
+/* ---------- other regions ---------- */
+.mh-more { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; padding: 18px 22px; border-radius: 22px; background: var(--navy); }
+.mh-more__ico { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px; background: var(--accent); color: var(--accent-ink); flex: none; }
+.mh-more > div:nth-child(2) { flex: 1 1 360px; }
+.mh-more b { font-weight: 600; }
+.mh-more p { color: var(--on-dark-2); }
+.mh-more__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }

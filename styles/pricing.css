@@ -1,0 +1,68 @@
+/* Pricing page (pr-) */
+.pr-sec { padding-block: clamp(14px, 1.4vw, 22px); scroll-margin-top: calc(var(--hdr) + 12px); }
+
+/* ---------- hero ---------- */
+.pr-hero { background: var(--navy); padding-block: clamp(28px, 3.2vw, 52px); margin: 8px 0 clamp(14px, 1.4vw, 22px); }
+.pr-hero__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px clamp(32px, 4vw, 72px); align-items: center; }
+.pr-hero__copy { display: grid; gap: 18px; }
+.pr-hero__copy .h1 { font-size: var(--fs-h1); }
+.pr-hero__copy .lede { max-width: 46ch; }
+.pr-glance { display: grid; gap: 10px; padding: 12px; border-radius: 26px; background: var(--inner); }
+.pr-glance__free { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 18px; background: var(--accent); color: var(--accent-ink); }
+.pr-glance__free p { font-size: 14.5px; line-height: 1.45; }
+.pr-glance__free b { font-weight: 600; }
+.pr-glance__badge { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--navy); color: var(--accent-on-dark); font-family: var(--serif); font-style: italic; font-size: 1.35rem; transform: rotate(-8deg); }
+.pr-glance ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.pr-glance a { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; gap: 4px 10px; align-items: end; padding: 14px 16px; border-radius: 18px; background: #fff; color: var(--navy); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.pr-glance a:hover { transform: translateY(-2px); box-shadow: 0 4px 0 var(--accent); }
+.pr-glance__k { grid-column: 1 / -1; font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.pr-glance a b { font-family: var(--serif); font-weight: 400; font-size: 1.45rem; line-height: 1.1; }
+.pr-glance a b .money__per { font-family: var(--sans); font-size: 13px; color: var(--ink-3); margin-left: 2px; }
+.pr-glance a .ico { margin-bottom: 4px; }
+@media (max-width: 1000px) { .pr-hero__grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .pr-glance ul { grid-template-columns: 1fr; } .pr-glance__badge { width: 52px; height: 52px; font-size: 1.1rem; } }
+
+/* ---------- studio ---------- */
+.pr-studio { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.pr-once, .pr-sub { display: flex; flex-direction: column; gap: 12px; padding: clamp(18px, 2vw, 26px); border-radius: var(--r-l); }
+.pr-once { background: var(--surface-2); }
+.pr-once ul { display: grid; gap: 8px; }
+.pr-once li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--surface); }
+.pr-once li b { display: block; font-weight: 600; }
+.pr-once li small { color: var(--ink-3); font-size: 12.5px; }
+.pr-once li .num { font-family: var(--serif); font-size: 1.35rem; }
+.pr-once__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pr-once__chips span { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; color: var(--ink-2); }
+.pr-once__chips b { font-weight: 600; color: var(--ink); }
+.pr-once__note { color: var(--ink-3); font-size: 12.5px; }
+.pr-once .btn { margin-top: auto; }
+.pr-sub { background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.pr-sub--rec { box-shadow: inset 0 0 0 1.5px var(--navy), 0 5px 0 var(--accent); }
+.pr-sub header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pr-sub__kind { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.pr-sub .ticks { flex: 1; }
+.pr-trust { margin-top: 14px; }
+@media (max-width: 1100px) { .pr-studio { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pr-once { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .pr-studio { grid-template-columns: 1fr; } }
+
+/* ---------- analytics: a meter that fills as the plan grows ---------- */
+.pr-meter { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.pr-meter li { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px; border-radius: var(--r-l); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.pr-meter li.is-free { box-shadow: inset 0 0 0 1.5px var(--navy), 0 5px 0 var(--accent); }
+.pr-meter__bar { width: 100%; height: 8px; border-radius: 999px; background: var(--grey); overflow: hidden; margin-bottom: 4px; }
+.pr-meter__bar i { display: block; height: 100%; width: calc(var(--lvl) * 100%); border-radius: inherit; background: var(--navy); }
+.pr-meter li.is-free .pr-meter__bar i { background: var(--accent); box-shadow: inset 0 0 0 1px var(--navy); }
+.pr-meter__n { display: flex; align-items: baseline; gap: 6px; }
+.pr-meter__n b { font-family: var(--serif); font-size: 2.6rem; line-height: 1; }
+.pr-meter__n span { color: var(--ink-3); font-size: 13px; }
+.pr-meter li .btn, .pr-meter li > .muted { margin-top: auto; }
+.pr-note { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 12px 16px; border-radius: 14px; background: var(--surface-2); font-size: 13.5px; color: var(--ink-2); }
+@media (max-width: 1000px) { .pr-meter { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .pr-meter { grid-template-columns: 1fr; } }
+
+/* ---------- enterprise strip ---------- */
+.pr-ent { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px 28px; padding: clamp(20px, 2.4vw, 32px); border-radius: 26px; background: var(--navy); }
+.pr-ent__ico { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 18px; background: var(--accent); color: var(--accent-ink); }
+.pr-ent p { color: var(--on-dark-2); max-width: 64ch; margin-top: 6px; }
+.pr-ent__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+@media (max-width: 860px) { .pr-ent { grid-template-columns: 1fr; } }
