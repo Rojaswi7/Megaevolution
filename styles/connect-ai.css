@@ -4,7 +4,7 @@
 .cai-hero { background: var(--navy); padding-block: clamp(28px, 3.6vw, 60px); margin-top: 8px; }
 .cai-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px clamp(32px, 4vw, 80px); align-items: center; }
 .cai-hero__copy { display: grid; gap: 20px; justify-items: start; }
-.cai-hero__copy .h1 { font-size: clamp(2.3rem, 4.2vw, 4.3rem); }
+.cai-hero__copy .h1 { font-size: var(--fs-h1); }
 .cai-hero__copy .lede { max-width: 46ch; }
 .cai-url { display: grid; gap: 8px; width: min(100%, 560px); }
 .cai-url__k { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-on-dark); }

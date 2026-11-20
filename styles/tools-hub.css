@@ -3,7 +3,7 @@
 /* ---------- hero: headline + live demo ---------- */
 .th-hero { background: var(--navy); padding-block: clamp(28px, 3.4vw, 56px); margin-top: 8px; }
 .th-hero__copy { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px clamp(32px, 4vw, 72px); align-items: end; margin-bottom: clamp(22px, 2.6vw, 36px); }
-.th-hero__copy .h1 { font-size: clamp(2.4rem, 4.4vw, 4.6rem); margin-top: 14px; }
+.th-hero__copy .h1 { font-size: var(--fs-h1); margin-top: 14px; }
 .th-hero__side { display: grid; gap: 18px; justify-items: start; }
 .th-hero__side .lede { max-width: 44ch; }
 .th-hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
@@ -31,7 +31,7 @@
 .th-card:hover .th-card__go .ico { transform: translateX(3px); }
 
 .th-card--lead { grid-column: span 2; background: var(--accent); color: var(--accent-ink); }
-.th-card--lead .h3 { font-size: clamp(1.8rem, 2.6vw, 2.6rem); }
+.th-card--lead .h3 { font-size: var(--fs-h3l); }
 .th-card--lead .th-card__job { color: var(--accent-ink); font-family: var(--serif); font-style: italic; font-size: clamp(1.25rem, 1.8vw, 1.6rem); line-height: 1.25; }
 .th-card--lead .th-card__feat { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
 .th-card--lead .th-card__feat li { padding: 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.5); }

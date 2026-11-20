@@ -3,7 +3,7 @@
 /* ---------- hero with the map ---------- */
 .mh-hero { background: var(--navy); padding-block: clamp(28px, 3.4vw, 56px); margin-top: 8px; }
 .mh-hero__top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px clamp(32px, 5vw, 88px); align-items: end; }
-.mh-hero__top .h1 { margin-top: 14px; font-size: clamp(2.4rem, 4.4vw, 4.6rem); }
+.mh-hero__top .h1 { margin-top: 14px; font-size: var(--fs-h1); }
 .mh-hero__side { display: grid; gap: 18px; }
 .mh-hero__side > p { color: var(--on-dark-2); max-width: 48ch; }
 .mh-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }

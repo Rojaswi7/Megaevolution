@@ -68,7 +68,7 @@ export default async function MarketPage({ params }: P) {
             <p className="ag-mhero__flag"><Flag market={m.id} /><span className="eyebrow eyebrow--plain">{m.city} · {m.langs.join(', ')}</span></p>
             <h1 className="h1">Influencer marketing<span className="it">in {m.name}.</span></h1>
             <p className="lede">{m.fact}</p>
-            {s?.summary ? <p className="lede" style={{ fontSize: '1rem' }}>{s.summary}</p> : null}
+            {s?.summary ? <p className="body-2">{s.summary}</p> : null}
             <div className="ag-mhero__cta">
               <Cta lang={lang} to={`/creators/${m.slug}`} cta="market_search_creators" size="lg">Search creators in {m.short}</Cta>
               <TLink lang={lang} to={talk} cta="market_talk_to_manager">Talk to our {m.short} manager</TLink>

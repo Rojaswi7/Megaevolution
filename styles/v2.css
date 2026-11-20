@@ -31,7 +31,7 @@
 /* ---------- hero: full-bleed navy with the moving collage ---------- */
 .hero2 { background: var(--dark); padding-bottom: clamp(20px, 2.4vw, 32px); margin-top: -1px; }
 .hero2__grid { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: 28px clamp(28px, 4vw, 72px); align-items: center; padding-top: clamp(18px, 2.4vw, 36px); }
-.hero2__copy .h1 { margin-top: 18px; font-size: clamp(2.4rem, 4.5vw, 4.9rem); }
+.hero2__copy .h1 { margin-top: 18px; font-size: var(--fs-h1); }
 .hero2__copy .lede { margin-top: 20px; max-width: 48ch; }
 .hero2__stats { display: flex; flex-wrap: wrap; gap: 14px 40px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--on-dark-line); max-width: 640px; }
 .hero2__stats dt { font-family: var(--serif); font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.1; color: var(--accent-on-dark); }

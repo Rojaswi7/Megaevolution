@@ -16,7 +16,7 @@
 .cs-feat .cs-meta span { background: var(--inner); color: #fff; }
 .cs-feat .cs-meta .cs-meta__no { background: var(--accent); color: var(--accent-ink); }
 .cs-feat__copy { display: grid; gap: 18px; justify-items: start; }
-.cs-feat__copy .h1 { font-size: clamp(2.3rem, 4vw, 4.2rem); }
+.cs-feat__copy .h1 { font-size: var(--fs-h1); }
 .cs-feat__copy .lede { max-width: 54ch; }
 .cs-feat__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
 .cs-feat__flags { display: inline-flex; align-items: center; gap: 6px; }
@@ -91,7 +91,7 @@
 .cs-story li { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: clamp(20px, 2.2vw, 28px); border-radius: 26px; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--navy); }
 .cs-story__n { font-family: var(--serif); font-style: italic; font-size: 2.4rem; line-height: 1; color: transparent; -webkit-text-stroke: 1.2px var(--navy); }
 .cs-story--quote .cs-story__n { -webkit-text-stroke-color: var(--accent-on-dark); }
-.cs-story__k { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.cs-story__k { font-size: var(--fs-k); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
 .cs-story li > p { font-size: 1.08rem; line-height: 1.5; }
 .cs-story .cs-story--result { background: var(--accent); color: var(--accent-ink); }
 .cs-story .cs-story--result .cs-story__k { color: var(--accent-ink); }

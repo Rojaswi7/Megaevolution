@@ -1,0 +1,21 @@
+/* One type scale for the whole site. Page CSS points at these tokens instead of its own sizes. */
+:root {
+  --fs-h1: clamp(2.4rem, 4.4vw, 4rem);        /* page title */
+  --fs-h2: clamp(1.8rem, 3vw, 2.75rem);       /* section title, compact page title */
+  --fs-h3l: clamp(1.45rem, 2.2vw, 2rem);      /* large card title */
+  --fs-h3: clamp(1.2rem, 1.7vw, 1.45rem);     /* card title */
+  --fs-h4: 1.125rem;                          /* small card title */
+  --fs-k: 11.5px;                             /* uppercase label */
+  --fs-link: 15px;                            /* text link */
+  --fs-lede: clamp(1.02rem, 1.3vw, 1.18rem);  /* intro paragraph */
+}
+.h1 { font-size: var(--fs-h1); }
+.h2, h2.h1 { font-size: var(--fs-h2); }
+.h3 { font-size: var(--fs-h3); }
+.lede { font-size: var(--fs-lede); }
+.tlink { font-size: var(--fs-link); }
+.eyebrow { font-size: var(--fs-k); }
+/* a page-title class used on a section heading (final CTA slabs, spotlight cards) stays section-sized */
+.cs-feat__copy h2.h1, .slab.final h2.h1 { font-size: var(--fs-h2); }
+/* secondary paragraph under an intro */
+.body-2 { font-size: 1rem; line-height: 1.6; color: var(--ink-2); max-width: 62ch; }

@@ -167,7 +167,7 @@
 .bf { grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.6fr); }
 .bf__form { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; row-gap: 0; padding: clamp(22px, 2.6vw, 40px); align-content: start; }
 .bf__form > .eyebrow, .bf__form > .h2 { grid-column: 1 / -1; }
-.bf__form .h2 { margin: 8px 0 6px; font-size: clamp(1.7rem, 2.6vw, 2.4rem); }
+.bf__form .h2 { margin: 8px 0 6px; font-size: var(--fs-h3l); }
 .bf__q { padding: 16px 0; gap: 10px; }
 .bf__q legend { font-size: 1rem; margin-bottom: 10px; }
 .bf__q legend i { width: 26px; height: 26px; font-size: 12px; }
@@ -239,7 +239,7 @@
 .tq-sec { padding-block: 0; }
 .tq { background: var(--navy); padding-block: clamp(36px, 4vw, 60px); margin-block: clamp(40px, 4.6vw, 76px); }
 .tq__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
-.tq__head .eyebrow { color: var(--accent-on-dark); font-size: 13px; letter-spacing: 0.22em; }
+.tq__head .eyebrow { color: var(--accent-on-dark); }
 .tq__nav { display: flex; gap: 10px; }
 .tq__nav button { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.35); }
 .tq__nav button:hover { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
