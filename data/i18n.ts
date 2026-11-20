@@ -4,7 +4,7 @@
 import type { Locale } from './site'
 
 const en = {
-  nav: { creators: 'Creator Marketing', tools: 'Tools', video: 'Video Editing', agency: 'Agency', markets: 'Markets', ai: 'Connect your AI', blog: 'Blog' },
+  nav: { creators: 'Creators', tools: 'Tools', video: 'Video Editing', agency: 'Agency', markets: 'Markets', ai: 'Connect your AI', blog: 'Blog' },
   new: 'New',
   searchPlaceholder: 'Search creators, tools, help…',
   login: 'Log in',

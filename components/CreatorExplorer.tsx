@@ -71,6 +71,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
   const [active, setActive] = useState(0) // spotlight index (home)
   const [page, setPage] = useState(0)
   const [hold, setHold] = useState(false)
+  const [picked, setPicked] = useState(false) // once someone picks a creator, the spotlight stops rotating
 
   // read ?q=&country=&category=&platform= on the client so the page itself stays static
   useEffect(() => {
@@ -129,71 +130,91 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
   const spot = pageList[active] || pageList[0]
   useEffect(() => { setActive(0); setPage(0) }, [f])
   useEffect(() => {
-    if (mode !== 'home' || hold || pageList.length < 2) return
+    if (mode !== 'home' || hold || picked || pageList.length < 2) return
     if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const t = setTimeout(() => setActive((a) => (a + 1) % pageList.length), 4600)
     return () => clearTimeout(t)
-  }, [mode, hold, active, pageList.length])
+  }, [mode, hold, picked, active, pageList.length])
   const allHref = href(lang, '/creators') + (f.country || f.category || f.q ? `?${new URLSearchParams(Object.entries({ q: f.q, country: f.country, category: f.category, platform: f.platform }).filter(([, v]) => v) as any).toString()}` : '')
 
   return (
     <div className="cx" ref={top} id="results">
-      <div className="cq">
-        <div className="cq__top">
-          <div className="cq__title">{heading}</div>
-          <div className="cq__meta">
-            <p className="cq__count" aria-live="polite"><b>{results.length}</b><span>{results.length === 1 ? 'creator' : 'creators'}<br />match</span></p>
-            <label className="cq__sort"><span>Sort by</span>
-              <select aria-label="Sort creators" value={f.sort} onChange={(e) => set('sort', e.target.value)}>
-                {mode === 'home' ? <option value="featured">Featured</option> : null}<option value="followers">Most followers</option><option value="views">Most views</option><option value="er">Highest engagement</option><option value="rate">Lowest starting rate</option>
-                <option value="gmv" disabled>TikTok Shop sales (soon)</option>
-              </select>
-            </label>
-          </div>
+      {heading ? (
+        <div className="ct__head">
+          <div className="ct__title">{heading}</div>
+          <p className="ct__count" aria-live="polite"><b>{results.length}</b> {results.length === 1 ? 'creator' : 'creators'}{f.category ? <> in {CATEGORIES.find((c) => c.slug === f.category)!.label}</> : null}</p>
         </div>
+      ) : null}
 
+      <div className="ct">
+        <label className="ct__q">
+          <Icon name="search" size={17} />
+          <span className="sr">Search creators by name, handle or keyword</span>
+          <input value={f.q} onChange={(e) => set('q', e.target.value)} placeholder="Search creators" />
+        </label>
         {!lock.includes('category') && (
-          <div className="cq__cats scroller" role="group" aria-label="Category">
-            <button className={!f.category ? 'is-on' : ''} aria-pressed={!f.category} onClick={() => set('category', '')}>All creators</button>
-            {CATEGORIES.map((c) => <button key={c.slug} className={f.category === c.slug ? 'is-on' : ''} aria-pressed={f.category === c.slug} onClick={() => set('category', f.category === c.slug ? '' : c.slug)}><Icon name={c.icon} size={16} />{c.label}</button>)}
+          <div className="ct__cats scroller" role="group" aria-label="Category">
+            <button className={!f.category ? 'is-on' : ''} aria-pressed={!f.category} onClick={() => set('category', '')}>All</button>
+            {CATEGORIES.map((c) => <button key={c.slug} className={f.category === c.slug ? 'is-on' : ''} aria-pressed={f.category === c.slug} onClick={() => set('category', f.category === c.slug ? '' : c.slug)}><Icon name={c.icon} size={15} />{c.label}</button>)}
           </div>
         )}
-
-        <div className="cq__bar">
-          <label className="cq__q">
-            <Icon name="search" size={18} />
-            <span className="sr">Search creators by name, handle or keyword</span>
-            <input value={f.q} onChange={(e) => set('q', e.target.value)} placeholder="Search a name, handle or keyword" />
-          </label>
-          <div className="cq__plat" role="group" aria-label="Platform">
-            {PLATFORMS.map((p) => (
-              <button key={p} aria-pressed={f.platform === p} aria-label={p} title={p} onClick={() => set('platform', f.platform === p ? '' : p)}><PlatformIcon name={p} size={17} /></button>
-            ))}
-          </div>
-          <button className="cq__more" onClick={() => setOpen(!open)} aria-expanded={open}><Icon name="filter" size={16} />Filters{activeCount ? ` · ${activeCount}` : ''}</button>
-          <div className={`cq__fields ${open ? 'is-open' : ''}`}>
-            {!lock.includes('country') && (
-              <label className={`cq__f ${f.country ? 'is-set' : ''}`}><span>Country</span>
-              <select value={f.country} onChange={(e) => set('country', e.target.value)}><option value="">Any</option>{MARKETS.map((m) => <option key={m.id} value={m.slug}>{m.name}</option>)}</select>
-            </label>
-            )}
-            <label className={`cq__f ${f.followers ? 'is-set' : ''}`}><span>Followers</span>
-              <select value={f.followers} onChange={(e) => set('followers', e.target.value)}><option value="">Any</option>{Object.entries(BANDS).map(([k, v]) => <option key={k} value={k}>{v[2]}</option>)}</select>
-            </label>
-            <label className={`cq__f ${f.er ? 'is-set' : ''}`}><span>Engagement</span>
-              <select value={f.er} onChange={(e) => set('er', e.target.value)}><option value="">Any</option><option value="3">3%+</option><option value="5">5%+</option><option value="7">7%+</option></select>
-            </label>
-            <label className={`cq__f ${f.posts ? 'is-set' : ''}`}><span>Min. posts</span>
-              <select value={f.posts} onChange={(e) => set('posts', e.target.value)}><option value="">Any</option><option value="50">50+</option><option value="150">150+</option><option value="400">400+</option></select>
-            </label>
-            <label className={`cq__f ${f.language ? 'is-set' : ''}`}><span>Language</span>
-              <select value={f.language} onChange={(e) => set('language', e.target.value)}><option value="">Any</option>{languages.map((l) => <option key={l}>{l}</option>)}</select>
-            </label>
-            <span className="cq__f cq__f--soon" aria-disabled="true" title="Coming soon: TikTok Shop sales per creator"><span>Sales (GMV)</span><em><Icon name="lock" size={12} />Soon</em></span>
-          </div>
+        <div className="ct__plat" role="group" aria-label="Platform">
+          {PLATFORMS.map((p) => (
+            <button key={p} aria-pressed={f.platform === p} aria-label={p} title={p} onClick={() => set('platform', f.platform === p ? '' : p)}><PlatformIcon name={p} size={16} /></button>
+          ))}
         </div>
-        {activeCount || f.q ? <p className="cq__clear"><button className="ulink" onClick={reset}>Clear all filters</button></p> : null}
+        <div className="ct__pop">
+          <button className={`ct__more ${open ? 'is-open' : ''}`} onClick={() => setOpen(!open)} aria-expanded={open}><Icon name="filter" size={16} />Filters{activeCount ? <i>{activeCount}</i> : null}</button>
+          {open ? (
+            <div className="ct__panel" role="dialog" aria-label="Filters">
+              <div className="ct__grid">
+                {!lock.includes('country') && (
+                  <label className={`ct__f ${f.country ? 'is-set' : ''}`}><span>Country</span>
+                <select value={f.country} onChange={(e) => set('country', e.target.value)}><option value="">Any</option>{MARKETS.map((m) => <option key={m.id} value={m.slug}>{m.name}</option>)}</select>
+              </label>
+                )}
+                <label className={`ct__f ${f.followers ? 'is-set' : ''}`}><span>Followers</span>
+                <select value={f.followers} onChange={(e) => set('followers', e.target.value)}><option value="">Any</option>{Object.entries(BANDS).map(([k, v]) => <option key={k} value={k}>{v[2]}</option>)}</select>
+              </label>
+                <label className={`ct__f ${f.er ? 'is-set' : ''}`}><span>Engagement</span>
+                <select value={f.er} onChange={(e) => set('er', e.target.value)}><option value="">Any</option><option value="3">3% and up</option><option value="5">5% and up</option><option value="7">7% and up</option></select>
+              </label>
+                <label className={`ct__f ${f.posts ? 'is-set' : ''}`}><span>Minimum posts</span>
+                <select value={f.posts} onChange={(e) => set('posts', e.target.value)}><option value="">Any</option><option value="50">50+</option><option value="150">150+</option><option value="400">400+</option></select>
+              </label>
+                <label className={`ct__f ${f.language ? 'is-set' : ''}`}><span>Language</span>
+                <select value={f.language} onChange={(e) => set('language', e.target.value)}><option value="">Any</option>{languages.map((l) => <option key={l}>{l}</option>)}</select>
+              </label>
+                <span className="ct__f ct__f--soon" aria-disabled="true" title="Coming soon: TikTok Shop sales per creator"><span>Sales (GMV)</span><em><Icon name="lock" size={12} />Coming soon</em></span>
+              </div>
+              <div className="ct__panelfoot">
+                <button className="ulink" onClick={reset}>Clear all</button>
+                <button className="btn btn--sm" onClick={() => setOpen(false)}>Show {results.length} creators</button>
+              </div>
+            </div>
+          ) : null}
+        </div>
+        <label className="ct__sort"><span className="sr">Sort</span>
+          <select aria-label="Sort creators" value={f.sort} onChange={(e) => set('sort', e.target.value)}>
+            {mode === 'home' ? <option value="featured">Featured</option> : null}<option value="followers">Most followers</option><option value="views">Most views</option><option value="er">Highest engagement</option><option value="rate">Lowest starting rate</option>
+            <option value="gmv" disabled>TikTok Shop sales (soon)</option>
+          </select>
+        </label>
       </div>
+
+      {activeCount || f.q ? (
+        <div className="ct__chips">
+          {f.q ? <button onClick={() => set('q', '')}>“{f.q}”<Icon name="close" size={12} /></button> : null}
+          {(['country', 'platform', 'followers', 'er', 'posts', 'language'] as const).filter((k) => f[k] && !lock.includes(k as any)).map((k) => (
+            <button key={k} onClick={() => set(k, '')}>
+              {k === 'country' ? MARKETS.find((m) => m.slug === f.country)?.name : k === 'followers' ? BANDS[f.followers]?.[2] : k === 'er' ? `${f.er}%+ engagement` : k === 'posts' ? `${f.posts}+ posts` : f[k]}
+              <Icon name="close" size={12} />
+            </button>
+          ))}
+          <button className="ct__clear" onClick={reset}>Clear all</button>
+          {!heading ? <span className="ct__n"><b>{results.length}</b> creators</span> : null}
+        </div>
+      ) : !heading ? <p className="ct__chips"><span className="ct__n"><b>{results.length}</b> creators</span></p> : null}
 
       {relax && <p className="cx__relax"><Icon name="sparkle" size={15} /><span><b>+{relax.n} more</b> if you relax {relaxName[relax.k]}.</span><button className="ulink" onClick={() => set(relax.k, '')}>Relax it</button></p>}
 
@@ -202,7 +223,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
           <Spotlight c={spot} lang={lang} />
           <div className="show__side">
             <div className="show__grid">
-              {pageList.map((c, i) => <CreatorCard key={c.handle} c={c} lang={lang} selected={i === active} onSelect={() => setActive(i)} />)}
+              {pageList.map((c, i) => <CreatorCard key={c.handle} c={c} lang={lang} selected={i === active} onSelect={() => { setActive(i); setPicked(true); track('spotlight_selected', { handle: c.handle }) }} />)}
             </div>
             {pages > 1 ? (
               <div className="show__pager">
@@ -251,7 +272,7 @@ function Spotlight({ c, lang }: { c: Creator; lang: string }) {
   const main = c.platforms[0]
   const st = postStats(c)
   return (
-    <article className="spot" key={c.handle} aria-live="polite">
+    <article className={'spot' + (main.platform === 'YouTube' ? '' : ' spot--vert')} key={c.handle} aria-live="polite">
       <div className={'spot__media tone-' + c.tone + ' spot__media--' + main.platform.toLowerCase()}>
         <PostFrame c={c} size="spot" />
       </div>

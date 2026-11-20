@@ -47,20 +47,9 @@ export default function Footer({ lang, dict }: { lang: string; dict: Dict }) {
           ))}
         </div>
 
-        {/* one compact grid: each market links to its market page, its creators and its top categories */}
-        <nav className="ftr__mk" aria-label="Creators and markets">
-          <h3>Creators by market</h3>
-          <ul>
-            {MARKETS.map((m) => (
-              <li key={m.id}>
-                <L to={`/markets/${m.slug}`}><b>{m.name}</b></L>
-                <span>
-                  <L to={`/creators/${m.slug}`}>All</L>
-                  {m.strong.map((s) => <L key={s} to={`/creators/${m.slug}/${s}`}>{CATEGORIES.find((c) => c.slug === s)!.label}</L>)}
-                </span>
-              </li>
-            ))}
-          </ul>
+        <nav className="ftr__line" aria-label="Creators by market">
+          <span>Creators in</span>
+          {MARKETS.map((m) => <L key={m.id} to={`/creators/${m.slug}`}>{m.short}</L>)}
         </nav>
 
         <div className="ftr__bot">

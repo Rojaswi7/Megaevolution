@@ -10,6 +10,9 @@ import ReelWall from '@/components/home/ReelWall'
 import ToolsShowcase from '@/components/home/ToolsShowcase'
 import BeforeAfter from '@/components/home/BeforeAfter'
 import BriefForm from '@/components/home/BriefForm'
+import FaqCards from '@/components/home/FaqCards'
+import Testimonials from '@/components/home/Testimonials'
+import CampaignRuns from '@/components/sections/CampaignRuns'
 import ServicesFan from '@/components/sections/ServicesFan'
 import { TOOLS } from '@/data/tools'
 import { HOME_CASES } from '@/data/cases'
@@ -150,6 +153,9 @@ export default async function Home({ params }: P) {
         <ToolsShowcase lang={lang} />
       </section>
 
+      {/* 6b — how a campaign runs: the phone walkthrough */}
+      <section className="wrap sec" id="how"><CampaignRuns lang={lang} /></section>
+
       {/* 7 — Video Editing Studio */}
       <section className="wrap sec" id="studio">
         <div className="slab studio2">
@@ -187,6 +193,11 @@ export default async function Home({ params }: P) {
           <Cta lang={lang} to="/creators" cta="proof_search_creators">{CTA.search}</Cta>
           <TLink lang={lang} to="/case-studies" cta="home_all_cases">See all case studies</TLink>
         </div>
+      </section>
+
+      {/* 8b — testimonials */}
+      <section className="wrap sec--tight" aria-label="What clients say">
+        <Testimonials lang={lang} />
       </section>
 
       {/* 9 — Connect your AI */}
@@ -229,10 +240,7 @@ export default async function Home({ params }: P) {
 
       {/* 11 — FAQ */}
       <section className="wrap sec" id="faq">
-        <div className="faqwrap">
-          <SectionHead eyebrow="FAQ" title="Before you|ask us." />
-          <Faq items={HOME_FAQ} />
-        </div>
+        <FaqCards lang={lang} items={HOME_FAQ} />
       </section>
 
       {/* 12 — start a campaign: the brief form */}

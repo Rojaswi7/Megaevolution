@@ -54,7 +54,8 @@ type CardProps = { c: Creator; lang: string; gmvSlot?: boolean; selected?: boole
 export function CreatorCard({ c, lang, gmvSlot = false, selected = false, onSelect }: CardProps) {
   const m = marketById[c.market]
   return (
-    <article className={`rt ${selected ? 'is-on' : ''}`} data-handle={c.handle} onMouseEnter={onSelect} onFocus={onSelect}>
+    <article className={`rt ${selected ? 'is-on' : ''} ${onSelect ? 'rt--pick' : ''}`} data-handle={c.handle}>
+      {onSelect ? <button className="rt__pick" onClick={onSelect} aria-pressed={selected} aria-label={`Show @${c.handle} in the spotlight`} data-cta="creator_card_spotlight" /> : null}
       <div className="rt__media"><PostFrame c={c} /></div>
       <div className="rt__body">
         <div className="rt__who">

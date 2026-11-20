@@ -3,7 +3,7 @@
 // summary beside it. Mock only — it validates, shows success and fires track().
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
-import { href } from '@/data/site'
+import { href, CONTACT_EMAIL } from '@/data/site'
 import { MARKETS, REGIONS, LOGO_PLATFORMS } from '@/data/markets'
 import { CATEGORIES, categoryBySlug } from '@/data/categories'
 import { CURRENCIES } from '@/data/pricing'
@@ -130,6 +130,11 @@ export default function BriefForm({ lang, pool }: { lang: string; pool: BriefPoo
             <div className="bf__match">
               <span className="bf__avs">{matches.slice(0, 4).map((c) => <span key={c.handle} className={`av tone-${(c.tone + 5) % 8}`}>{c.name[0]}</span>)}</span>
               <p><b>{matches.length}</b> sample {categoryBySlug[cat].noun} creators match<small>Your real shortlist comes from our local teams.</small></p>
+            </div>
+            <div className="bf__talk">
+              <span className="bf__talkav" role="img" aria-label="TODO: real photo of an account manager"><Icon name="user" size={18} /></span>
+              <p><b>Prefer to talk first?</b><small>Write to {CONTACT_EMAIL}</small></p>
+              <a className="btn btn--white btn--sm" href={`mailto:${CONTACT_EMAIL}`} data-cta="brief_email_us">Email us</a>
             </div>
           </>
         )}

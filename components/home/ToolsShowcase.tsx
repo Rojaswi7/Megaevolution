@@ -69,29 +69,33 @@ function Preview({ slug }: { slug: string }) {
 export default function ToolsShowcase({ lang }: { lang: string }) {
   const [on, setOn] = useState(0)
   const t = TOOLS[on]
+  const pick = (i: number) => { setOn(i); track('cta_click', { cta: 'home_tool_tab', tool: TOOLS[i].slug }) }
   return (
-    <div className="tsx">
-      <ul className="tsx__list">
-        {TOOLS.map((x, i) => (
-          <li key={x.slug} className={i === on ? 'is-on' : ''} onMouseEnter={() => setOn(i)}>
-            <button onClick={() => { setOn(i); track('cta_click', { cta: 'home_tool_tab', tool: x.slug }) }} aria-pressed={i === on} aria-label={`Preview ${x.name}`}>
-              <span className="tsx__ico"><Icon name={ICONS[i]} size={19} /></span>
-              <span className="tsx__name"><b>{x.name}</b><small>{x.job}</small></span>
-              {x.comingSoon ? <span className="tag tag--soon">Soon</span> : null}
-              <span className={`rtag rtag--${x.status}`}>{{ live: 'Live', dev: 'In development', planned: 'Planned' }[x.status]}</span>
+    <div className="tw">
+      <div className="tw__bar">
+        <span className="tw__dots" aria-hidden="true"><i /><i /><i /></span>
+        <div className="tw__tabs scroller" role="group" aria-label="Tools">
+          {TOOLS.map((x, i) => (
+            <button key={x.slug} className={i === on ? 'is-on' : ''} aria-pressed={i === on} onClick={() => pick(i)}>
+              <Icon name={ICONS[i]} size={15} />{x.name}{x.comingSoon ? <em>Soon</em> : null}
             </button>
-            <Link className="tsx__go" href={href(lang, `/tools/${x.slug}`)} data-cta={`home_tool_try_${x.slug}`} prefetch={false} aria-label={`${x.comingSoon ? 'Join the waitlist for' : 'Try'} ${x.name}`}><Arrow /></Link>
-          </li>
-        ))}
-      </ul>
-
-      <div className="tsx__stage" aria-live="polite">
-        <div className="tsx__head">
-          <span><b>{t.name}</b><small><Money usd={TOOL_FROM[t.slug]} from per="/mo" /> · or pay per use</small></span>
-          <Link className="btn btn--sm" href={href(lang, `/tools/${t.slug}`)} data-cta={`home_tool_open_${t.slug}`} prefetch={false}>{t.comingSoon ? 'Join waitlist' : `Try ${t.name}`}<Arrow size={14} /></Link>
+          ))}
         </div>
-        <div key={t.slug} className="tsx__screen"><Preview slug={t.slug} /></div>
-        <p className="tsx__foot">Sample screen. <Link className="ulink" href={href(lang, '/tools')} data-cta="home_all_tools" prefetch={false}>See all tools &amp; plans</Link></p>
+      </div>
+      <div className="tw__url"><Icon name="lock" size={12} /><span>megaevolution.io/tools/<b>{t.slug}</b></span></div>
+      <div className="tw__body">
+        <div key={t.slug} className="tw__screen"><Preview slug={t.slug} /></div>
+        <aside className="tw__info">
+          <span className={'rtag rtag--' + t.status}>{{ live: 'Live', dev: 'In development', planned: 'Planned' }[t.status]}</span>
+          <h3>{t.name}</h3>
+          <p className="tw__job">{t.job}</p>
+          <ol className="tw__steps">{t.steps.slice(0, 3).map((st, i) => <li key={st.title}><i>{i + 1}</i><span><b>{st.title}</b>{st.text}</span></li>)}</ol>
+          <div className="tw__buy">
+            <span><small>Plans</small><b><Money usd={TOOL_FROM[t.slug]} from per="/mo" /></b><small>or pay per use</small></span>
+            <Link className="btn" href={href(lang, '/tools/' + t.slug)} data-cta={'home_tool_open_' + t.slug} prefetch={false}>{t.comingSoon ? 'Join waitlist' : 'Try ' + t.name}<Arrow size={15} /></Link>
+          </div>
+          <Link className="tw__all" href={href(lang, '/tools')} data-cta="home_all_tools" prefetch={false}>See all tools &amp; plans<Arrow size={14} /></Link>
+        </aside>
       </div>
     </div>
   )

@@ -68,20 +68,29 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
           </Link>
 
           <nav className="hdr__nav" aria-label="Main">
-            {nav.map((n) => (
-              <Link key={n.key} href={href(lang, n.path)} aria-current={isCurrent(n.path) ? 'page' : undefined} data-cta={`nav_${n.key}`}>
-                {n.label}{'isNew' in n && n.isNew ? <span className="tag tag--accent">{dict.new}</span> : null}
-              </Link>
+            {nav.filter((n) => ['creators', 'tools', 'video', 'agency', 'markets'].includes(n.key)).map((n) => (
+              <Link key={n.key} href={href(lang, n.path)} aria-current={isCurrent(n.path) ? 'page' : undefined} data-cta={`nav_${n.key}`}>{n.label}</Link>
             ))}
+            <details className="hdr__morenav">
+              <summary>More<Icon name="chevron" size={14} /></summary>
+              <div className="hdr__menu">
+                <Link href={href(lang, '/connect-ai')} data-cta="nav_ai"><Icon name="plug" size={16} />{dict.nav.ai}<span className="tag tag--accent">{dict.new}</span></Link>
+                <Link href={href(lang, '/case-studies')} data-cta="nav_cases"><Icon name="chart" size={16} />Case studies</Link>
+                <Link href={href(lang, '/pricing')} data-cta="nav_pricing"><Icon name="card" size={16} />Pricing</Link>
+                <Link href={href(lang, '/blog')} data-cta="nav_blog"><Icon name="file" size={16} />{dict.nav.blog}</Link>
+                <Link href={href(lang, '/help')} data-cta="nav_help"><Icon name="message" size={16} />Help center</Link>
+                <Link href={href(lang, '/for-creators')} data-cta="nav_for_creators"><Icon name="user" size={16} />For creators</Link>
+              </div>
+            </details>
             {canSeeAgencyOrders(role) && <Link href={href(lang, `/preview/${role}?tab=agency-orders`)} data-cta="nav_agency_orders">Agency Orders</Link>}
           </nav>
 
           <div className="hdr__tools">
             <button className="hdr__search" onClick={() => openSearch('header')} data-cta="header_search" aria-label={dict.searchPlaceholder}>
-              <Icon name="search" size={17} /><span>Search creators</span>
+              <Icon name="search" size={18} />
             </button>
             <details className="hdr__loc">
-              <summary aria-label={`${dict.language} / ${dict.currency}`}><Icon name="globe" size={17} /><span>{lang.toUpperCase()} · {currency}</span></summary>
+              <summary aria-label={`${dict.language} / ${dict.currency}`} title={`${dict.language} · ${dict.currency}`}><Icon name="globe" size={18} /></summary>
               <div className="hdr__pop">
                 <label><span>{dict.language}</span><LangSwitch lang={lang} label={dict.language} /></label>
                 <label><span>{dict.currency}</span><CurrencySwitch label={dict.currency} /></label>
