@@ -12,13 +12,8 @@
 .mh-stats dd { font-family: var(--serif); font-size: clamp(2rem, 3vw, 2.8rem); line-height: 1; }
 .mh-stats dt { font-size: 12.5px; color: var(--on-dark-2); }
 .mh-stats div:first-child dt { color: var(--accent-ink); }
-/* map section: the map takes the full width, the country panel is a strip below it */
-.mh-map .mm__body { grid-template-columns: 1fr; gap: 10px; }
-.mh-map .mm__map { padding: clamp(10px, 1.6vw, 24px) clamp(14px, 3vw, 48px); box-shadow: inset 0 0 0 1.5px var(--navy); }
-.mh-map .mm__card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1.1fr); gap: 18px 28px; align-items: start; }
-.mh-map .mm__cta { margin-top: 0; align-self: center; }
-@media (max-width: 900px) { .mh-map .mm__card { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .mh-map .mm__card { grid-template-columns: 1fr; } }
+/* map section: map and country panel side by side */
+.mh-map .mm__map { box-shadow: inset 0 0 0 1.5px var(--navy); }
 @media (max-width: 1000px) { .mh-hero__top { grid-template-columns: 1fr; } }
 @media (max-width: 480px) { .mh-stats { gap: 6px; } .mh-stats div { padding: 12px; border-radius: 14px; } .mh-stats dd { font-size: 1.8rem; } .mh-stats dt { font-size: 11.5px; } }
 

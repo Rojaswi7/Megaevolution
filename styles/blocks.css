@@ -303,3 +303,42 @@
 .nf__links .tlink { color: #fff; }
 .mm__stage > span.mm__pin { position: absolute; cursor: pointer; }
 .studio__prices dd small { display: block; font-family: var(--sans); line-height: 1.4; }
+
+/* ---------- market map: hint, legend, hover preview, motion ---------- */
+.mm__map { display: flex; flex-direction: column; justify-content: space-between; gap: 14px; }
+.mm__hint, .mm__legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 12.5px; color: var(--ink-3); }
+.mm__hint { font-weight: 500; }
+.mm__live { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1.5px var(--ink); animation: mm-blink 1.8s ease-in-out infinite; }
+.mm__sep { width: 1px; height: 12px; background: var(--line-strong); }
+.mm__legend span { display: inline-flex; align-items: center; gap: 6px; }
+.mm__key { width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
+.mm__key--on { background: var(--accent); box-shadow: 0 0 0 1.5px var(--ink); }
+.mm__key--req { width: 16px; height: 0; border-radius: 0; background: none; border-bottom: 1.5px dashed var(--ink-3); }
+
+.mm__pin { animation: mm-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both; animation-delay: var(--d, 0s); }
+.mm__pin i { position: relative; }
+.mm__pin i::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid var(--ink); opacity: 0; animation: mm-ring 2.8s ease-out infinite; animation-delay: calc(var(--d, 0s) * 4); }
+.mm__pin.is-on i::after { border-color: var(--accent); border-width: 2px; animation-duration: 1.6s; }
+.mm__pin.is-peek i { transform: scale(1.35); }
+
+.mm__tip { position: absolute; bottom: calc(100% + 6px); left: 50%; z-index: 6; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 2px 8px; min-width: 190px; padding: 9px 12px; border-radius: 12px; background: var(--navy); color: #fff; font-weight: 400; text-align: left; box-shadow: 0 10px 24px rgba(14, 13, 57, 0.25); pointer-events: none; opacity: 0; transform: translate(-50%, 6px); transition: opacity 0.16s, transform 0.16s; }
+.mm__pin.tip-down .mm__tip { bottom: auto; top: calc(100% + 6px); transform: translate(-50%, -6px); }
+.mm__tip .flag { grid-row: span 2; width: 26px; max-width: none; border-radius: 3px; }
+.mm__pin.tip-l .mm__tip { left: -8px; transform: translate(0, 6px); }
+.mm__pin.tip-r .mm__tip { left: auto; right: -8px; transform: translate(0, 6px); }
+.mm__pin.tip-l:hover .mm__tip, .mm__pin.tip-l.is-peek .mm__tip, .mm__pin.tip-r:hover .mm__tip, .mm__pin.tip-r.is-peek .mm__tip { transform: none; }
+.mm__tip strong { font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+.mm__tip small { font-size: 11.5px; color: var(--on-dark-2); white-space: nowrap; }
+.mm__pin:hover .mm__tip, .mm__pin.is-peek .mm__tip { opacity: 1; transform: translate(-50%, 0); }
+.mm__pin.is-on .mm__tip { display: none; }
+.mm__pin:hover > span, .mm__pin.is-peek > span { display: none; }
+.mm__pin.is-on > span { display: block; }
+
+.mm__card { animation: mm-in 0.35s ease-out both; }
+
+@keyframes mm-pop { from { opacity: 0; transform: translate(-50%, -50%) scale(0.2); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes mm-ring { 0% { opacity: 0.55; transform: scale(0.6); } 70%, 100% { opacity: 0; transform: scale(2.3); } }
+@keyframes mm-blink { 50% { opacity: 0.35; } }
+@keyframes mm-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .mm__pin, .mm__card, .mm__live, .mm__pin i::after { animation: none; } }
+@media (max-width: 700px) { .mm__tip { display: none; } .mm__hint .mm__sep, .mm__hint .mm__sep ~ * { display: none; } }
