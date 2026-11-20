@@ -1,0 +1,38 @@
+/* Workspace shell, light sidebar and one spacing scale (16px) for every logged-in preview */
+
+/* the page title stays for screen readers; the sidebar says what this is */
+.wa-top, .wb-top { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; padding: 0; }
+.ws { padding-top: 16px; }
+.wrap .ws__signin { margin-bottom: 16px; }
+
+@media (min-width: 941px) { .ws .ws__grid { grid-template-columns: 236px minmax(0, 1fr); gap: 16px; } }
+.ws .ws__main > div { gap: 16px; }
+
+/* sidebar */
+.ws .ws__side { top: calc(var(--hdr) + 16px); gap: 0; padding: 10px; background: var(--surface); color: var(--ink); border-radius: 20px; box-shadow: inset 0 0 0 1px var(--line); }
+.ws .ws__acct { gap: 10px; padding: 6px 6px 10px; border-bottom: 0; }
+.ws .ws__acct .av { --s: 36px; }
+.ws .ws__acct b { font-size: 14px; }
+.ws .ws__acct small { color: var(--ink-3); font-size: 12px; }
+.ws__tag { display: flex; align-items: center; gap: 7px; margin: 0 6px 10px; padding: 6px 10px; border-radius: 10px; background: var(--grey); font-size: 11.5px; font-weight: 500; color: var(--ink-2); }
+.ws__tag i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1.5px var(--navy); }
+.ws .ws__side nav { display: grid; gap: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.ws .ws__group + .ws__group { margin-top: 0; }
+.ws .ws__group p { padding: 4px 10px 4px; font-size: 10.5px; color: var(--ink-3); }
+.ws .ws__group button { min-height: 38px; padding: 0 10px; gap: 10px; border-radius: 11px; font-size: 14px; font-weight: 500; color: var(--ink-2); }
+.ws .ws__group button svg { color: var(--ink-3); }
+.ws .ws__group button:hover { background: var(--surface-2); color: var(--ink); }
+.ws .ws__group button.is-on { background: var(--navy); color: #fff; font-weight: 600; }
+.ws .ws__group button.is-on svg { color: var(--accent); }
+.ws .ws__group button em { min-width: 20px; height: 20px; line-height: 20px; background: var(--grey); color: var(--ink); font-size: 11px; }
+.ws .ws__group button.is-on em { background: var(--accent); color: var(--accent-ink); }
+.ws .ws__sidefoot { margin-top: 10px; padding: 10px 8px 2px; border-top: 1px solid var(--line); color: var(--ink-3); }
+.ws .ws__sidefoot a:hover, .ws .ws__sidefoot button:hover { color: var(--ink); }
+.ws .ws__side :focus-visible { outline-color: var(--blue, #2867e0); }
+
+/* cards share one radius and padding */
+.ws .wcard { padding: 20px; border-radius: 20px; }
+.ws .wcard--flush { padding: 0; }
+.ws .wcard__h { margin-bottom: 14px; }
+
+@media (max-width: 940px) { .ws .ws__grid { gap: 12px; } }

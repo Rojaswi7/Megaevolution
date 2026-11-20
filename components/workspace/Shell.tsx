@@ -5,6 +5,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import '@/styles/workspace.css'
+import '@/styles/ws-shell.css'
 import { href } from '@/data/site'
 import { accountByRole, type Role } from '@/data/accounts'
 import { Icon } from '../Icon'
@@ -55,6 +56,7 @@ export default function WorkspaceShell({ lang, role, tabs, title }: { lang: stri
             <span className={`av tone-${account.tone}`}>{account.initial}</span>
             <div><b>{account.name}</b><small>{account.org}</small></div>
           </div>
+          <p className="ws__tag"><i />Preview · sample data</p>
           <nav aria-label={title}>
             {groups.map((g) => (
               <div key={g} className="ws__group">

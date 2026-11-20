@@ -95,68 +95,67 @@ export function BrandHome({ lang }: { lang: string }) {
         </div>
       </div>
 
-      <div className="bh-main">
-        <section className="wcard bh-needs">
-          <div className="wcard__h"><h3>Needs you</h3><span className="bh-count">{needs.length}</span></div>
-          <ol>
-            {needs.map((n, i) => (
-              <li key={n.t}>
-                <span className="bh-needs__ico"><Icon name={NEED_ICON[i] || 'bell'} size={17} /></span>
-                <div><b>{n.t}</b><small><em>{NEED_TAG[i]}</em>{n.s}</small></div>
-                <button className={`btn btn--sm ${i ? 'btn--ghost' : ''}`} data-cta="brand_home_needs_you" onClick={() => goTab(n.to)}>{n.cta}<Arrow size={13} /></button>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="wcard bh-week">
-          <div className="wcard__h"><h3>Coming up</h3><button className="ulink small" onClick={() => goTab('orders')}>All orders</button></div>
-          <ol>
-            {upcoming.map((u) => (
-              <li key={u.t + u.due}>
-                <span className="bh-date"><b>{u.due.slice(8)}</b><small>{fmtDay(u.due).split(' ')[0]}</small></span>
-                <div><b>{u.t}</b><small>{u.market ? <Market id={u.market} /> : null}{u.s}</small></div>
-                <span className={`bh-when ${u.due === TODAY ? 'is-today' : ''}`}>{u.due === TODAY ? 'Today' : relDay(u.due)}</span>
-              </li>
-            ))}
-          </ol>
-        </section>
-      </div>
-
-      <div className="bh-main">
-        <section className="wcard bh-camps">
-          <div className="wcard__h"><h3>Campaigns</h3><button className="ulink small" onClick={() => goTab('orders')}>Creator orders</button></div>
-          <div className="bh-camps__list">
-            {campaigns.map((c) => (
-              <article key={c.name}>
-                <header>
-                  <b>{c.name}</b>
-                  <span className="bh-camps__mk">{c.markets.map((m) => <Market key={m} id={m} />)}</span>
-                </header>
-                <div className="bh-camps__avs">
-                  {c.os.slice(0, 5).map((o) => { const cr = creatorByHandle[o.creator]; return <span key={o.id} className={`av tone-${cr ? (cr.tone + 5) % 8 : 2}`} title={`@${o.creator}`}>{o.creator[0].toUpperCase()}</span> })}
-                  <small>{c.os.length} creator{c.os.length === 1 ? '' : 's'} · <Money usd={c.spend} /></small>
-                </div>
-                <div className="bh-prog" aria-label={`${c.done} posted, ${c.live} scheduled, ${c.work} in progress`}>
-                  <i className="is-done" style={{ flex: c.done }} /><i className="is-live" style={{ flex: c.live }} /><i style={{ flex: c.work }} />
-                </div>
-                <p className="bh-prog__k"><span><i className="is-done" />{c.done} posted</span><span><i className="is-live" />{c.live} scheduled</span><span><i />{c.work} in progress</span></p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="wcard bh-feed">
-          <div className="wcard__h"><h3>Latest</h3><button className="ulink small" onClick={() => goTab('alerts')}>All alerts</button></div>
-          <ol>
-            {NOTIFICATIONS.map((n) => (
-              <li key={n.text}>
-                <span className="bh-feed__ico"><Icon name={n.to === 'team' ? 'users' : 'film'} size={14} /></span>
-                <div><button onClick={() => goTab(n.to)}>{n.text}</button><small>{n.when}</small></div>
-              </li>
-            ))}
-          </ol>
-        </section>
+      <div className="bh-cols">
+        <div className="bh-col">
+          <section className="wcard bh-needs">
+            <div className="wcard__h"><h3>Needs you</h3><span className="bh-count">{needs.length}</span></div>
+            <ol>
+              {needs.map((n, i) => (
+                <li key={n.t}>
+                  <span className="bh-needs__ico"><Icon name={NEED_ICON[i] || 'bell'} size={17} /></span>
+                  <div><b>{n.t}</b><small><em>{NEED_TAG[i]}</em>{n.s}</small></div>
+                  <button className={`btn btn--sm ${i ? 'btn--ghost' : ''}`} data-cta="brand_home_needs_you" onClick={() => goTab(n.to)}>{n.cta}<Arrow size={13} /></button>
+                </li>
+              ))}
+            </ol>
+          </section>
+          <section className="wcard bh-camps">
+            <div className="wcard__h"><h3>Campaigns</h3><button className="ulink small" onClick={() => goTab('orders')}>Creator orders</button></div>
+            <div className="bh-camps__list">
+              {campaigns.map((c) => (
+                <article key={c.name}>
+                  <header>
+                    <b>{c.name}</b>
+                    <span className="bh-camps__mk">{c.markets.map((m) => <Market key={m} id={m} />)}</span>
+                  </header>
+                  <div className="bh-camps__avs">
+                    {c.os.slice(0, 5).map((o) => { const cr = creatorByHandle[o.creator]; return <span key={o.id} className={`av tone-${cr ? (cr.tone + 5) % 8 : 2}`} title={`@${o.creator}`}>{o.creator[0].toUpperCase()}</span> })}
+                    <small>{c.os.length} creator{c.os.length === 1 ? '' : 's'} · <Money usd={c.spend} /></small>
+                  </div>
+                  <div className="bh-prog" aria-label={`${c.done} posted, ${c.live} scheduled, ${c.work} in progress`}>
+                    <i className="is-done" style={{ flex: c.done }} /><i className="is-live" style={{ flex: c.live }} /><i style={{ flex: c.work }} />
+                  </div>
+                  <p className="bh-prog__k"><span><i className="is-done" />{c.done} posted</span><span><i className="is-live" />{c.live} scheduled</span><span><i />{c.work} in progress</span></p>
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
+        <div className="bh-col">
+          <section className="wcard bh-week">
+            <div className="wcard__h"><h3>Coming up</h3><button className="ulink small" onClick={() => goTab('orders')}>All orders</button></div>
+            <ol>
+              {upcoming.map((u) => (
+                <li key={u.t + u.due}>
+                  <span className="bh-date"><b>{u.due.slice(8)}</b><small>{fmtDay(u.due).split(' ')[0]}</small></span>
+                  <div><b>{u.t}</b><small>{u.market ? <Market id={u.market} /> : null}{u.s}</small></div>
+                  <span className={`bh-when ${u.due === TODAY ? 'is-today' : ''}`}>{u.due === TODAY ? 'Today' : relDay(u.due)}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+          <section className="wcard bh-feed">
+            <div className="wcard__h"><h3>Latest</h3><button className="ulink small" onClick={() => goTab('alerts')}>All alerts</button></div>
+            <ol>
+              {NOTIFICATIONS.map((n) => (
+                <li key={n.text}>
+                  <span className="bh-feed__ico"><Icon name={n.to === 'team' ? 'users' : 'film'} size={14} /></span>
+                  <div><button onClick={() => goTab(n.to)}>{n.text}</button><small>{n.when}</small></div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
       </div>
     </>
   )
