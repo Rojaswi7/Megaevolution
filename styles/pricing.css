@@ -1,5 +1,5 @@
 /* Pricing page (pr-) */
-.pr-sec { padding-block: clamp(24px, 2.6vw, 42px); scroll-margin-top: calc(var(--hdr) + 12px); }
+.pr-sec { padding-block: clamp(14px, 1.4vw, 22px); scroll-margin-top: calc(var(--hdr) + 12px); }
 .pr-sec > .pr-head { margin-bottom: 18px; }
 
 /* compact heading */
@@ -8,7 +8,7 @@
 .pr-head__sub { color: var(--ink-2); max-width: 60ch; font-size: 15px; }
 
 /* ---------- hero ---------- */
-.pr-hero { background: var(--navy); padding-block: clamp(28px, 3.2vw, 52px); margin-top: 8px; }
+.pr-hero { background: var(--navy); padding-block: clamp(28px, 3.2vw, 52px); margin: 8px 0 clamp(14px, 1.4vw, 22px); }
 .pr-hero__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px clamp(32px, 4vw, 72px); align-items: center; }
 .pr-hero__copy { display: grid; gap: 18px; }
 .pr-hero__copy .h1 { font-size: clamp(2.4rem, 4.4vw, 4.6rem); }
