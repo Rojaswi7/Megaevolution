@@ -409,3 +409,9 @@
 .tq { margin-block: 0; padding-block: clamp(32px, 3.4vw, 52px); }
 #proof { padding-bottom: clamp(32px, 3vw, 48px); }
 .tq-sec + .sec { padding-top: clamp(32px, 3vw, 48px); }
+
+/* header icon buttons: same outlined circle, even gaps */
+.hdr__tools { gap: 10px; }
+.hdr__search, .hdr__loc summary { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; border-radius: 50%; background: transparent; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24); }
+.hdr__search:hover, .hdr__loc summary:hover, .hdr__loc[open] summary { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+.hdr__login { margin-left: 4px; }
