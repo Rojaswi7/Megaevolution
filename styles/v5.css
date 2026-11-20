@@ -418,3 +418,7 @@
 
 /* creator card: let the platform row wrap on phones instead of clipping */
 @media (max-width: 560px) { .rt__on { overflow: visible; } .rt__on .plist { flex-wrap: wrap; row-gap: 4px; } }
+
+/* site-wide: tighter rhythm between sections */
+.sec { padding-block: clamp(28px, 3vw, 48px); }
+.sec--tight { padding-block: clamp(20px, 2.2vw, 32px); }
