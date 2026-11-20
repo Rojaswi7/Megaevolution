@@ -55,12 +55,12 @@ export const SEARCH_INDEX: SearchItem[] = [
 
 // shown before anything is typed: big jump tiles, then popular searches
 export const QUICK: (SearchItem & { icon: string })[] = [
-  { ...pages[0], icon: 'users' },
-  { ...pages[1], icon: 'building' },
-  { ...pages[2], icon: 'film' },
-  { ...pages[3], icon: 'sparkle' },
-  { ...pages[5], icon: 'globe' },
-  { ...pages[4], icon: 'card' },
+  { ...pages[0], sub: 'Find and shortlist', icon: 'users' },
+  { ...pages[1], sub: 'We run your campaign', icon: 'building' },
+  { ...pages[2], sub: 'Order edited videos', icon: 'film' },
+  { ...pages[3], sub: 'AI Listup, reports', icon: 'sparkle' },
+  { ...pages[5], sub: 'Compare 11 countries', icon: 'globe' },
+  { ...pages[4], sub: 'All plans', icon: 'card' },
 ]
 const used = new Set<string>()
 export const POPULAR: (SearchItem & { market: string; icon: string })[] = (['vn', 'kr', 'jp', 'th', 'ph', 'us'] as const).map((id) => {
