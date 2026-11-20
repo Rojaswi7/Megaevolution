@@ -2,7 +2,7 @@
 // Tool plans: monthly / yearly toggle, one recommended plan, pay-per-use and enterprise contact.
 // All values come from data/pricing.ts — Basic is still $TBD ($10 vs $19 not decided).
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { href } from '@/data/site'
 import { TOOL_PLANS, PAY_PER_USE, YEARLY_DISCOUNT, isTBD } from '@/data/pricing'
 import { TOOLS } from '@/data/tools'
@@ -15,18 +15,19 @@ import { planTrustItems } from './shared'
 const saving = isTBD(YEARLY_DISCOUNT) ? 'TBD%' : `${YEARLY_DISCOUNT}%`
 
 
-export default function PlanTable({ lang, source, payPerUse = true, tool }: { lang: string; source: string; payPerUse?: boolean; tool?: string }) {
+export default function PlanTable({ lang, source, payPerUse = true, tool, head }: { lang: string; source: string; payPerUse?: boolean; tool?: string; head?: ReactNode }) {
   const [cycle, setCycle] = useState<'monthly' | 'yearly'>('monthly')
   const pick = (id: string) => track('plan_selected', { product: 'tools', plan: id, cycle, source, tool })
 
   return (
     <div className="tl-plans">
       <div className="tl-plans__bar">
+        {head}
         <div className="tl-seg" role="group" aria-label="Billing period">
           <button aria-pressed={cycle === 'monthly'} onClick={() => { setCycle('monthly'); track('billing_cycle_changed', { cycle: 'monthly', source }) }} data-cta="plans_toggle_monthly">Monthly</button>
           <button aria-pressed={cycle === 'yearly'} onClick={() => { setCycle('yearly'); track('billing_cycle_changed', { cycle: 'yearly', source }) }} data-cta="plans_toggle_yearly">Yearly <em>save {saving}</em></button>
         </div>
-        <p className="small muted">Prices show in your currency. Tax is added at checkout where it applies.</p>
+        {head ? null : <p className="small muted">Prices show in your currency. Tax is added at checkout where it applies.</p>}
       </div>
 
       <div className="tl-plans__grid">
