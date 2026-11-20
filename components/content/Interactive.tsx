@@ -11,7 +11,7 @@ import { fmtDate } from '@/lib/format'
 import { track } from '@/lib/track'
 
 // ---------- /connect-ai ----------
-const APPS: { id: string; name: string; steps: { t: string; d: string; url?: boolean }[] }[] = [
+export const APPS: { id: string; name: string; steps: { t: string; d: string; url?: boolean }[] }[] = [
   { id: 'claude', name: 'Claude', steps: [
     { t: 'Open Settings → Connectors', d: 'In Claude on the web or desktop, choose “Add custom connector”.' },
     { t: 'Paste the connector URL', d: 'Name it MegaEvolution and paste this address.', url: true },

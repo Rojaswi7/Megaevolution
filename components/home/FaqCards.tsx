@@ -6,12 +6,13 @@ import { faqLd } from '@/lib/seo'
 import { JsonLd } from '../ui'
 import { Icon, Arrow } from '../Icon'
 
-export default function FaqCards({ lang, items }: { lang: string; items: { q: string; a: string }[] }) {
+export default function FaqCards({ lang, items, title = 'Before you|ask us.' }: { lang: string; items: { q: string; a: string }[]; title?: string }) {
+  const [t1, t2] = title.split('|')
   return (
     <div className="fq">
       <div className="fq__side">
         <p className="eyebrow">FAQ</p>
-        <h2 className="h2">Before you<span className="it">ask us.</span></h2>
+        <h2 className="h2">{t1}{t2 ? <span className="it">{t2}</span> : null}</h2>
         <div className="fq__ask">
           <span className="fq__ico"><Icon name="message" size={22} /></span>
           <b>Still have a question?</b>
