@@ -2,6 +2,7 @@
 import { pageMeta } from '@/lib/seo'
 import { TEAM, ACCESS_REQUESTS, INVOICES, NOTIFICATIONS, STUDIO_ORDERS, CREATOR_ORDERS, AGENCY_ORDERS, THREADS } from '@/data/workspace'
 import WorkspaceShell, { type WsTab } from '@/components/workspace/Shell'
+import ProfileScreen from '@/components/workspace/ProfileScreen'
 import { TeamScreen, BillingScreen, ListsScreen, AlertsScreen } from '@/components/workspace/brand/common'
 import { BrandHome, BrandOrders, BrandInbox, BrandAgencyOrders } from '@/components/workspace/brand/screens'
 
@@ -25,6 +26,7 @@ export default async function BrandWorkspace({ params }: P) {
     { id: 'team', label: 'Team and roles', icon: 'users', group: 'Organisation', badge: ACCESS_REQUESTS.length, status: 'dev', content: <TeamScreen org="Lumi Skin" members={TEAM} requests={ACCESS_REQUESTS} /> },
     { id: 'billing', label: 'Billing', icon: 'card', group: 'Organisation', status: 'planned', content: <BillingScreen invoices={INVOICES} who="brand" /> },
     { id: 'alerts', label: 'Alerts', icon: 'bell', group: 'Organisation', badge: NOTIFICATIONS.length, status: 'live', content: <AlertsScreen items={NOTIFICATIONS} /> },
+    { id: 'settings', label: 'Profile and settings', icon: 'settings', group: 'Organisation', status: 'planned', content: <ProfileScreen role="brand" /> },
   ]
   return (
     <>

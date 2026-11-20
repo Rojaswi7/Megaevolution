@@ -3,6 +3,7 @@ import { pageMeta } from '@/lib/seo'
 import { AGENCY_ORDERS, THREADS } from '@/data/workspace'
 import { AGENCY_TEAM, AGENCY_REQUESTS, AGENCY_NOTIFICATIONS, CLIENT_INVOICES, REPORTS } from '@/data/workspaceAgency'
 import WorkspaceShell, { type WsTab } from '@/components/workspace/Shell'
+import ProfileScreen from '@/components/workspace/ProfileScreen'
 import { TeamScreen, BillingScreen, ListsScreen, AlertsScreen } from '@/components/workspace/brand/common'
 import { AgencyHome, AgencyOrdersScreen, ListupCard, AgencyInbox, ReportsScreen, ClientsScreen } from '@/components/workspace/agency/screens'
 
@@ -26,6 +27,7 @@ export default async function AgencyWorkspace({ params }: P) {
     { id: 'team', label: 'Team and roles', icon: 'users', group: 'Organisation', badge: AGENCY_REQUESTS.length, status: 'dev', content: <TeamScreen org="the MegaEvolution team" members={AGENCY_TEAM} requests={AGENCY_REQUESTS} /> },
     { id: 'billing', label: 'Billing', icon: 'card', group: 'Organisation', status: 'planned', content: <BillingScreen invoices={CLIENT_INVOICES} who="agency" /> },
     { id: 'alerts', label: 'Alerts', icon: 'bell', group: 'Organisation', badge: AGENCY_NOTIFICATIONS.length, status: 'live', content: <AlertsScreen items={AGENCY_NOTIFICATIONS} /> },
+    { id: 'settings', label: 'Profile and settings', icon: 'settings', group: 'Organisation', status: 'planned', content: <ProfileScreen role="agency" /> },
   ]
   return (
     <>

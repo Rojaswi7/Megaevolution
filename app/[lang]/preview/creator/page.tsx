@@ -3,6 +3,7 @@ import { pageMeta } from '@/lib/seo'
 import { creatorByHandle, CREATORS } from '@/data/creators'
 import { CREATOR_CHATS, CREATOR_ALERTS, CREATOR_SAVED } from '@/data/workspace-b'
 import WorkspaceShell, { type WsTab } from '@/components/workspace/Shell'
+import ProfileScreen from '@/components/workspace/ProfileScreen'
 import { Inbox, Alerts, Saved } from '@/components/workspace/common-b'
 import { CreatorHome, CreatorProfile, CreatorRates, CreatorRanking, CreatorOrders, CreatorScripts, CreatorPdfs, CreatorEarnings } from '@/components/workspace/creator/screens'
 
@@ -28,6 +29,7 @@ export default async function CreatorWorkspace({ params }: P) {
     { id: 'earnings', label: 'Earnings', icon: 'bag', group: 'Money', status: 'dev', content: <CreatorEarnings /> },
     { id: 'lists', label: 'Saved', icon: 'bookmark', group: 'More', content: <Saved sub="Briefs, guides and hooks you kept." items={CREATOR_SAVED} /> },
     { id: 'alerts', label: 'Alerts', icon: 'bell', group: 'More', badge: CREATOR_ALERTS.length, content: <Alerts items={CREATOR_ALERTS} /> },
+    { id: 'settings', label: 'Account settings', icon: 'settings', group: 'More', status: 'planned', content: <ProfileScreen role="creator" /> },
   ]
   return (
     <>

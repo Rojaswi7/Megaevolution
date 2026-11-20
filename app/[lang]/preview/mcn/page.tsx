@@ -5,6 +5,7 @@ import { MCNS, mcnBySlug, rosterOf } from '@/data/mcns'
 import { categoryBySlug } from '@/data/categories'
 import { MCN_CHATS, MCN_ALERTS, MCN_SAVED, MCN_DEALS, CONTRACTS } from '@/data/workspace-b'
 import WorkspaceShell, { type WsTab } from '@/components/workspace/Shell'
+import ProfileScreen from '@/components/workspace/ProfileScreen'
 import { Inbox, Alerts, Saved } from '@/components/workspace/common-b'
 import { McnHome, McnTalent, McnContracts, McnBuilder, McnPortal, McnAgencyOrders, McnBilling, type RosterRow } from '@/components/workspace/mcn/screens'
 
@@ -36,6 +37,7 @@ export default async function McnWorkspace({ params }: P) {
     { id: 'billing', label: 'Billing', icon: 'card', group: 'Business', status: 'dev', content: <McnBilling /> },
     { id: 'lists', label: 'Saved', icon: 'bookmark', group: 'More', content: <Saved title="Saved lists" sub="Creators you are scouting." items={MCN_SAVED} /> },
     { id: 'alerts', label: 'Alerts', icon: 'bell', group: 'More', badge: MCN_ALERTS.length, content: <Alerts items={MCN_ALERTS} /> },
+    { id: 'settings', label: 'Profile and settings', icon: 'settings', group: 'More', status: 'planned', content: <ProfileScreen role="mcn" /> },
   ]
   return (
     <>

@@ -1,0 +1,115 @@
+/* Brand profile and settings (pf-) */
+.pf { display: grid; gap: 16px; }
+
+.pf-hero { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px 22px; padding: 22px 24px; border-radius: 20px; background: var(--navy); color: #fff; }
+.pf-hero__av { position: relative; width: 76px; height: 76px; }
+.pf-hero__av .av { --s: 76px; font-size: 30px; box-shadow: 0 0 0 3px var(--accent); }
+.pf-hero__av img { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px var(--accent); }
+.pf-hero__cam { position: absolute; right: -4px; bottom: -4px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 0 3px var(--navy); cursor: pointer; transition: transform 0.15s; }
+.pf-hero__cam:hover { transform: scale(1.08); }
+.pf-hero__cam:focus-within { outline: 2px solid var(--accent-on-dark); outline-offset: 2px; }
+.pf-hero__who h2 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+.pf-hero__who p { color: var(--on-dark-2); font-size: 14px; margin-top: 4px; }
+.pf-hero__mail { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.pf-ok { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: 11px; font-weight: 600; }
+.pf-hero__done { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: var(--inner); max-width: 300px; }
+.pf-hero__done b { display: block; font-size: 14px; font-weight: 600; }
+.pf-hero__done small { display: block; font-size: 12px; color: var(--on-dark-2); line-height: 1.35; }
+.pf-ring { --p: 0; width: 52px; height: 52px; flex: none; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(var(--accent) calc(var(--p) * 1%), rgba(255, 255, 255, 0.14) 0); }
+.pf-ring b { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: var(--inner); font-size: 12.5px; font-weight: 600; }
+
+.pf-grid { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 16px; align-items: start; }
+.pf-nav { position: sticky; top: calc(var(--hdr) + 16px); display: grid; gap: 2px; padding: 8px; border-radius: 20px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.pf-nav button { display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 10px; border-radius: 11px; font-size: 13.5px; font-weight: 500; color: var(--ink-2); text-align: left; }
+.pf-nav button svg { color: var(--ink-3); }
+.pf-nav button:hover { background: var(--surface-2); color: var(--ink); }
+.pf-main { display: grid; gap: 16px; min-width: 0; }
+
+.pf-card { padding: 20px; border-radius: 20px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); scroll-margin-top: calc(var(--hdr) + 16px); }
+.pf-card > header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.pf-card__ico { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; background: var(--accent); color: var(--accent-ink); box-shadow: inset 0 0 0 1.5px var(--navy); flex: none; }
+.pf-card h3 { font-size: 16.5px; font-weight: 600; letter-spacing: -0.015em; }
+.pf-card > header p { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+
+.pf-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; }
+.pf-fields--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pf-span { grid-column: 1 / -1; }
+.pf-fields label, .pf-field { display: grid; gap: 6px; min-width: 0; }
+.pf-fields label > span, .pf-field > span { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+.pf-field > span small { font-weight: 500; color: var(--ink-3); }
+.pf-fields input, .pf-fields select, .pf-pw input, .pf-del input { width: 100%; height: 44px; padding: 0 14px; border-radius: 12px; border: 0; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); font-size: 14.5px; color: var(--ink); transition: box-shadow 0.15s, background 0.15s; }
+.pf-fields input:hover, .pf-fields select:hover { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.pf-fields input:focus, .pf-fields select:focus, .pf-pw input:focus, .pf-del input:focus { outline: 0; background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--navy), 0 0 0 4px rgba(214, 255, 77, 0.45); }
+.pf-fields input[readonly] { color: var(--ink-2); }
+.pf-fields label small { font-size: 12px; color: var(--ink-3); }
+.pf-lock { display: flex; gap: 8px; }
+.pf-lock button { flex: none; padding: 0 16px; border-radius: 12px; font-size: 13.5px; font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--navy); }
+.pf-lock button:hover { background: var(--accent); }
+.pf-pre { display: flex; align-items: center; border-radius: 12px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); }
+.pf-pre em { font-style: normal; padding-left: 14px; font-size: 14px; color: var(--ink-3); }
+.pf-pre input { box-shadow: none; background: none; padding-left: 2px; }
+.pf-pre:focus-within { background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--navy), 0 0 0 4px rgba(214, 255, 77, 0.45); }
+.pf-pre input:focus { box-shadow: none; background: none; }
+.pf-seg { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 12px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); }
+.pf-seg button { flex: 1; height: 34px; padding: 0 8px; border-radius: 9px; font-size: 13px; font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+.pf-seg button:hover { color: var(--ink); }
+.pf-seg button[aria-checked='true'] { background: var(--navy); color: #fff; font-weight: 600; }
+.pf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pf-chips button { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px 0 9px; border-radius: 999px; font-size: 13.5px; font-weight: 500; box-shadow: inset 0 0 0 1px var(--line-strong); }
+.pf-chips .flag { width: 18px; }
+.pf-chips button:hover { box-shadow: inset 0 0 0 1.5px var(--navy); }
+.pf-chips button[aria-pressed='true'] { background: var(--accent); box-shadow: inset 0 0 0 1.5px var(--navy); font-weight: 600; }
+
+.pf-rows { display: grid; }
+.pf-rows > li { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+.pf-rows > li:first-child { border-top: 0; padding-top: 0; }
+.pf-rows > li > div { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.pf-rows b { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 600; }
+.pf-rows small { font-size: 12.5px; color: var(--ink-3); }
+.pf-rows .btn { flex: none; box-shadow: none; }
+.pf-row__ico { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; background: var(--grey); flex: none; }
+.pf-row__ico--g { font-weight: 700; font-size: 15px; color: #fff; background: var(--navy); }
+.pf-now { font-style: normal; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); }
+.pf-sub { margin: 18px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.pf-rows--tight > li { padding: 10px 0; }
+.pf-pw form { width: 100%; display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 10px; padding: 14px; border-radius: 14px; background: var(--surface-2); }
+.pf-pw label { display: grid; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+.pf-pw input { background: var(--surface); }
+
+.pf-matrix { display: grid; }
+.pf-matrix > div { display: grid; grid-template-columns: minmax(0, 1fr) 80px 80px; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+.pf-matrix > div > span:not(:first-child) { display: grid; justify-items: center; }
+.pf-matrix > div > span:first-child { display: grid; gap: 2px; }
+.pf-matrix b { font-size: 14.5px; font-weight: 600; }
+.pf-matrix small { font-size: 12.5px; color: var(--ink-3); }
+.pf-matrix .pf-matrix__h { border-top: 0; padding-top: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+
+.pf-danger { box-shadow: inset 0 0 0 1.5px #f1b7b2; }
+.pf-danger .pf-card__ico { background: #fbdcd9; color: #8c1d18; box-shadow: none; }
+.pf-del input { width: 120px; flex: none; height: 38px; }
+.pf-btn-bad { background: #c2362d; color: #fff; box-shadow: none; }
+.pf-btn-bad:hover:not(:disabled) { background: #a32a22; }
+.pf-btn-bad:disabled { opacity: 0.4; cursor: not-allowed; }
+.pf-del code { font-weight: 700; color: var(--ink); }
+
+.pf-savebar { position: sticky; bottom: 16px; z-index: 20; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 10px 10px 10px 18px; border-radius: 18px; background: var(--navy); color: #fff; box-shadow: 0 16px 40px -14px rgba(14, 13, 57, 0.6); animation: pf-up 0.2s ease-out; }
+.pf-savebar > span { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+.pf-savebar > span i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.pf-savebar > div { display: flex; gap: 8px; }
+.pf-savebar .btn { box-shadow: none; }
+.pf-savebar .btn--ghost { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.4); }
+@keyframes pf-up { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) { .pf-savebar { animation: none; } }
+
+@media (max-width: 1180px) { .pf-grid { grid-template-columns: 1fr; } .pf-nav { position: static; display: flex; overflow-x: auto; scrollbar-width: none; } .pf-nav button { white-space: nowrap; } .pf-hero { grid-template-columns: auto minmax(0, 1fr); } .pf-hero__done { grid-column: 1 / -1; max-width: none; } }
+@media (max-width: 640px) {
+  .pf-fields, .pf-fields--3 { grid-template-columns: 1fr; }
+  .pf-hero { padding: 18px; gap: 14px; }
+  .pf-pw form { grid-template-columns: 1fr; }
+  .pf-matrix > div { grid-template-columns: minmax(0, 1fr) 54px 54px; gap: 8px; }
+  .pf-rows > li { flex-wrap: wrap; }
+  .pf-del input { flex: 1 1 120px; }
+  .pf-card { padding: 16px; }
+}
+.pf .pf-rows .btn--ghost { box-shadow: inset 0 0 0 1.5px var(--navy); padding-inline: 14px; }
+.pf .pf-rows .btn--ghost:hover { background: var(--accent); }

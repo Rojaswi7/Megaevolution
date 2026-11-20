@@ -2,6 +2,7 @@
 import { pageMeta } from '@/lib/seo'
 import { EDITOR_CHATS, EDITOR_ALERTS, EDITOR_SAVED } from '@/data/workspace-b'
 import WorkspaceShell, { type WsTab } from '@/components/workspace/Shell'
+import ProfileScreen from '@/components/workspace/ProfileScreen'
 import { Inbox, Alerts, Saved } from '@/components/workspace/common-b'
 import { EditorQueue, EditorMine, EditorRevisions, EditorDelivered } from '@/components/workspace/editor/screens'
 
@@ -22,6 +23,7 @@ export default async function EditorWorkspace({ params }: P) {
     { id: 'messages', label: 'Messages', icon: 'message', group: 'More', badge: 1, status: 'dev', content: <Inbox role="editor" title="Messages" sub="Order chats with brands and the studio lead." chats={EDITOR_CHATS} /> },
     { id: 'lists', label: 'Reference', icon: 'bookmark', group: 'More', content: <Saved title="Reference" sub="Brand guides and presets you saved." items={EDITOR_SAVED} /> },
     { id: 'alerts', label: 'Alerts', icon: 'bell', group: 'More', badge: EDITOR_ALERTS.length, content: <Alerts items={EDITOR_ALERTS} /> },
+    { id: 'settings', label: 'Profile and settings', icon: 'settings', group: 'More', status: 'planned', content: <ProfileScreen role="editor" /> },
   ]
   return (
     <>
