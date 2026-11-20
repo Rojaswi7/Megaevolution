@@ -10,6 +10,8 @@ import { Icon, Arrow, PlatformIcon } from '../../Icon'
 import { Money } from '../../Money'
 import { WsHead, Pill } from '../Shell'
 import { useToast, goTab, CreatorCell, Market } from './common'
+import { creatorByHandle } from '@/data/creators'
+import '@/styles/brand-home.css'
 
 // Free revisions per order come from the pricing config. While that number is TBD the
 // mockup assumes 2, only so the free → paid switch can be seen.
@@ -32,44 +34,145 @@ export function BrandHome({ lang }: { lang: string }) {
     review ? { t: `${review} creator orders need your review`, s: 'A script and a draft are waiting.', to: 'orders', cta: 'Open orders' } : null,
     proposed ? { t: `${proposed} creator proposed by your agency`, s: 'Approve or decline the listing.', to: 'agency-orders', cta: 'Decide' } : null,
   ].filter(Boolean) as { t: string; s: string; to: string; cta: string }[]
+  const NEED_ICON = ['pen', 'play', 'users', 'list']
+  const NEED_TAG = ['Studio', 'Studio', 'Creator orders', 'Agency']
+  const videos = STUDIO_ORDERS.flatMap((o) => o.videos)
+  const openOrders = CREATOR_ORDERS.filter((o) => o.status !== 'Completed')
+  const posting = CREATOR_ORDERS.filter((o) => o.status === 'Scheduled').length
+
+  // the next deadlines across creator orders and Studio videos (sample "today" is TODAY)
+  const upcoming = [
+    ...openOrders.map((o) => ({ due: o.due, t: `@${o.creator}`, s: `${o.pkg} · ${o.status}`, market: o.market, to: 'orders' })),
+    ...videos.filter((v) => v.due !== '—' && v.status !== 'Final delivered').map((v) => ({ due: v.due, t: v.title, s: `Studio · ${v.status}`, market: '', to: 'orders' })),
+  ].filter((x) => x.due >= TODAY).sort((a, b) => a.due.localeCompare(b.due)).slice(0, 5)
+
+  const campaigns = Array.from(new Set(CREATOR_ORDERS.map((o) => o.campaign))).map((name) => {
+    const os = CREATOR_ORDERS.filter((o) => o.campaign === name)
+    const done = os.filter((o) => o.status === 'Posted' || o.status === 'Completed').length
+    const live = os.filter((o) => o.status === 'Scheduled').length
+    const work = os.length - done - live
+    return { name, os, done, live, work, spend: os.reduce((s, o) => s + o.amountUsd, 0), markets: Array.from(new Set(os.map((o) => o.market))) }
+  })
+
+  const kpis = [
+    { icon: 'users', n: openOrders.length, label: 'Open creator orders', sub: `${review} need your review`, to: 'orders', part: review / Math.max(openOrders.length, 1) },
+    { icon: 'film', n: videos.filter((v) => v.status !== 'Final delivered').length, label: 'Videos in the Studio', sub: `${drafts} draft ready`, to: 'orders', part: drafts / Math.max(videos.length, 1) },
+    { icon: 'list', n: proposed, label: 'Listings to approve', sub: 'from your agency team', to: 'agency-orders', part: proposed ? 1 : 0 },
+  ]
+
   return (
     <>
-      <WsHead title="Good morning, Hana" sub="Lumi Skin · sample data">
-        <Link className="btn btn--sm" href={href(lang, '/creators')} data-cta="brand_home_search_creators" prefetch={false}>Search creators<Arrow size={14} /></Link>
-        <Link className="btn btn--sm btn--ghost" href={href(lang, '/video-editing/checkout')} data-cta="brand_home_order_video" prefetch={false}>Order a video</Link>
-      </WsHead>
-      <div className="wgrid-4">
-        <div className="kpi"><b>{CREATOR_ORDERS.filter((o) => o.status !== 'Completed').length}</b><span>Open creator orders</span><small>{review} need your review</small></div>
-        <div className="kpi"><b>{STUDIO_ORDERS.flatMap((o) => o.videos).filter((v) => v.status !== 'Final delivered').length}</b><span>Videos in the Studio</span><small>{drafts} draft ready</small></div>
-        <div className="kpi"><b>{proposed}</b><span>Listings to approve</span><small>from the MegaEvolution team</small></div>
-        <div className="kpi"><b><Money usd={spend} /></b><span>Creator spend this month</span><small>across {CREATOR_ORDERS.length} orders</small></div>
-      </div>
-      <div className="wgrid-main">
-        <div className="wcard">
-          <div className="wcard__h"><h3>Needs you</h3><span className="pill">{needs.length}</span></div>
-          {needs.map((n) => (
-            <div className="wrow" key={n.t}>
-              <span className="wa-dot" /><div className="wrow__t"><b>{n.t}</b><small>{n.s}</small></div>
-              <button className="btn btn--sm" data-cta="brand_home_needs_you" onClick={() => goTab(n.to)}>{n.cta}</button>
-            </div>
-          ))}
+      <section className="bh-hero" aria-label="Today">
+        <div className="bh-hero__copy">
+          <p className="bh-hero__date">{fmtDay(TODAY, true)} · Lumi Skin</p>
+          <h2>Good morning, <span className="it">Hana.</span></h2>
+          <p><b>{needs.length} things</b> are waiting for you and <b>{posting} post{posting === 1 ? '' : 's'}</b> go live soon.</p>
         </div>
-        <div className="wcard">
+        <div className="bh-quick">
+          <Link href={href(lang, '/creators')} data-cta="brand_home_search_creators" prefetch={false}><Icon name="search" size={18} /><b>Search creators</b><small>Shortlist by market</small></Link>
+          <Link href={href(lang, '/video-editing/checkout')} data-cta="brand_home_order_video" prefetch={false}><Icon name="film" size={18} /><b>Order a video</b><small>Edited by the Studio</small></Link>
+          <Link href={href(lang, '/about-agency#inquiry')} data-cta="brand_home_request_campaign" prefetch={false}><Icon name="building" size={18} /><b>Request a campaign</b><small>We run it for you</small></Link>
+          <button data-cta="brand_home_invite" onClick={() => goTab('team')}><Icon name="plus" size={18} /><b>Invite a teammate</b><small>Share this workspace</small></button>
+        </div>
+      </section>
+
+      <div className="bh-kpis">
+        {kpis.map((k) => (
+          <button key={k.label} className="bh-kpi" onClick={() => goTab(k.to)} data-cta={`brand_home_kpi_${k.to}`}>
+            <span className="bh-kpi__ico"><Icon name={k.icon} size={17} /></span>
+            <b className="num">{k.n}</b>
+            <span className="bh-kpi__l">{k.label}</span>
+            <span className="bh-kpi__bar"><i style={{ width: `${Math.round(k.part * 100)}%` }} /></span>
+            <small>{k.sub}</small>
+          </button>
+        ))}
+        <div className="bh-kpi bh-kpi--spend">
+          <span className="bh-kpi__ico"><Icon name="card" size={17} /></span>
+          <b className="num"><Money usd={spend} /></b>
+          <span className="bh-kpi__l">Creator spend this month</span>
+          <span className="bh-kpi__bar">{campaigns.map((c) => <i key={c.name} style={{ width: `${(c.spend / spend) * 100}%` }} title={c.name} />)}</span>
+          <small>across {CREATOR_ORDERS.length} orders, {campaigns.length} campaigns</small>
+        </div>
+      </div>
+
+      <div className="bh-main">
+        <section className="wcard bh-needs">
+          <div className="wcard__h"><h3>Needs you</h3><span className="bh-count">{needs.length}</span></div>
+          <ol>
+            {needs.map((n, i) => (
+              <li key={n.t}>
+                <span className="bh-needs__ico"><Icon name={NEED_ICON[i] || 'bell'} size={17} /></span>
+                <div><b>{n.t}</b><small><em>{NEED_TAG[i]}</em>{n.s}</small></div>
+                <button className={`btn btn--sm ${i ? 'btn--ghost' : ''}`} data-cta="brand_home_needs_you" onClick={() => goTab(n.to)}>{n.cta}<Arrow size={13} /></button>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="wcard bh-week">
+          <div className="wcard__h"><h3>Coming up</h3><button className="ulink small" onClick={() => goTab('orders')}>All orders</button></div>
+          <ol>
+            {upcoming.map((u) => (
+              <li key={u.t + u.due}>
+                <span className="bh-date"><b>{u.due.slice(8)}</b><small>{fmtDay(u.due).split(' ')[0]}</small></span>
+                <div><b>{u.t}</b><small>{u.market ? <Market id={u.market} /> : null}{u.s}</small></div>
+                <span className={`bh-when ${u.due === TODAY ? 'is-today' : ''}`}>{u.due === TODAY ? 'Today' : relDay(u.due)}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </div>
+
+      <div className="bh-main">
+        <section className="wcard bh-camps">
+          <div className="wcard__h"><h3>Campaigns</h3><button className="ulink small" onClick={() => goTab('orders')}>Creator orders</button></div>
+          <div className="bh-camps__list">
+            {campaigns.map((c) => (
+              <article key={c.name}>
+                <header>
+                  <b>{c.name}</b>
+                  <span className="bh-camps__mk">{c.markets.map((m) => <Market key={m} id={m} />)}</span>
+                </header>
+                <div className="bh-camps__avs">
+                  {c.os.slice(0, 5).map((o) => { const cr = creatorByHandle[o.creator]; return <span key={o.id} className={`av tone-${cr ? (cr.tone + 5) % 8 : 2}`} title={`@${o.creator}`}>{o.creator[0].toUpperCase()}</span> })}
+                  <small>{c.os.length} creator{c.os.length === 1 ? '' : 's'} · <Money usd={c.spend} /></small>
+                </div>
+                <div className="bh-prog" aria-label={`${c.done} posted, ${c.live} scheduled, ${c.work} in progress`}>
+                  <i className="is-done" style={{ flex: c.done }} /><i className="is-live" style={{ flex: c.live }} /><i style={{ flex: c.work }} />
+                </div>
+                <p className="bh-prog__k"><span><i className="is-done" />{c.done} posted</span><span><i className="is-live" />{c.live} scheduled</span><span><i />{c.work} in progress</span></p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="wcard bh-feed">
           <div className="wcard__h"><h3>Latest</h3><button className="ulink small" onClick={() => goTab('alerts')}>All alerts</button></div>
-          {NOTIFICATIONS.map((n) => <div className="wrow" key={n.text}><div className="wrow__t"><b style={{ whiteSpace: 'normal' }}>{n.text}</b><small>{n.when}</small></div></div>)}
-        </div>
-      </div>
-      <div className="wcard wcard--flush">
-        <div className="wcard__h"><h3>Recent creator orders</h3><button className="ulink small" onClick={() => goTab('orders')}>All orders</button></div>
-        <div className="tbl-wrap">
-          <table className="tbl">
-            <thead><tr><th>Creator</th><th>Campaign</th><th>Package</th><th>Status</th><th>Due</th></tr></thead>
-            <tbody>{CREATOR_ORDERS.slice(0, 4).map((o) => <tr key={o.id}><td><CreatorCell handle={o.creator} lang={lang} /></td><td className="small">{o.campaign}</td><td className="small">{o.pkg}</td><td><Pill>{o.status}</Pill></td><td className="tnum small">{o.due}</td></tr>)}</tbody>
-          </table>
-        </div>
+          <ol>
+            {NOTIFICATIONS.map((n) => (
+              <li key={n.text}>
+                <span className="bh-feed__ico"><Icon name={n.to === 'team' ? 'users' : 'film'} size={14} /></span>
+                <div><button onClick={() => goTab(n.to)}>{n.text}</button><small>{n.when}</small></div>
+              </li>
+            ))}
+          </ol>
+        </section>
       </div>
     </>
   )
+}
+
+const TODAY = '2026-11-20'
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const asDate = (d: string) => new Date(`${d}T00:00:00Z`)
+function fmtDay(d: string, long = false) {
+  const x = asDate(d)
+  return long ? `${DAYS[x.getUTCDay()]}, ${x.getUTCDate()} ${MONTHS[x.getUTCMonth()]}` : `${MONTHS[x.getUTCMonth()]} ${x.getUTCDate()}`
+}
+function relDay(d: string) {
+  const n = Math.round((asDate(d).getTime() - asDate(TODAY).getTime()) / 86400000)
+  return n === 1 ? 'Tomorrow' : `In ${n} days`
 }
 
 // ---------- My orders ----------

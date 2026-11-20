@@ -102,7 +102,7 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
                 <Link href={href(lang, '/for-creators')} data-cta="nav_for_creators"><Icon name="user" size={16} />For creators</Link>
               </div>
             </details>
-            {canSeeAgencyOrders(role) && <Link href={href(lang, `/preview/${role}?tab=agency-orders`)} data-cta="nav_agency_orders">Agency Orders</Link>}
+            {canSeeAgencyOrders(role) && <Link className="hdr__ao" href={href(lang, `/preview/${role}?tab=agency-orders`)} data-cta="nav_agency_orders">Agency Orders</Link>}
           </nav>
 
           <div className="hdr__tools">
@@ -116,8 +116,8 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
             {account ? (
               <>
                 <Link className="hdr__icon" href={href(lang, `/preview/${role}?tab=alerts`)} aria-label="Alerts" data-cta="header_alerts"><Icon name="bell" /><i>3</i></Link>
-                <Link className="hdr__icon" href={href(lang, `/preview/${role}?tab=lists`)} aria-label="Saved creators" data-cta="header_saved"><Icon name="bookmark" />{saved.length ? <i>{saved.length}</i> : null}</Link>
-                <Link className="hdr__icon" href={href(lang, `/preview/${role}?tab=messages`)} aria-label="Messages" data-cta="header_messages"><Icon name="message" /><i>2</i></Link>
+                <Link className="hdr__icon hdr__opt" href={href(lang, `/preview/${role}?tab=lists`)} aria-label="Saved creators" data-cta="header_saved"><Icon name="bookmark" />{saved.length ? <i>{saved.length}</i> : null}</Link>
+                <Link className="hdr__icon hdr__opt" href={href(lang, `/preview/${role}?tab=messages`)} aria-label="Messages" data-cta="header_messages"><Icon name="message" /><i>2</i></Link>
                 <Link className="hdr__acct" href={href(lang, account.home)} data-cta="header_org_menu" title={`${account.name} · ${account.org} · My workspace`} aria-label={`My workspace: ${account.org}`}>
                   <span className={`av tone-${account.tone}`}>{account.initial}</span>
                 </Link>
