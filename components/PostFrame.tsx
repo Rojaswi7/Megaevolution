@@ -84,7 +84,7 @@ export function PostFrame({ c, platform, size = 'tile' }: { c: Creator; platform
         <span className="pf__cap">{c.caption}</span>
         <small><Icon name="play" size={10} stroke={0} className="pc__fill" />original sound · {c.name}</small>
       </span>
-      <span className="pf__brand"><PlatformIcon name="TikTok" size={14} />TikTok</span>
+      <span className="pf__brand">{p === 'TikTok' ? <PlatformIcon name="TikTok" size={14} /> : null}{p}</span>
     </div>
   )
 }

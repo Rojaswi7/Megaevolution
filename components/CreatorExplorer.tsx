@@ -9,7 +9,7 @@ import type { Creator } from '@/data/creators'
 import { MARKETS, marketById } from '@/data/markets'
 import { CATEGORIES, categoryBySlug } from '@/data/categories'
 import { SEARCH_GATE } from '@/data/pricing'
-import { CreatorCard, Avatar, Verified, postStats } from './CreatorCard'
+import { CreatorCard, CreatorRow, Avatar, Verified, postStats } from './CreatorCard'
 import { PostFrame } from './PostFrame'
 import { Money } from './Money'
 import { SaveButton } from './client'
@@ -223,7 +223,7 @@ export default function CreatorExplorer({ lang, creators, initial = {}, pageSize
           <Spotlight c={spot} lang={lang} />
           <div className="show__side">
             <div className="show__grid">
-              {pageList.map((c, i) => <CreatorCard key={c.handle} c={c} lang={lang} selected={i === active} onSelect={() => { setActive(i); setPicked(true); track('spotlight_selected', { handle: c.handle }) }} />)}
+              {pageList.map((c, i) => <CreatorRow key={c.handle} c={c} lang={lang} selected={i === active} onSelect={() => { setActive(i); setPicked(true); track('spotlight_selected', { handle: c.handle }) }} />)}
             </div>
             {pages > 1 ? (
               <div className="show__pager">

@@ -14,6 +14,7 @@ import { SaveButton } from './client'
 import { PostFrame, postStats } from './PostFrame'
 
 export { postStats }
+const LOGOS = ['Instagram', 'TikTok', 'YouTube']
 
 export function Verified() {
   return (
@@ -44,7 +45,7 @@ export function Thumb({ c, caption, views, ratio, tone, platform }: { c: Creator
 export function PlatformList({ c, size = 14 }: { c: Creator; size?: number }) {
   return (
     <ul className="plist" aria-label="Available on">
-      {c.platforms.map((p) => <li key={p.platform} title={`${p.platform}: ${compact(p.followers)} followers`}><PlatformIcon name={p.platform} size={size} /><span>{compact(p.followers)}</span></li>)}
+      {c.platforms.map((p) => <li key={p.platform} title={`${p.platform}: ${compact(p.followers)} followers`}>{LOGOS.includes(p.platform) ? <PlatformIcon name={p.platform} size={size} /> : <em className="plist__name">{p.platform}</em>}<span>{compact(p.followers)}</span></li>)}
     </ul>
   )
 }
@@ -79,6 +80,39 @@ export function CreatorCard({ c, lang, gmvSlot = false, selected = false, onSele
           <SaveButton handle={c.handle} />
         </div>
         {gmvSlot && <p className="rt__gmv" title="Coming soon: TikTok Shop sales per creator"><Icon name="bag" size={13} />TikTok Shop sales · coming soon</p>}
+      </div>
+    </article>
+  )
+}
+
+/** Compact "up next" row for the home spotlight list. Clicking the row features the creator. */
+export function CreatorRow({ c, lang, selected, onSelect }: { c: Creator; lang: string; selected: boolean; onSelect: () => void }) {
+  const m = marketById[c.market]
+  const main = c.platforms[0].platform
+  return (
+    <article className={`cr ${selected ? 'is-on' : ''}`} data-handle={c.handle}>
+      <button className="rt__pick" onClick={onSelect} aria-pressed={selected} aria-label={`Show @${c.handle} in the spotlight`} data-cta="creator_row_spotlight" />
+      <div className={`cr__thumb tone-${c.tone} cr__thumb--${main.toLowerCase()}`} aria-hidden="true">
+        {LOGOS.includes(main) ? <span className="cr__plat"><PlatformIcon name={main} size={13} /></span> : <span className="cr__plat cr__plat--name">{main}</span>}
+        <span className="cr__cap">{c.caption}</span>
+        <span className="cr__views"><Icon name="play" size={10} stroke={0} className="pc__fill" />{compact(c.avgViews)}</span>
+      </div>
+      <div className="cr__info">
+        <p className="cr__handle">
+          <Link href={href(lang, `/@${c.handle}`)} className="rt__link" data-cta="creator_row_view_profile" prefetch={false}>@{c.handle}</Link>
+          {c.verified && <Verified />}
+        </p>
+        <p className="cr__place"><Flag market={c.market} title={m.name} />{c.city} · {categoryBySlug[c.category].label}</p>
+        <dl className="cr__stats">
+          <div><dt>Followers</dt><dd>{compact(c.followers)}</dd></div>
+          <div><dt>Avg views</dt><dd>{compact(c.avgViews)}</dd></div>
+          <div><dt>Eng.</dt><dd>{c.er}%</dd></div>
+        </dl>
+        <PlatformList c={c} size={13} />
+      </div>
+      <div className="cr__side">
+        <SaveButton handle={c.handle} />
+        <p className="cr__from"><small>from</small><b>{localMoney(c.rateLocal, c.currency)}</b>{c.currency !== 'USD' ? <small>≈ <Money usd={c.rateUsd} /></small> : null}</p>
       </div>
     </article>
   )
