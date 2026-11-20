@@ -51,7 +51,7 @@ export default function WorkspaceShell({ lang, role, tabs, title }: { lang: stri
         </div>
       )}
       <div className="ws__grid">
-        <aside className="ws__side">
+        <aside className="ws__side" data-long={tabs.length > 10 ? "" : undefined}>
           <div className="ws__acct">
             <span className={`av tone-${account.tone}`}>{account.initial}</span>
             <div><b>{account.name}</b><small>{account.org}</small></div>
