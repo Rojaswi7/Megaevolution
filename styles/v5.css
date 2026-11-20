@@ -385,3 +385,27 @@
 .ct__sort { flex: none; }
 .ct__sort select { width: auto; min-width: 0; }
 .ct__sort select { field-sizing: content; padding-right: 34px; }
+
+/* ---------- header: menu sits next to the logo again ---------- */
+.hdr__nav { flex: 1; justify-content: flex-start; margin-left: clamp(12px, 2vw, 36px); }
+
+/* ---------- hero: tighter bottom, links share the space under the chips ---------- */
+.hero3__copy { padding-block: clamp(24px, 3vw, 48px) clamp(24px, 2.6vw, 40px); }
+.hero3__quick { margin-top: 14px; }
+.hero3__alt { margin-top: 16px; gap: 6px 28px; }
+.rw { height: clamp(460px, 38vw, 660px); }
+
+/* hero search stays one row on laptops: button shrinks to its icon between 1181 and 1640px */
+@media (max-width: 1640px) and (min-width: 1181px) {
+  .hero3 .hs { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto auto; }
+  .hero3 .hs__f--q { grid-column: auto; border-right: 1px solid var(--line); border-bottom: 0; border-radius: 14px; }
+  .hero3 .hs__f--plat { border-right: 0; }
+  .hero3 .hs__go { grid-column: auto; margin-top: 0; width: 60px; padding: 0; }
+  .hero3 .hs__golabel { display: none; }
+}
+@media (max-width: 1180px) { .hero3 .hs { grid-template-columns: 1fr 1fr; } }
+
+/* testimonials band: no extra margin on top of the sections' own spacing */
+.tq { margin-block: 0; padding-block: clamp(32px, 3.4vw, 52px); }
+#proof { padding-bottom: clamp(32px, 3vw, 48px); }
+.tq-sec + .sec { padding-top: clamp(32px, 3vw, 48px); }

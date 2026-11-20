@@ -339,7 +339,7 @@ export function HeroSearch({ lang, action = 'event' }: { lang: string; action?: 
           <input type="hidden" name="platform" value={platform} />
         </div>
       </div>
-      <button className="btn btn--lg hs__go" data-cta="hero_search_creators"><Icon name="search" size={18} stroke={2.1} />Search creators</button>
+      <button className="btn btn--lg hs__go" data-cta="hero_search_creators" aria-label="Search creators"><Icon name="search" size={18} stroke={2.1} /><span className="hs__golabel">Search creators</span></button>
     </form>
   )
 }

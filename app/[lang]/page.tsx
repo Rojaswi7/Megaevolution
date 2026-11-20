@@ -78,13 +78,7 @@ export default async function Home({ params }: P) {
             <HeroSearch lang={lang} />
             <div className="hero3__quick">
               {CHIPS.map((c) => <QuickChip key={c.label} lang={lang} country={c.country} category={c.category}>{c.label}</QuickChip>)}
-                          </div>
-            <nav className="hero3__cats" aria-label="Browse by category">
-              <span>Browse</span>
-              {CATEGORIES.map((c) => (
-                <Link key={c.slug} href={href(lang, '/creators?category=' + c.slug)} data-cta="hero_category" prefetch={false}><Icon name={c.icon} size={14} />{c.label}</Link>
-              ))}
-            </nav>
+            </div>
             <p className="hero3__alt">
               <span>Need us to run it? <TLink lang={lang} to="/about-agency" cta="hero_to_agency">Agency</TLink></span>
               <span>Need videos edited? <TLink lang={lang} to="/video-editing" cta="hero_to_video">Video Editing</TLink></span>
