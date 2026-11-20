@@ -56,3 +56,6 @@ Choices made where the brief was unclear or two items pulled against each other.
 | 50 | **Brief form uses two columns** (product + budget side by side) and the summary ends with a "Prefer to talk first?" card. | Review: too tall, right side empty. |
 | 51 | **Footer market links are one line** ("Creators in Korea · Japan · …"). Category hub links stay on the country pages. Replaces row 42. | Review: no site has footer notes that large. |
 | 52 | **The phone walkthrough ("How a campaign runs") is also on the home page**, after the tools. | Asked where the mobile design went; it was only on the agency page. |
+| 53 | **Testimonials use the review's design**: full-width navy band, white cards with a folded lime corner, category pill, italic quote, result line, brand avatar. The row drifts on its own and stops on hover, focus or touch. Only the three real client quotes are used; the sample placeholders are gone. Replaces row 48. | Requested in review. |
+| 54 | **The phone walkthrough and the services fan are off the home page**; both stay on the Agency page. Replaces row 52. | Review: the home page should not repeat what other sections already say. |
+| 55 | **Tool steps show titles only** in the tools window, so the sample screen and the info card are the same height. | Review: too much white space in the tools window. |

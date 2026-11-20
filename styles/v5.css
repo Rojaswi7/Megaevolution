@@ -234,3 +234,40 @@
 .tw__buy b { white-space: nowrap; }
 .tsx__rows em { white-space: nowrap; }
 @media (max-width: 560px) { .tsx__rows li { grid-template-columns: auto 1fr auto; } .tsx__rows small { display: none; } }
+
+/* ---------- testimonials: navy band, cards with a folded lime corner, drifting row ---------- */
+.tq-sec { padding-block: 0; }
+.tq { background: var(--navy); padding-block: clamp(36px, 4vw, 60px); margin-block: clamp(40px, 4.6vw, 76px); }
+.tq__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+.tq__head .eyebrow { color: var(--accent-on-dark); font-size: 13px; letter-spacing: 0.22em; }
+.tq__nav { display: flex; gap: 10px; }
+.tq__nav button { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.35); }
+.tq__nav button:hover { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+.tq__flip { transform: scaleX(-1); }
+.tq__view { overflow-x: auto; scrollbar-width: none; padding-inline: var(--gutter);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%); }
+.tq__view::-webkit-scrollbar { display: none; }
+.tq__row { display: flex; gap: 20px; width: max-content; padding-block: 4px; }
+.tq__card { position: relative; width: clamp(300px, 30vw, 570px); flex: none; display: flex; flex-direction: column; gap: 18px; padding: 30px 32px 28px; border-radius: 22px; background: var(--page); color: var(--navy);
+  clip-path: polygon(0 0, calc(100% - 46px) 0, 100% 46px, 100% 100%, 0 100%); }
+.tq__card::after { content: ''; position: absolute; top: 0; right: 0; width: 46px; height: 46px; background: var(--accent); clip-path: polygon(0 0, 100% 100%, 0 100%); border-bottom-left-radius: 10px; }
+.tq__cat { align-self: flex-start; height: 32px; display: inline-flex; align-items: center; padding: 0 13px; border-radius: 999px; background: var(--navy); color: var(--accent-on-dark); font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.tq__card blockquote { margin: 0; font-family: var(--serif); font-style: italic; font-size: clamp(1.2rem, 1.55vw, 1.6rem); line-height: 1.32; }
+.tq__res { padding-top: 16px; border-top: 1.5px dashed rgba(14, 13, 57, 0.18); font-weight: 600; font-size: 15px; }
+.tq__who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: auto; padding-top: 14px; font-size: 15px; }
+.tq__who b { font-weight: 600; }
+.tq__who > span:last-child { color: var(--ink-3); }
+.tq__av { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: var(--navy); color: var(--accent-on-dark); font-weight: 700; font-size: 15px; margin-right: 4px; }
+.tq__link::after { content: ''; position: absolute; inset: 0; }
+@media (max-width: 760px) { .tq__card { width: 84vw; padding: 24px; } .tq__view { -webkit-mask-image: none; mask-image: none; } }
+
+/* ---------- tools: the screen and the info card are the same height, no dead space ---------- */
+.tw__body { align-items: stretch; }
+.tw__screen { align-content: start; }
+.tw__info { gap: 12px; padding: 22px; }
+.tw__steps { gap: 8px; }
+.tw__steps li { align-items: center; font-size: 14.5px; }
+.tw__steps b { font-size: 14.5px; }
+.tw__buy { padding-top: 12px; }
+.tw__buy b span { display: inline; }

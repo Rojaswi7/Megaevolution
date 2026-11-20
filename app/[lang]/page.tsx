@@ -12,8 +12,6 @@ import BeforeAfter from '@/components/home/BeforeAfter'
 import BriefForm from '@/components/home/BriefForm'
 import FaqCards from '@/components/home/FaqCards'
 import Testimonials from '@/components/home/Testimonials'
-import CampaignRuns from '@/components/sections/CampaignRuns'
-import ServicesFan from '@/components/sections/ServicesFan'
 import { TOOLS } from '@/data/tools'
 import { HOME_CASES } from '@/data/cases'
 import { STUDIO, TOOL_FROM } from '@/data/pricing'
@@ -138,9 +136,6 @@ export default async function Home({ params }: P) {
         </div>
       </section>
 
-      {/* 4b — what we do for brands (services fan) */}
-      <ServicesFan lang={lang} />
-
       {/* 5 — market map */}
       <section className="wrap sec" id="markets">
         <SectionHead eyebrow="Markets" title="Every market works differently.|We have someone there.">Pick a country to see what people watch, where they shop and who would run your campaign.</SectionHead>
@@ -152,9 +147,6 @@ export default async function Home({ params }: P) {
         <SectionHead eyebrow="Tools" title="The tools our own managers use,|open to you.">Pick one to see it. Use it for a single job, or put the set on a plan.</SectionHead>
         <ToolsShowcase lang={lang} />
       </section>
-
-      {/* 6b — how a campaign runs: the phone walkthrough */}
-      <section className="wrap sec" id="how"><CampaignRuns lang={lang} /></section>
 
       {/* 7 — Video Editing Studio */}
       <section className="wrap sec" id="studio">
@@ -196,7 +188,7 @@ export default async function Home({ params }: P) {
       </section>
 
       {/* 8b — testimonials */}
-      <section className="wrap sec--tight" aria-label="What clients say">
+      <section className="tq-sec" aria-label="What clients say">
         <Testimonials lang={lang} />
       </section>
 

@@ -89,7 +89,7 @@ export default function ToolsShowcase({ lang }: { lang: string }) {
           <span className={'rtag rtag--' + t.status}>{{ live: 'Live', dev: 'In development', planned: 'Planned' }[t.status]}</span>
           <h3>{t.name}</h3>
           <p className="tw__job">{t.job}</p>
-          <ol className="tw__steps">{t.steps.slice(0, 3).map((st, i) => <li key={st.title}><i>{i + 1}</i><span><b>{st.title}</b>{st.text}</span></li>)}</ol>
+          <ol className="tw__steps">{t.steps.slice(0, 3).map((st, i) => <li key={st.title}><i>{i + 1}</i><b>{st.title}</b></li>)}</ol>
           <div className="tw__buy">
             <span><small>Plans</small><b><Money usd={TOOL_FROM[t.slug]} from per="/mo" /></b><small>or pay per use</small></span>
             <Link className="btn" href={href(lang, '/tools/' + t.slug)} data-cta={'home_tool_open_' + t.slug} prefetch={false}>{t.comingSoon ? 'Join waitlist' : 'Try ' + t.name}<Arrow size={15} /></Link>

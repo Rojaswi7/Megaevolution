@@ -1,19 +1,18 @@
-// Testimonials for the scrolling row after Proof.
-// The first two are the public client quotes from the brief. The rest are SAMPLE
-// placeholders, marked as such on the page, to be replaced with real, approved quotes.
-export type Testimonial = { quote: string; who: string; org: string; result?: string; sample?: boolean; tone: number; caseSlug?: string }
+// Client quotes for the scrolling testimonials band. Real, public quotes only —
+// add a new one here once the client has approved it.
+export type Testimonial = { quote: string; brand: string; role: string; initial: string; category: string; result: string; caseSlug?: string }
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    quote: 'Within just one month: a 7x increase in traffic, a 10x surge in sales volume, and a 50% increase in revenue.',
-    who: 'Global Marketing Manager', org: 'Beauty company P', result: '10× sales volume', tone: 1, caseSlug: 'beauty-company-p',
+    quote: 'I thought it would be impossible to find any more suitable influencers, but I was amazed that MegaEvolution, using data, was able to identify the most optimal influencers we had never reached before.',
+    brand: 'F&B brand N', role: 'Marketing Director', initial: 'N', category: 'F&B', result: 'Creators found with data',
   },
   {
-    quote: 'We were able to successfully run campaigns in 3 countries simultaneously, which significantly reduced our workload.',
-    who: 'Global Marketing Manager', org: 'Beauty brand R', result: '3 countries at once', tone: 0, caseSlug: 'beauty-brand-r',
+    quote: 'By running global KOL campaigns together with MegaEvolution, we achieved remarkable results within just one month: a 7x increase in traffic, a 10x surge in sales volume, and a 50% increase in revenue.',
+    brand: 'Beauty company P', role: 'Global Marketing Manager', initial: 'P', category: 'Beauty', result: '7× traffic · 10× sales volume · +50% revenue', caseSlug: 'beauty-company-p',
   },
-  { quote: 'We saw every creator’s rate before we wrote to anyone. That alone saved us a week of back-and-forth.', who: 'Brand manager', org: 'Sample quote', sample: true, tone: 2 },
-  { quote: 'One contact in Seoul, and someone on the ground in Manila and Ho Chi Minh City. The posts went live on the same day.', who: 'Head of growth', org: 'Sample quote', sample: true, tone: 3 },
-  { quote: 'The edited cut-downs from the Studio ran as ads with no changes. Two rounds of revisions, delivered on time.', who: 'Performance lead', org: 'Sample quote', sample: true, tone: 4 },
-  { quote: 'Our MCN page took an afternoon to build, and brand requests now land in one inbox instead of five.', who: 'MCN founder', org: 'Sample quote', sample: true, tone: 7 },
+  {
+    quote: 'By collaborating with MegaEvolution, a global company, we were able to successfully run campaigns in 3 countries simultaneously, which significantly reduced our workload.',
+    brand: 'Beauty brand R', role: 'Global Marketing Manager', initial: 'R', category: 'Beauty', result: '3 countries at once', caseSlug: 'beauty-brand-r',
+  },
 ]
