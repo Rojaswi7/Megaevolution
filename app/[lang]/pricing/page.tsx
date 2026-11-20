@@ -7,7 +7,7 @@ import { CTA } from '@/data/site'
 import { TOOL_PLANS, STUDIO, STUDIO_SUBSCRIPTIONS, ANALYTICS_LIMITS, isTBD } from '@/data/pricing'
 import { PRICING_FAQ } from '@/data/faq'
 import { pageMeta, productLd, offerLd, abs } from '@/lib/seo'
-import { Cta, TLink, Breadcrumbs, JsonLd, RoadmapTag, StickyCta } from '@/components/ui'
+import { Cta, TLink, SectionHead, Breadcrumbs, JsonLd, RoadmapTag, StickyCta } from '@/components/ui'
 import { Icon, Arrow } from '@/components/Icon'
 import { Money } from '@/components/Money'
 import PlanTable from '@/components/tools/PlanTable'
@@ -23,18 +23,6 @@ export async function generateMetadata({ params }: P) {
 }
 
 const n = (v: unknown) => (isTBD(v) ? 'TBD' : String(v))
-
-/** Compact section heading: title on the left, a short line under it. */
-function Head({ eyebrow, title, children, tag }: { eyebrow: string; title: string; children?: React.ReactNode; tag?: React.ReactNode }) {
-  const [a, b] = title.split('|')
-  return (
-    <div className="pr-head">
-      <p className="eyebrow">{eyebrow} {tag}</p>
-      <h2 className="h2">{a}{b ? <span className="it">{b}</span> : null}</h2>
-      {children ? <p className="pr-head__sub">{children}</p> : null}
-    </div>
-  )
-}
 
 export default async function Pricing({ params }: P) {
   const { lang } = await params
@@ -82,11 +70,12 @@ export default async function Pricing({ params }: P) {
       </section>
 
       <section className="wrap pr-sec" id="tools">
-        <PlanTable lang={lang} source="pricing" head={<Head eyebrow="Tools" title="Tool plans.|Start free." tag={<RoadmapTag status="planned" />}>AI Listup, Performance Report, AI Video Edit, Script Studio and, soon, Creator Commerce Data.</Head>} />
+        <SectionHead eyebrow="Tools" title="Tool plans.|Start free.">AI Listup, Performance Report, AI Video Edit, Script Studio and, soon, Creator Commerce Data. <RoadmapTag status="planned" /></SectionHead>
+        <PlanTable lang={lang} source="pricing" />
       </section>
 
       <section className="wrap pr-sec" id="studio">
-        <Head eyebrow="Video Editing Studio" title="Pay per video,|or subscribe." tag={<RoadmapTag status="dev" />}>Order online by card. Bundles of several videos cost less.</Head>
+        <SectionHead eyebrow="Video Editing Studio" title="Pay per video,|or subscribe.">Order online by card. Bundles of several videos cost less. <RoadmapTag status="dev" /></SectionHead>
         <div className="pr-studio">
           <div className="pr-once">
             <p className="tl-k">One-time order</p>
@@ -123,7 +112,7 @@ export default async function Pricing({ params }: P) {
       </section>
 
       <section className="wrap pr-sec" id="analytics">
-        <Head eyebrow="Audience analytics" title="Audience breakdowns|you can open a day." tag={<RoadmapTag status="dev" />}>Where a creator’s followers live, their age and gender split, and what else they watch.</Head>
+        <SectionHead eyebrow="Audience analytics" title="Audience breakdowns|you can open a day.">Where a creator’s followers live, their age and gender split, and what else they watch. <RoadmapTag status="dev" /></SectionHead>
         <ol className="pr-meter">
           {tiers.map((t, i) => (
             <li key={t.who} className={i === 1 ? 'is-free' : ''} style={{ ['--lvl' as string]: (i + 1) / 4 }}>

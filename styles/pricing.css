@@ -1,11 +1,5 @@
 /* Pricing page (pr-) */
 .pr-sec { padding-block: clamp(14px, 1.4vw, 22px); scroll-margin-top: calc(var(--hdr) + 12px); }
-.pr-sec > .pr-head { margin-bottom: 18px; }
-
-/* compact heading */
-.pr-head { display: grid; gap: 8px; min-width: 0; }
-.pr-head .h2 { font-size: clamp(1.9rem, 2.8vw, 2.9rem); }
-.pr-head__sub { color: var(--ink-2); max-width: 60ch; font-size: 15px; }
 
 /* ---------- hero ---------- */
 .pr-hero { background: var(--navy); padding-block: clamp(28px, 3.2vw, 52px); margin: 8px 0 clamp(14px, 1.4vw, 22px); }
@@ -27,10 +21,6 @@
 .pr-glance a .ico { margin-bottom: 4px; }
 @media (max-width: 1000px) { .pr-hero__grid { grid-template-columns: 1fr; } }
 @media (max-width: 480px) { .pr-glance ul { grid-template-columns: 1fr; } .pr-glance__badge { width: 52px; height: 52px; font-size: 1.1rem; } }
-
-/* ---------- tool plans: heading and toggle on one row ---------- */
-#tools .tl-plans__bar { align-items: end; margin-bottom: 4px; }
-#tools .tl-plans__bar .pr-head { flex: 1 1 420px; }
 
 /* ---------- studio ---------- */
 .pr-studio { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
