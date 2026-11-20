@@ -2,14 +2,15 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import '@/styles/agency.css'
+import '@/styles/cases.css'
 import { href, CTA, LOCALES } from '@/data/site'
 import { CASES, caseBySlug } from '@/data/cases'
 import { marketBySlug } from '@/data/markets'
 import { pageMeta, articleLd } from '@/lib/seo'
 import { fmtDate } from '@/lib/format'
-import { Cta, TLink, SectionHead, JsonLd, Breadcrumbs, StickyCta, Stat } from '@/components/ui'
-import { Flag, Icon } from '@/components/Icon'
-import { CaseCard } from '@/components/CaseCard'
+import { Cta, TLink, SectionHead, JsonLd, Breadcrumbs, StickyCta } from '@/components/ui'
+import { Flag } from '@/components/Icon'
+import { CaseMeta, CaseTile } from '@/components/CaseTile'
 
 type P = { params: Promise<{ lang: string; slug: string }> }
 export const dynamicParams = false
@@ -41,64 +42,61 @@ export default async function CasePage({ params }: P) {
       <div className="wrap"><Breadcrumbs lang={lang} items={[{ name: 'Case studies', path: '/case-studies' }, { name: c.client, path }]} /></div>
 
       <article>
-        <header className="wrap">
-          <div className="slab ag-chero">
-            <p className="case__meta">
-              <span className="case__no">Case {c.no}</span>
-              {c.category ? <span>{c.category}</span> : null}
-              {c.origin || c.target ? <span>{[c.origin, c.target].filter(Boolean).join(' → ')}</span> : null}
-            </p>
-            <h1 className="h1">{head}{tail ? <span className="it">{tail}</span> : null}</h1>
-            <p className="lede">{c.summary}</p>
-            {c.stats.length ? <div className="ag-chero__stats">{c.stats.map((s) => <Stat key={s.label} value={s.value} label={s.label} />)}</div> : null}
+        <header className="wrap cs-sec">
+          <div className="cs-feat on-dark">
+            <div className="cs-feat__copy">
+              <CaseMeta c={c} />
+              <h1 className="h1">{head}{tail ? <span className="it">{tail}</span> : null}</h1>
+              <p className="lede">{c.summary}</p>
+            </div>
+            {c.stats.length ? (
+              <ul className={`cs-feat__stats ${c.stats.length === 1 ? 'cs-feat__stats--one' : ''}`}>
+                {c.stats.map((s) => <li key={s.label}><b className="num">{s.value}</b><span>{s.label}</span></li>)}
+              </ul>
+            ) : null}
           </div>
         </header>
 
-        <section className="wrap sec">
-          <div className="ag-cbody">
-            <div className="ag-cbody__main">
-              {c.goal ? <div><h2>Client goal</h2><p>{c.goal}</p></div> : null}
-              {c.achieved ? <div><h2>What they achieved</h2><p>{c.achieved}</p></div> : null}
-              {c.feedback ? (
-                <figure className="ag-quote">
-                  <blockquote><q>{c.feedback}</q></blockquote>
-                  {c.feedbackBy ? <figcaption><cite>{c.feedbackBy}, {c.client}</cite></figcaption> : null}
-                </figure>
-              ) : null}
-              <div className="ag-after" style={{ marginTop: 0 }}>
-                <Cta lang={lang} to="/about-agency#inquiry" cta="case_explore_options" size="lg">{CTA.agency}</Cta>
-                <TLink lang={lang} to="/about-agency#how" cta="case_how_we_work">How we work</TLink>
-              </div>
-            </div>
+        <section className="wrap cs-sec" aria-label="The story">
+          <ol className="cs-story">
+            {c.goal ? <li><span className="cs-story__n">01</span><h2 className="cs-story__k">Client goal</h2><p>{c.goal}</p></li> : null}
+            {c.achieved ? <li className="cs-story--result"><span className="cs-story__n">02</span><h2 className="cs-story__k">What they achieved</h2><p>{c.achieved}</p></li> : null}
+            {c.feedback ? (
+              <li className="cs-story--quote on-dark">
+                <span className="cs-story__n">03</span><h2 className="cs-story__k">Their feedback</h2>
+                <blockquote><q>{c.feedback}</q></blockquote>
+                {c.feedbackBy ? <cite>{c.feedbackBy}, {c.client}</cite> : null}
+              </li>
+            ) : (
+              <li className="cs-story--quote on-dark">
+                <span className="cs-story__n">03</span><h2 className="cs-story__k">Want the same?</h2>
+                <p>Tell us the product and the markets. A campaign manager replies within one business day.</p>
+                <Cta lang={lang} to="/about-agency#inquiry" cta="case_story_explore_options" size="sm">{CTA.agency}</Cta>
+              </li>
+            )}
+          </ol>
 
-            <aside className="card card--pad ag-cside" aria-label="About this case">
-              <dl>
-                <div><dt>Client</dt><dd>{c.client}</dd></div>
-                {c.category ? <div><dt>Category</dt><dd>{c.category}</dd></div> : null}
-                {c.origin ? <div><dt>Brand origin</dt><dd>{c.origin}</dd></div> : null}
-                {c.target ? <div><dt>Target market</dt><dd>{c.target}</dd></div> : null}
-                <div><dt>Published</dt><dd><time dateTime={c.date}>{fmtDate(c.date)}</time></dd></div>
-              </dl>
-              {markets.length ? (
-                <div>
-                  <dl><dt style={{ marginBottom: 8 }}>Markets in this case</dt></dl>
-                  <ul>
-                    {markets.map((m) => (
-                      <li key={m.id}><Link href={href(lang, `/markets/${m.slug}`)} data-cta="case_market_link" prefetch={false}><Flag market={m.id} />Influencer marketing in {m.name}<Icon name="chevronRight" size={13} /></Link></li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <TLink lang={lang} to="/markets" cta="case_all_markets">See all markets</TLink>
-              )}
-            </aside>
-          </div>
+          <dl className="cs-facts">
+            <div><dt>Client</dt><dd>{c.client}</dd></div>
+            {c.category ? <div><dt>Category</dt><dd>{c.category}</dd></div> : null}
+            {c.origin ? <div><dt>Brand origin</dt><dd>{c.origin}</dd></div> : null}
+            {c.target ? <div><dt>Target market</dt><dd>{c.target}</dd></div> : null}
+            <div><dt>Published</dt><dd><time dateTime={c.date}>{fmtDate(c.date)}</time></dd></div>
+            <div className="cs-facts__mk">
+              <dt>Markets in this case</dt>
+              <dd>
+                {markets.length ? markets.map((m) => (
+                  <Link key={m.id} href={href(lang, `/markets/${m.slug}`)} data-cta="case_market_link" prefetch={false} aria-label={`Influencer marketing in ${m.name}`}><Flag market={m.id} />{m.name}</Link>
+                )) : <Link href={href(lang, '/markets')} data-cta="case_all_markets" prefetch={false}>See all markets</Link>}
+              </dd>
+            </div>
+          </dl>
         </section>
       </article>
 
-      <section className="wrap sec">
+      <section className="wrap cs-sec">
         <SectionHead eyebrow="More cases" title="Other campaigns|we ran." />
-        <div className="grid-3">{others.map((o) => <CaseCard key={o.slug} c={o} lang={lang} />)}</div>
+        <div className="cs-grid">{others.map((o, i) => <CaseTile key={o.slug} c={o} lang={lang} tone={(['light', 'accent', 'dark'] as const)[i % 3]} />)}</div>
         <div className="ag-after">
           <Cta lang={lang} to="/about-agency#inquiry" cta="case_bottom_explore_options">{CTA.agency}</Cta>
           <TLink lang={lang} to="/case-studies" cta="case_all_cases">See all case studies</TLink>

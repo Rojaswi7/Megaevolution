@@ -241,6 +241,8 @@
 .case:nth-child(2) .case__big b, .case:nth-child(2) .case__stats b { color: var(--accent-on-dark); }
 .case:nth-child(2) .case__big span, .case:nth-child(2) .case__body dt, .case:nth-child(2) .case__stats { color: var(--on-dark-2); }
 .case:nth-child(2) .case__body dd { color: rgba(255, 255, 255, 0.86); }
+.case:nth-child(2) .case__body q { color: #fff; }
+.case:nth-child(2) .case__body cite { color: var(--on-dark-2); }
 .case:nth-child(2) .case__stats { border-color: var(--on-dark-line); }
 .case:nth-child(2) .case__more { color: var(--accent-on-dark); }
 
