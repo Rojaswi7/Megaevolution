@@ -6,7 +6,6 @@ import { useMemo, useState } from 'react'
 import { href } from '@/data/site'
 import { MARKETS, REGIONS, LOGO_PLATFORMS } from '@/data/markets'
 import { CATEGORIES, categoryBySlug } from '@/data/categories'
-import { CREATORS } from '@/data/creators'
 import { CURRENCIES } from '@/data/pricing'
 import { Flag, Icon, Arrow, PlatformIcon } from '../Icon'
 import { useApp } from '../AppState'
@@ -14,7 +13,9 @@ import { track } from '@/lib/track'
 
 const MIN = 1000, MAX = 100000
 
-export default function BriefForm({ lang }: { lang: string }) {
+export type BriefPoolItem = { handle: string; name: string; tone: number; market: string; category: string }
+
+export default function BriefForm({ lang, pool }: { lang: string; pool: BriefPoolItem[] }) {
   const { currency } = useApp()
   const [product, setProduct] = useState('')
   const [cat, setCat] = useState('beauty')
@@ -31,7 +32,7 @@ export default function BriefForm({ lang }: { lang: string }) {
   }
   const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]))
   const teams = picked.map((id) => MARKETS.find((m) => m.id === id) || REGIONS.find((r) => r.id === id)!).filter(Boolean)
-  const matches = useMemo(() => CREATORS.filter((c) => c.category === cat && (picked.length === 0 || picked.includes(c.market))), [cat, picked])
+  const matches = useMemo(() => pool.filter((c) => c.category === cat && (picked.length === 0 || picked.includes(c.market))), [cat, picked, pool])
   const pct = ((budget - MIN) / (MAX - MIN)) * 100
 
   const submit = (e: React.FormEvent) => {

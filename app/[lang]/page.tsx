@@ -56,7 +56,7 @@ export default async function Home({ params }: P) {
   // everything the quick chips can filter to, then the biggest accounts.
   const chipSets = CHIPS.flatMap((c) => creatorsIn(undefined, c.category).filter((x) => x.market === (c.country === 'vietnam' ? 'vn' : c.country === 'philippines' ? 'ph' : c.country === 'japan' ? 'jp' : 'kr')))
   const seen = new Set<string>()
-  const slice = [...FEATURED, ...chipSets, ...[...CREATORS].sort((a, b) => b.followers - a.followers)].filter((c) => !seen.has(c.handle) && seen.add(c.handle)).slice(0, 84)
+  const slice = [...FEATURED, ...chipSets, ...[...CREATORS].sort((a, b) => b.followers - a.followers)].filter((c) => !seen.has(c.handle) && seen.add(c.handle)).slice(0, 48)
     .map(({ bio, captions, mcn, ...c }) => ({ ...c, bio: '', captions: [], mcn: null }))
   const wall = [...FEATURED, ...slice.slice(12, 18)].slice(0, 15).map((c, i) => ({
     handle: c.handle, name: c.name, place: `${categoryBySlug[c.category].label} · ${c.city}`, caption: c.caption, tone: [6, 5, 1, 2, 0, 3, 4, 7, 1, 5, 2, 6, 0, 4, 3][i],
@@ -237,7 +237,7 @@ export default async function Home({ params }: P) {
 
       {/* 12 — start a campaign: the brief form */}
       <section className="wrap sec" id="brief">
-        <BriefForm lang={lang} />
+        <BriefForm lang={lang} pool={CREATORS.map((c) => ({ handle: c.handle, name: c.name, tone: c.tone, market: c.market, category: c.category }))} />
         <ul className="bf__ok">{PROOF.approvals.map((a) => <li key={a}><Icon name="check" size={15} />{a}</li>)}</ul>
       </section>
 

@@ -260,3 +260,8 @@ ul.bf__ok li { display: inline-flex; align-items: center; gap: 7px; }
 @media (max-width: 900px) { .cq:has(.cq__title:empty) { grid-template-columns: 1fr; } .cq:has(.cq__title:empty) .cq__top, .cq:has(.cq__title:empty) .cq__cats { grid-column: 1; grid-row: auto; } }
 .rt__foot { align-items: flex-end; }
 @media (max-width: 620px) { .spot__media--tiktok, .spot__media--instagram { aspect-ratio: 4 / 5; } }
+
+/* ---------- performance: skip work for what isn't on screen yet ---------- */
+.rw { contain: layout paint; }
+.rw__col { contain: layout paint; }
+.rw__track { will-change: transform; animation-delay: 1.2s; }
