@@ -49,3 +49,20 @@
 .ws .wcard__h { margin-bottom: 14px; }
 
 @media (max-width: 940px) { .ws .ws__grid { gap: 12px; } }
+
+/* compact sidebar: every role's menu fits without a scrollbar */
+.ws .ws__side { scrollbar-width: none; padding: 8px; }
+.ws .ws__side::-webkit-scrollbar { display: none; }
+.ws .ws__acct { padding: 8px; }
+.ws .ws__acct .av { --s: 32px; }
+.ws__tag { padding: 6px 8px 0; font-size: 11px; }
+.ws .ws__side nav { gap: 8px; padding: 8px 0 2px; }
+.ws .ws__group p { padding: 0 12px 3px; font-size: 9.5px; }
+.ws .ws__group button { min-height: 34px; font-size: 13.5px; gap: 10px; }
+.ws .ws__group button svg { width: 16px; height: 16px; }
+.ws .ws__group button.is-on::before { left: -8px; top: 8px; bottom: 8px; }
+.ws__help { margin-top: 8px; padding: 10px; }
+.ws__help > span { width: 28px; height: 28px; border-radius: 8px; }
+.ws .ws__sidefoot { margin-top: 4px; padding: 6px 6px 0; font-size: 12px; }
+@media (max-height: 940px) { .ws__help { display: none; } }
+@media (max-height: 760px) { .ws .ws__group button { min-height: 30px; } .ws .ws__side nav { gap: 4px; } .ws__tag { display: none; } }
