@@ -19,15 +19,23 @@ type Step = 'pick' | 'account' | 'pay' | 'done' | 'brief' | 'sent'
 
 export function RateCard({ lang, handle, name, currency, packages }: { lang: string; handle: string; name: string; currency: string; packages: Package[] }) {
   const { role, setRole, currency: viewCur } = useApp()
-  const [sel, setSel] = useState(packages.find((p) => p.popular)?.id || packages[0].id)
+  const [sel, setSel] = useState<string[]>([packages.find((p) => p.popular)?.id || packages[0].id])
   const [step, setStep] = useState<Step>('pick')
   const [edit, setEdit] = useState(false)
-  const pkg = packages.find((p) => p.id === sel)!
+  const chosen = packages.filter((p) => sel.includes(p.id))
+  const totalLocal = chosen.reduce((n, p) => n + p.priceLocal, 0)
+  const totalUsd = chosen.reduce((n, p) => n + p.priceUsd, 0)
+  const ids = chosen.map((p) => p.id).join(',')
+  const toggle = (id: string) => {
+    const on = !sel.includes(id)
+    setSel(on ? [...sel, id] : sel.filter((x) => x !== id))
+    track('package_selected', { handle, package: id, selected: on })
+  }
   const brand = accountByRole.brand
   const first = name.split(' ')[0]
 
-  const start = () => { track('checkout_started', { type: 'creator_package', handle, package: pkg.id, usd: pkg.priceUsd }); setStep(role === 'guest' ? 'account' : 'pay') }
-  const pay = (e: React.FormEvent) => { e.preventDefault(); track('checkout_completed', { type: 'creator_package', handle, package: pkg.id, usd: pkg.priceUsd, editing_addon: edit }); setStep('done') }
+  const start = () => { track('checkout_started', { type: 'creator_package', handle, packages: ids, usd: totalUsd }); setStep(role === 'guest' ? 'account' : 'pay') }
+  const pay = (e: React.FormEvent) => { e.preventDefault(); track('checkout_completed', { type: 'creator_package', handle, packages: ids, usd: totalUsd, editing_addon: edit }); setStep('done') }
   const close = () => setStep('pick')
 
   return (
@@ -36,11 +44,11 @@ export function RateCard({ lang, handle, name, currency, packages }: { lang: str
         <h2 className="h3">My Rates</h2>
         <span className="small muted">Prices in {currency}{currency !== viewCur ? `, shown in ${viewCur} too` : ''}</span>
       </div>
-      <div className="cr-rates__list" role="radiogroup" aria-label={`Packages from ${name}`}>
+      <div className="cr-rates__list" role="group" aria-label={`Packages from ${name}. Pick one or more.`}>
         {packages.map((p) => (
-          <label key={p.id} className={`cr-pkg ${p.id === sel ? 'is-on' : ''}`}>
-            <input type="radio" name="pkg" className="sr" checked={p.id === sel} onChange={() => { setSel(p.id); track('package_selected', { handle, package: p.id }) }} />
-            <span className="cr-pkg__dot" aria-hidden="true" />
+          <label key={p.id} className={`cr-pkg ${sel.includes(p.id) ? 'is-on' : ''}`}>
+            <input type="checkbox" className="sr" checked={sel.includes(p.id)} onChange={() => toggle(p.id)} />
+            <span className="cr-pkg__box" aria-hidden="true"><Icon name="check" size={13} stroke={3} /></span>
             <span className="cr-pkg__t">
               <b><PlatformIcon name={p.platform} size={14} />{p.name}{p.popular ? <i className="tag tag--accent">Most ordered</i> : null}</b>
               <small>{p.detail}</small>
@@ -55,7 +63,9 @@ export function RateCard({ lang, handle, name, currency, packages }: { lang: str
         <span><b>Need this creator’s video edited?</b> Add editing from {formatAmount(STUDIO.addOnFrom, viewCur)}. Our Studio cuts ad versions from the raw footage.</span>
       </label>
 
-      <button className="btn btn--lg btn--block" onClick={start} data-cta="profile_order_package">Order a package<Arrow /></button>
+      <button className="btn btn--lg btn--block cr-rates__order" onClick={start} disabled={!chosen.length} data-cta="profile_order_package">
+        {chosen.length ? <>Order {chosen.length === 1 ? '1 package' : `${chosen.length} packages`}<span className="cr-rates__total">{localMoney(totalLocal, currency)}</span><Arrow /></> : 'Pick at least one package'}
+      </button>
       <ul className="trust">
         <li><Icon name="lock" size={16} />Secure card checkout</li>
         <li><Icon name="refresh" size={16} />Revisions included ({isTBD(STUDIO.freeRevisions) ? 'number TBD' : STUDIO.freeRevisions})</li>
@@ -73,10 +83,18 @@ export function RateCard({ lang, handle, name, currency, packages }: { lang: str
               <button className="hdr__icon" onClick={close} aria-label="Close"><Icon name="close" /></button>
             </div>
 
-            <div className="cr-order__sum">
-              <span><b>{pkg.name}</b><small>@{handle}{edit ? ' · with Studio editing' : ''}</small></span>
-              <span className="cr-pkg__p"><b>{localMoney(pkg.priceLocal, currency)}</b><small>≈ <Money usd={pkg.priceUsd} /></small></span>
-            </div>
+            <ul className="cr-order__sum">
+              {chosen.map((p) => (
+                <li key={p.id}>
+                  <span><b>{p.name}</b><small>@{handle}</small></span>
+                  <span className="cr-pkg__p"><b>{localMoney(p.priceLocal, currency)}</b><small>≈ <Money usd={p.priceUsd} /></small></span>
+                </li>
+              ))}
+              <li className="cr-order__total">
+                <span><b>Total</b><small>{chosen.length} {chosen.length === 1 ? 'package' : 'packages'}{edit ? ' · plus Studio editing, priced in your brief' : ''}</small></span>
+                <span className="cr-pkg__p"><b>{localMoney(totalLocal, currency)}</b><small>≈ <Money usd={totalUsd} /></small></span>
+              </li>
+            </ul>
 
             {step === 'account' && (
               <div className="stack">
@@ -98,7 +116,7 @@ export function RateCard({ lang, handle, name, currency, packages }: { lang: str
                   <label className="field"><span>CVC</span><input className="input" placeholder="123" defaultValue="123" /></label>
                 </div>
                 <p className="wnote" id="cr-mock"><Icon name="lock" size={15} />Mock checkout. No card is charged and nothing leaves this page.</p>
-                <button className="btn btn--lg btn--block" data-cta="order_pay">Pay {localMoney(pkg.priceLocal, currency)}<Arrow /></button>
+                <button className="btn btn--lg btn--block" data-cta="order_pay">Pay {localMoney(totalLocal, currency)}<Arrow /></button>
                 <ul className="trust">
                   <li><Icon name="shield" size={16} />{STUDIO.refundNote}</li>
                 </ul>

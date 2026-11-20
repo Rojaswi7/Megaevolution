@@ -35,7 +35,7 @@ Every event automatically carries: `path`, `ts`, and any captured ad parameters 
 | `results_load_more` | More results requested | `shown` |
 | `market_selected` | A market is picked on the map | `market` |
 | `creator_saved` | Save to list (logged in) | `handle`, `saved` |
-| `package_selected` | A package is picked in My Rates | `handle`, `package` |
+| `package_selected` | A package is ticked or unticked in My Rates (brands can pick several) | `handle`, `package`, `selected` |
 | `audience_viewed` | An audience breakdown is opened | `handle`, `used`, `limit` |
 
 ### Gates and paywalls
@@ -50,7 +50,7 @@ Every event automatically carries: `path`, `ts`, and any captured ad parameters 
 
 | Event | When | Main props |
 |---|---|---|
-| `checkout_started` | Studio checkout or a creator package order starts | `type`, `handle`, `package`, `usd` |
+| `checkout_started` | Studio checkout or a creator package order starts | `type`, `handle`, `packages` (comma-separated ids), `usd` (total) |
 | `checkout_step` | Each Studio checkout step | `step` |
 | `checkout_completed` | Mock payment succeeds | `type`, quantities, `plan` |
 | `brief_submitted` | Brief sent after payment | `type` |
