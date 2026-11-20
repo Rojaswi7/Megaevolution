@@ -3,7 +3,8 @@
 // Second row: the nav. Logged in (dummy accounts), it adds alerts, saved, messages and the org menu.
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { NAV, LOCALES, LOCALE_NAMES, href } from '@/data/site'
 import type { Dict } from '@/data/i18n'
 import { Icon, Arrow } from './Icon'
@@ -35,13 +36,17 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
   const [stuck, setStuck] = useState(false)
   const [palette, setPalette] = useState(false)
   const [menu, setMenu] = useState(false)
-  const [path, setPath] = useState('')
+  // the header lives in the layout and survives client navigation, so read the path on every route change
+  const pathname = usePathname() || '/'
+  const path = pathname.replace(/^\/(ko|ja|zh|vi)(?=\/|$)/, '') || '/'
+  const moreRef = useRef<HTMLDetailsElement>(null)
+  const locRef = useRef<HTMLDetailsElement>(null)
+  const closeMenus = () => { moreRef.current?.removeAttribute('open'); locRef.current?.removeAttribute('open') }
   const [mac, setMac] = useState(true)
   const { role, setRole, saved, currency } = useApp()
   const account = useAccount()
 
   useEffect(() => {
-    setPath(barePath())
     setMac(/Mac|iPhone|iPad/.test(navigator.platform))
     const onScroll = () => setStuck(window.scrollY > 8)
     const onKey = (e: KeyboardEvent) => {
@@ -55,6 +60,20 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
   useEffect(() => { document.body.style.overflow = menu || palette ? 'hidden' : '' }, [menu, palette])
 
   const openSearch = (via: string) => { setPalette(true); track('search_opened', { via }) }
+  // close the More and language menus on navigation, on a click outside them, and on Escape
+  useEffect(() => { closeMenus(); setMenu(false) }, [pathname])
+  useEffect(() => {
+    const outside = (e: MouseEvent) => {
+      const t = e.target as Node
+      if (moreRef.current && !moreRef.current.contains(t)) moreRef.current.removeAttribute('open')
+      if (locRef.current && !locRef.current.contains(t)) locRef.current.removeAttribute('open')
+    }
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenus() }
+    document.addEventListener('mousedown', outside)
+    document.addEventListener('keydown', esc)
+    return () => { document.removeEventListener('mousedown', outside); document.removeEventListener('keydown', esc) }
+  }, [])
+
   const isCurrent = (p: string) => path === p || (p !== '/' && path.startsWith(p + '/'))
   const nav = NAV.map((n) => ({ ...n, label: dict.nav[n.key] }))
 
@@ -71,9 +90,9 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
             {nav.filter((n) => ['creators', 'tools', 'video', 'agency', 'markets'].includes(n.key)).map((n) => (
               <Link key={n.key} href={href(lang, n.path)} aria-current={isCurrent(n.path) ? 'page' : undefined} data-cta={`nav_${n.key}`}>{n.label}</Link>
             ))}
-            <details className="hdr__morenav">
+            <details className="hdr__morenav" ref={moreRef}>
               <summary>More<Icon name="chevron" size={14} /></summary>
-              <div className="hdr__menu">
+              <div className="hdr__menu" onClick={closeMenus}>
                 <Link href={href(lang, '/connect-ai')} data-cta="nav_ai"><Icon name="plug" size={16} />{dict.nav.ai}<span className="tag tag--accent">{dict.new}</span></Link>
                 <Link href={href(lang, '/case-studies')} data-cta="nav_cases"><Icon name="chart" size={16} />Case studies</Link>
                 <Link href={href(lang, '/pricing')} data-cta="nav_pricing"><Icon name="card" size={16} />Pricing</Link>
@@ -89,7 +108,7 @@ export default function Header({ lang, dict }: { lang: string; dict: Dict }) {
             <button className="hdr__search" onClick={() => openSearch('header')} data-cta="header_search" aria-label={dict.searchPlaceholder}>
               <Icon name="search" size={18} />
             </button>
-            <details className="hdr__loc">
+            <details className="hdr__loc" ref={locRef}>
               <summary aria-label={`${dict.language} / ${dict.currency}`} title={`${dict.language} · ${dict.currency}`}><Icon name="globe" size={18} /></summary>
               <div className="hdr__pop">
                 <label><span>{dict.language}</span><LangSwitch lang={lang} label={dict.language} /></label>
