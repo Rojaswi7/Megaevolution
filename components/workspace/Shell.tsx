@@ -55,6 +55,7 @@ export default function WorkspaceShell({ lang, role, tabs, title }: { lang: stri
           <div className="ws__acct">
             <span className={`av tone-${account.tone}`}>{account.initial}</span>
             <div><b>{account.name}</b><small>{account.org}</small></div>
+            <Icon name="chevron" size={15} />
           </div>
           <p className="ws__tag"><i />Preview · sample data</p>
           <nav aria-label={title}>
@@ -71,6 +72,12 @@ export default function WorkspaceShell({ lang, role, tabs, title }: { lang: stri
               </div>
             ))}
           </nav>
+          <div className="ws__help">
+            <span><Icon name="message" size={16} /></span>
+            <b>Need a hand?</b>
+            <small>Your account manager replies within one business day.</small>
+            <Link href={href(lang, '/help')} prefetch={false} data-cta={`ws_${role}_help`}>Get help<Icon name="arrow" size={13} /></Link>
+          </div>
           <div className="ws__sidefoot">
             <Link href={href(lang, '/preview')} prefetch={false}>All preview screens</Link>
             <button onClick={() => { setRole('guest'); window.location.href = href(lang, '/login') }} data-cta="ws_logout">Log out</button>
